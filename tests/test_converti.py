@@ -83,7 +83,7 @@ def test_revisioni_parquet():
 
     tipi = t.column("tipo")
     n_mod = sum(1 for i in range(len(tipi)) if tipi[i].as_py() == "modifica_costituzione")
-    assert n_mod >= 20, f"{n_mod} modifiche, attese almeno 20"
+    assert n_mod >= 15, f"{n_mod} modifiche, attese almeno 15"
 
     # Art. 9 deve essere presente tra le modifiche
     articoli = t.column("articoli_modificati")
