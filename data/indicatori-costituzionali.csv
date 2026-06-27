@@ -2,7 +2,6 @@ articolo,dataset_slug,dataset_name,fonte,dimensione,tipo_indicatore
 3,istat_gini_regionale,ISTAT - Indice di Gini regionale,"ISTAT — Dataflow 32_221 (Omogeneita del reddito regionale), SDMX-CSV",disuguaglianza reddito,outcome
 3,irpef_comunale,Irpef Comunale,Ministero dell'Economia e delle Finanze - OpenData,gap reddito territoriale,territoriale
 5,opencivitas_fsc_2025_rso,Opencivitas Fsc 2025 Rso,OpenCivitas / Sogei,Fondo Solidarietà Comunale,strutturale
-5,siope_uscite_comuni,siope_uscite_comuni,,spesa comuni,strutturale
 9,terna_capacita_rinnovabile,Terna Capacita Rinnovabile,Terna S.p.A. — dati pubblicati su terna.com,capacità rinnovabile installata,strutturale
 9,terna_electricity_by_source,Terna Electricity By Source,Terna S.p.A. - dati.terna.it,mix elettrico per fonte,outcome
 9,ispra_ru_base,ISPRA - Rifiuti Urbani (dati base),ISPRA,produzione e differenziata rifiuti,outcome

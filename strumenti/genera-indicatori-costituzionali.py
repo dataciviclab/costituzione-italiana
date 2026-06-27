@@ -36,7 +36,7 @@ MAPPING: dict[int, list[tuple[str, str, str]]] = {
     ],
     5: [
         ("opencivitas_fsc_2025_rso", "Fondo Solidarietà Comunale", "strutturale"),
-        ("siope_uscite_comuni", "spesa comuni", "strutturale"),
+        # siope_uscite_comuni — da aggiungere quando sarà in clean_catalog
     ],
     9: [
         ("terna_capacita_rinnovabile", "capacità rinnovabile installata", "strutturale"),
@@ -113,8 +113,10 @@ MAPPING: dict[int, list[tuple[str, str, str]]] = {
 def leggi_clean_catalog(path: Path) -> dict[str, dict]:
     """Legge il clean_catalog e restituisce dict slug → info."""
     if not path.exists():
-        logger.warning("clean_catalog non trovato: %s", path)
-        return {}
+        raise FileNotFoundError(
+            f"clean_catalog non trovato: {path}\n"
+            "Assicurati che dataset-incubator sia clonato nel workspace."
+        )
     with open(path) as f:
         catalog = json.load(f)
     slugs: dict[str, dict] = {}
@@ -183,6 +185,14 @@ def main() -> None:
     logging.basicConfig(level=logging.INFO, format="%(levelname)s [%(name)s] %(message)s")
 
     catalog = leggi_clean_catalog(CLEAN_CATALOG)
+
+    # Valida che tutti gli slug MAPPING siano nel catalog
+    mapped_slugs = {ds[0] for entries in MAPPING.values() for ds in entries}
+    missing_slugs = mapped_slugs - set(catalog.keys())
+    if missing_slugs:
+        logger.error("Slug non trovati in clean_catalog: %s", sorted(missing_slugs))
+        sys.exit(1)
+
     records = genera_mappa(catalog)
 
     args.output_dir.mkdir(parents=True, exist_ok=True)
