@@ -107,8 +107,8 @@ FROM 'data/revisioni.parquet'
 WHERE list_has_any(articoli_modificati, [9]);
 
 -- Quali articoli sono stati modificati più volte?
-SELECT UNNEST(articoli_modificati) AS art, COUNT(*) AS volte
-FROM 'data/revisioni.parquet'
+SELECT art, COUNT(*) AS volte
+FROM 'data/revisioni.parquet', LATERAL UNNEST(articoli_modificati) AS t(art)
 WHERE tipo = 'modifica_costituzione'
 GROUP BY art ORDER BY volte DESC;
 ```

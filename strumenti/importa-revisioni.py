@@ -256,6 +256,10 @@ def importa_revisioni(corpus_dir: Path) -> list[dict]:
 
         tipo = _classifica(titolo, articoli)
 
+        # Solo le modifiche alla Costituzione hanno articoli_modificati
+        if tipo != "modifica_costituzione":
+            articoli = []
+
         revisioni.append(
             {
                 "urn": meta.get("urn", ""),
