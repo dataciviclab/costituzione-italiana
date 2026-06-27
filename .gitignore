@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.pyc
+*.egg-info/
+
+# Venv
+.venv/
+venv/
+
+# Output derivati (non committare dati generati)
+# data/articoli.csv e .parquet sono committati perché sono dataset pubblici
+
+# IDE
+.vscode/
+.idea/
