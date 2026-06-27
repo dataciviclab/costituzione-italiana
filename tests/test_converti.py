@@ -119,3 +119,26 @@ def test_revisioni_parquet():
             art9_presente = True
             break
     assert art9_presente, "Art. 9 non trovato tra le modifiche (legge ambiente 2022)"
+
+
+def test_indicatori_csv_esiste():
+    """Il file indicatori-costituzionali.csv deve esistere e avere almeno 30 righe."""
+    csv_path = REPO_ROOT / "data" / "indicatori-costituzionali.csv"
+    assert csv_path.exists()
+    lines = csv_path.read_text("utf-8").strip().split("\n")
+    assert len(lines) >= 31, f"{len(lines)} righe, attese almeno 31"
+
+
+def test_indicatori_parquet():
+    """Il parquet deve avere almeno 30 record e art. 9 tra gli articoli."""
+    import pyarrow.parquet as pq
+
+    t = pq.read_table(str(REPO_ROOT / "data" / "indicatori-costituzionali.parquet"))
+    assert t.num_rows >= 30, f"{t.num_rows} righe, attese >= 30"
+
+    # Art. 9 (ambiente) deve essere presente
+    artt = t.column("articolo")
+    assert any(artt[i].as_py() == 9 for i in range(len(artt))), "Art. 9 non trovato"
+
+    # Art. 32 (salute) deve essere presente
+    assert any(artt[i].as_py() == 32 for i in range(len(artt))), "Art. 32 non trovato"
