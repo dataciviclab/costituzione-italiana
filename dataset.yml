@@ -1,0 +1,53 @@
+dataset:
+  name: costituzione_italiana
+  display_name: Costituzione della Repubblica Italiana
+  description: >
+    Testo vigente della Costituzione della Repubblica Italiana, strutturato
+    articolo per articolo con partizioni (Parti, Titoli, Sezioni).
+    Include le Disposizioni transitorie e finali (I–XVIII).
+    Fonte originale: Wikisource (CC BY-SA 3.0), allineata con Normattiva.
+  source: Wikisource — https://it.wikisource.org/wiki/Italia,_Repubblica_-_Costituzione
+  source_url: https://it.wikisource.org/wiki/Italia,_Repubblica_-_Costituzione
+  license: CC BY-SA 3.0
+
+  coverage:
+    period_start: 1948-01-01
+    period_end: null  # vigente
+    territory: Italia
+    granularity: articolo
+
+  schema:
+    fields:
+      - name: articolo
+        type: integer
+        description: Numero dell'articolo (1–139) o null per disposizioni transitorie
+      - name: disposizione
+        type: string
+        description: Numero romano della disposizione transitoria (I–XVIII) o null per articoli
+      - name: parte
+        type: string
+        description: Nome della parte (es. "Principi fondamentali")
+      - name: titolo
+        type: string
+        description: Titolo all'interno della parte (es. "Rapporti civili")
+      - name: sezione
+        type: string
+        description: Sezione all'interno del titolo (es. "Le Camere")
+      - name: testo
+        type: string
+        description: Testo completo dell'articolo/disposizione
+      - name: commi
+        type: integer
+        description: Numero di commi nell'articolo
+      - name: heading
+        type: string
+        description: Intestazione completa (es. "Art. 1", "Disposizione transitoria I")
+
+    key_fields: [articolo]
+
+  tags:
+    - costituzione
+    - diritti
+    - cittadinanza
+    - ordinamento
+    - normativa
