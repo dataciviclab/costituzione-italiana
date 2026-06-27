@@ -100,3 +100,17 @@ datasets:
       - norma_articolo: string
       - norme_str: string
       - n_norme: integer
+
+  - name: indicatori_costituzionali
+    display_name: Indicatori Costituzionali
+    path: data/indicatori-costituzionali.parquet
+    description: >
+      Mappa articoli della Costituzione ↔ dataset del DataCivicLab.
+      Ogni riga collega un articolo a un dataset che ne misura l'attuazione.
+    fields:
+      - articolo: integer
+      - dataset_slug: string
+      - dataset_name: string
+      - fonte: string
+      - dimensione: string
+      - tipo_indicatore: string
