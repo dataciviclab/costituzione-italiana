@@ -3,13 +3,13 @@
 **Il testo vigente della Costituzione italiana, articolo per articolo, in formato queryabile.**
 
 | | |
-|---|---|---|
+|---|---|
 | Articoli | **139** |
 | Disposizioni transitorie | **18** (I–XVIII) |
 | Commi | **425** |
 | Partizioni | 4 Parti · 10 Titoli · 9 Sezioni |
 | Ultimo aggiornamento | L.cost. 26 settembre 2023, n. 1 (art. 33, sport) |
-| Leggi di revisione | **50** (da italia-corpus) di cui **24** modificano articoli della Costituzione |
+| Leggi di revisione | **50** (da italia-corpus) di cui **20** modificano articoli della Costituzione |
 | Licenza | CC BY-SA 3.0 (testo) / MIT (codice) |
 
 ## Cosa contiene

@@ -75,7 +75,7 @@ def test_revisioni_csv_esiste():
 
 
 def test_revisioni_parquet():
-    """Il parquet revisioni deve avere 50 leggi e almeno 20 modifiche alla Costituzione."""
+    """Il parquet revisioni deve avere 50 leggi e almeno 15 modifiche alla Costituzione."""
     import pyarrow.parquet as pq
 
     t = pq.read_table(str(REPO_ROOT / "data" / "revisioni.parquet"))

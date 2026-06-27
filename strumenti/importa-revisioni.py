@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Importa le leggi di revisione costituzionale da italia-corpus.
 
-Estrae gli articoli della Costituzione modificati direttamente dal titolo
-della legge (pattern: "Modifica all'articolo N", "Modifiche agli articoli N, M",
-"Modifiche al titolo V della parte seconda", …).
+Estrae gli articoli della Costituzione modificati con approccio ibrido:
+1. Prima dal titolo (pattern espliciti: "Modifica all'articolo N", …)
+2. Se il titolo non basta, dai blocchi ## Art. N. del testo che contengono
+   keyword di modifica (escludendo le sezioni NOTE).
 
 Produce data/revisioni.csv e .parquet.
 
@@ -22,7 +23,6 @@ from pathlib import Path
 
 logger = logging.getLogger("importa-revisioni")
 
-# Dove cercare italia-corpus
 DEFAULT_CORPUS = (
     Path(__file__).resolve().parent.parent.parent
     / "italia-corpus"
@@ -30,54 +30,32 @@ DEFAULT_CORPUS = (
 )
 
 # ---------------------------------------------------------------------------
-# Pattern per estrarre articoli modificati dal TITOLO
+# 1. Estrazione dal TITOLO
 # ---------------------------------------------------------------------------
 
-# "Modifica all'articolo 27 della Costituzione"
-# "Modifica dell'articolo 51 della Costituzione"
-RE_MODIFICA_UNO = re.compile(
-    r"l['\u2019]articolo\s+(\d+)\s+della\s+Costituzione",
-    re.IGNORECASE,
-)
+# "all'articolo N della Costituzione", "dell'articolo N della Costituzione"
+RE_UNO = re.compile(r"(?:all['\u2019]|dell['\u2019])articolo\s+(\d+)\s+della\s+Costituzione", re.IGNORECASE)
 
-# "Modifiche agli articoli 56, 57 e 59 della Costituzione"
-# "Modificazioni agli articoli 56, 57 e 60 della Costituzione"
-# "Modifiche degli articoli 96, 134 e 135 della Costituzione"
-# "Modificazione dell'articolo 135 della Costituzione"
-RE_MODIFICA_PIU = re.compile(
+# "Modifiche agli articoli N, M e O della Costituzione"
+# "Modificazioni agli articoli N, M e O della Costituzione"
+# "Modifiche degli articoli N, M e O della Costituzione"
+RE_PIU = re.compile(
     r"(?:Modifica|Modifiche|Modificazioni|Modificazione)\s+"
     r"(?:all['\u2019]|degli|agli)\s+articol[oi]\s+"
     r"((?:\d+(?:,\s*|\s+e\s+)*)+)",
     re.IGNORECASE,
 )
 
+# "Revisione dell'articolo N della Costituzione"
+RE_REV = re.compile(r"Revisione\s+dell['\u2019]articolo\s+(\d+)", re.IGNORECASE)
+
 # "Modifiche al titolo V della parte seconda della Costituzione"
-RE_TITOLO_V = re.compile(
-    r"Modifiche\s+al\s+titolo\s+([VX]+)\s+della\s+parte\s+seconda",
-    re.IGNORECASE,
-)
-
-# "Modifica dell'articolo 88, secondo comma, della Costituzione"
-RE_ART_VIRGOLA = re.compile(
-    r"Modifica\s+dell['\u2019]articolo\s+(\d+)",
-    re.IGNORECASE,
-)
-
-# "Revisione dell'articolo 79 della Costituzione"
-RE_REVISIONE = re.compile(
-    r"Revisione\s+dell['\u2019]articolo\s+(\d+)",
-    re.IGNORECASE,
-)
+RE_TIT_V = re.compile(r"Modifiche\s+al\s+titolo\s+([VX]+)\s+della\s+parte\s+seconda", re.IGNORECASE)
 
 NUM_RE = re.compile(r"\d+")
 
-# ---------------------------------------------------------------------------
-# Mappa: Titolo → articoli (casi speciali)
-# ---------------------------------------------------------------------------
-
-# Le leggi che modificano interi titoli della Costituzione
 TITOLO_MAP: dict[str, list[int]] = {
-    "V": list(range(114, 133 + 1)),  # Titolo V: Regioni, Province, Comuni
+    "V": list(range(114, 133 + 1)),
 }
 
 
@@ -86,74 +64,106 @@ def _numeri(testo: str) -> list[int]:
 
 
 def _estrai_dal_titolo(titolo: str) -> list[int]:
-    """Estrae gli articoli modificati dal titolo della legge."""
-    # Pattern 1: "Modifiche agli articoli N, M e O della Costituzione"
-    m = RE_MODIFICA_PIU.search(titolo)
+    m = RE_PIU.search(titolo)
     if m:
         return _numeri(m.group(1))
-
-    # Pattern 2: "Modifica all'articolo N della Costituzione"
-    m = RE_MODIFICA_UNO.search(titolo)
+    m = RE_UNO.search(titolo)
     if m:
         return [int(m.group(1))]
-
-    # Pattern 3: "Modifica dell'articolo N, ... della Costituzione"
-    m = RE_ART_VIRGOLA.search(titolo)
+    m = RE_REV.search(titolo)
     if m:
-        return [int(m.group(1))]
-
-    # Pattern 4: "Revisione dell'articolo N della Costituzione"
-    m = RE_REVISIONE.search(titolo)
-    if m:
-        return [int(m.group(1))]
-
-    # Pattern 5: "Modifiche al titolo V della parte seconda"
-    m = RE_TITOLO_V.search(titolo)
+        return _numeri(m.group(1))
+    m = RE_TIT_V.search(titolo)
     if m:
         return TITOLO_MAP.get(m.group(1), [])
-
     return []
 
 
 # ---------------------------------------------------------------------------
-# Classificazione
+# 2. Estrazione dal TESTO (fallback)
+# ---------------------------------------------------------------------------
+
+# Keyword che indicano una modifica costituzionale
+MOD_KW = [
+    "sostituit", "modificat", "aggiunt", "soppress", "apportat",
+    "inserit", "abrogat", "premesso",
+]
+
+# Header ## Art. N.
+ART_HDR = re.compile(r"^##\s+Art\.\s+\d+[^\n]*", re.M)
+
+# Inizio NOTE
+NOTE_START = re.compile(r"^Note\s", re.M)
+
+# Link markdown a un articolo della Costituzione: il testo del link
+# deve contenere "della Costituzione" o "Costituzione"
+ART_LINK = re.compile(
+    r"\[([^\]]*(?:della\s+)?Costituzione[^\]]*)\]\([^)]*#art_(\d+)[^)]*\)",
+    re.IGNORECASE,
+)
+
+
+def _estrai_dal_testo(testo_completo: str) -> list[int]:
+    """Cerca articoli modificati nei blocchi ## Art. N. del testo.
+
+    Esclude frontmatter e sezioni NOTE. Considera solo blocchi con keyword.
+    """
+    # Rimuovi frontmatter
+    testo = re.sub(r"^---.*?---\n*", "", testo_completo, count=1, flags=re.DOTALL)
+
+    headers = list(ART_HDR.finditer(testo))
+    if not headers:
+        return []
+
+    articoli: set[int] = set()
+
+    for i, h in enumerate(headers):
+        start = h.start()
+        end = headers[i + 1].start() if i + 1 < len(headers) else len(testo)
+        blocco = testo[start:end]
+
+        # Taglia NOTE
+        nm = NOTE_START.search(blocco)
+        if nm:
+            blocco = blocco[: nm.start()]
+
+        # Controlla keyword di modifica
+        blocco_lower = blocco.lower()
+        if not any(kw in blocco_lower for kw in MOD_KW):
+            continue
+
+        # Estrai link #art_N
+        for link_m in ART_LINK.finditer(blocco):
+            articoli.add(int(link_m.group(2)))
+
+    return sorted(articoli)
+
+
+# ---------------------------------------------------------------------------
+# 3. Classificazione
 # ---------------------------------------------------------------------------
 
 
 def _classifica(titolo: str, articoli_modificati: list[int]) -> str:
-    """Classifica il tipo di legge costituzionale."""
-
-    # Statuti speciali
-    statuto_patterns = [
-        r"Statuto\s+speciale",
-        r"Statuto\s+della\s+Regione\s+siciliana",
-        r"Conversione in legge costituzionale dello Statuto",
-        r"statut[oi]\s+speciali",
-        r"Statuto speciale per la",
-    ]
-    for pat in statuto_patterns:
-        if re.search(pat, titolo, re.IGNORECASE):
-            return "statuto_speciale"
-
-    # Referendum / proroghe / norme integrative → altre
-    altre_patterns = [
-        "referendum", "Proroga del termine", "Cessazione degli effetti",
-        "Soppressione del Senato", "Scadenza del termine",
-        "Norme integrative", "Norme sui giudizi",
-        "Istituzione di una Commissione", "Funzioni della Commissione",
-        "Assegnazione di tre Senatori", "Indizione di un",
-        "Modifica del termine", "Modifiche ed integrazioni alla legge costituzionale",
-    ]
-    for pat in altre_patterns:
-        if pat.lower() in titolo.lower():
-            return "altra_legge_costituzionale"
-
-    # Modifiche a statuti speciali (es. modifiche a uno statuto speciale)
-    if re.search(r"dello\s+Statuto\s+(?:speciale\s+)?(?:della\s+)?Regione", titolo, re.IGNORECASE):
+    if re.search(
+        r"Statuto\s+speciale|statut[oi]\s+speciali|"
+        r"Statuto\s+della\s+Regione\s+siciliana|"
+        r"Conversione in legge costituzionale dello Statuto|"
+        r"Modifica\s+dell['\u2019]articolo\s+\d+\s+dello\s+Statuto|"
+        r"Modifiche\s+ed\s+integrazioni\s+agli\s+statuti",
+        titolo, re.IGNORECASE,
+    ):
         return "statuto_speciale"
 
-    if re.search(r"Modifica\s+dell['\u2019]articolo\s+\d+\s+dello\s+Statuto", titolo, re.IGNORECASE):
-        return "statuto_speciale"
+    if re.search(
+        r"referendum|Proroga del termine|Cessazione degli effetti|"
+        r"Soppressione del Senato|Scadenza del termine|"
+        r"Norme integrative|Norme sui giudizi|"
+        r"Commissione parlamentare|Commissione per le riforme|"
+        r"Assegnazione di tre Senatori|Indizione di un",
+        titolo, re.IGNORECASE,
+    ):
+        return "altra_legge_costituzionale"
 
     if articoli_modificati:
         return "modifica_costituzione"
@@ -162,12 +172,11 @@ def _classifica(titolo: str, articoli_modificati: list[int]) -> str:
 
 
 # ---------------------------------------------------------------------------
-# Frontmatter
+# 4. Frontmatter
 # ---------------------------------------------------------------------------
 
 
 def parse_frontmatter(text: str) -> dict[str, str]:
-    """Parsa YAML frontmatter semplice (--- ... ---)."""
     m = re.match(r"^---\s*\n(.*?)\n---", text, re.DOTALL)
     if not m:
         return {}
@@ -176,14 +185,12 @@ def parse_frontmatter(text: str) -> dict[str, str]:
         line = line.strip()
         if ":" in line:
             key, _, value = line.partition(":")
-            key = key.strip()
-            value = value.strip().strip('"').strip("'")
-            result[key] = value
+            result[key.strip()] = value.strip().strip('"').strip("'")
     return result
 
 
 # ---------------------------------------------------------------------------
-# I/O
+# 5. I/O
 # ---------------------------------------------------------------------------
 
 
@@ -223,14 +230,13 @@ def scrivi_parquet(revisioni: list[dict], path: Path) -> None:
 
 
 # ---------------------------------------------------------------------------
-# Main
+# 6. Main
 # ---------------------------------------------------------------------------
 
 
 def importa_revisioni(corpus_dir: Path) -> list[dict]:
     if not corpus_dir.exists():
         logger.error("Directory non trovata: %s", corpus_dir)
-        logger.error("Assicurati che italia-corpus sia clonato nel workspace")
         return []
 
     md_files = sorted(corpus_dir.glob("*.md"))
@@ -243,7 +249,11 @@ def importa_revisioni(corpus_dir: Path) -> list[dict]:
         meta = parse_frontmatter(text)
         titolo = meta.get("titolo", fpath.stem)
 
+        # Ibrido: prima dal titolo, poi fallback sul testo
         articoli = _estrai_dal_titolo(titolo)
+        if not articoli:
+            articoli = _estrai_dal_testo(text)
+
         tipo = _classifica(titolo, articoli)
 
         revisioni.append(
@@ -262,46 +272,28 @@ def importa_revisioni(corpus_dir: Path) -> list[dict]:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(
-        description="Importa leggi di revisione costituzionale da italia-corpus"
-    )
-    parser.add_argument(
-        "--corpus-dir",
-        type=Path,
-        default=DEFAULT_CORPUS,
-    )
-    parser.add_argument(
-        "--output-dir",
-        "-o",
-        type=Path,
-        default=Path("data"),
-    )
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--corpus-dir", type=Path, default=DEFAULT_CORPUS)
+    parser.add_argument("--output-dir", "-o", type=Path, default=Path("data"))
     args = parser.parse_args()
 
-    logging.basicConfig(
-        level=logging.INFO,
-        format="%(levelname)s [%(name)s] %(message)s",
-    )
+    logging.basicConfig(level=logging.INFO, format="%(levelname)s [%(name)s] %(message)s")
 
     revisioni = importa_revisioni(args.corpus_dir)
     if not revisioni:
-        logger.error("Nessuna revisione importata")
         sys.exit(1)
 
     args.output_dir.mkdir(parents=True, exist_ok=True)
-
     scrivi_csv(revisioni, args.output_dir / "revisioni.csv")
     scrivi_parquet(revisioni, args.output_dir / "revisioni.parquet")
 
     n_mod = sum(1 for r in revisioni if r["tipo"] == "modifica_costituzione")
     n_stat = sum(1 for r in revisioni if r["tipo"] == "statuto_speciale")
     n_altre = sum(1 for r in revisioni if r["tipo"] == "altra_legge_costituzionale")
-    tot_art = sum(r["n_articoli"] for r in revisioni)
     logger.info(
         "Importate %d leggi: %d modifiche Costituzione, %d statuti speciali, %d altre",
         len(revisioni), n_mod, n_stat, n_altre,
     )
-    logger.info("Totale riferimenti ad articoli: %d", tot_art)
 
 
 if __name__ == "__main__":
