@@ -3,12 +3,13 @@
 **Il testo vigente della Costituzione italiana, articolo per articolo, in formato queryabile.**
 
 | | |
-|---|---|
+|---|---|---|
 | Articoli | **139** |
 | Disposizioni transitorie | **18** (I–XVIII) |
 | Commi | **425** |
 | Partizioni | 4 Parti · 10 Titoli · 9 Sezioni |
 | Ultimo aggiornamento | L.cost. 26 settembre 2023, n. 1 (art. 33, sport) |
+| Leggi di revisione | **50** (da italia-corpus) di cui **24** modificano articoli della Costituzione |
 | Licenza | CC BY-SA 3.0 (testo) / MIT (codice) |
 
 ## Cosa contiene
@@ -38,11 +39,10 @@ L'Italia è una Repubblica democratica, fondata sul lavoro.
 ### Dataset derivati (`data/`)
 | File | Formato | Descrizione |
 |---|---|---|
-| `articoli.csv` | CSV | Una riga per articolo/disposizione |
-| `articoli.parquet` | Parquet | Stesso contenuto in formato colonnare |
+| `articoli.csv` / `.parquet` | CSV + Parquet | Una riga per articolo/disposizione (157 righe) |
+| `revisioni.csv` / `.parquet` | CSV + Parquet | 50 leggi costituzionali di revisione |
 
-Schema articoli (8 campi):
-
+**Schema articoli** (8 campi):
 ```
 articolo             # numero (1–139) o null per disposizioni
 disposizione         # numero romano (I–XVIII) o null per articoli
@@ -52,6 +52,17 @@ sezione              # es. "Le Camere"
 heading              # es. "Art. 1", "Disposizione transitoria I"
 testo                # testo completo
 commi                # conteggio commi
+```
+
+**Schema revisioni** (7 campi):
+```
+urn                  # URN Normattiva della legge
+codice_redazionale   # codice Gazzetta Ufficiale
+data                 # data di emanazione
+titolo               # titolo della legge
+articoli_modificati  # lista articoli della Costituzione modificati
+n_articoli           # quanti articoli modifica
+tipo                 # modifica_costituzione / statuto_speciale / altra_legge_costituzionale
 ```
 
 ## Uso rapido
@@ -82,18 +93,24 @@ with open('data/articoli.csv') as f:
 ### Query SQL con DuckDB
 
 ```sql
+-- Testo dell'Art. 32
+SELECT testo FROM 'data/articoli.parquet' WHERE articolo = 32;
+
 -- Quanti commi ha ogni parte?
 SELECT parte, SUM(commi) AS commi
 FROM 'data/articoli.parquet'
 GROUP BY parte ORDER BY commi DESC;
 
--- Articoli del Titolo V (Regioni)
-SELECT articolo, heading
-FROM 'data/articoli.parquet'
-WHERE titolo LIKE '%Regioni%' OR titolo LIKE '%regioni%';
+-- Quali leggi hanno modificato l'art. 9?
+SELECT data, titolo
+FROM 'data/revisioni.parquet'
+WHERE list_has_any(articoli_modificati, [9]);
 
--- Testo dell'Art. 32
-SELECT testo FROM 'data/articoli.parquet' WHERE articolo = 32;
+-- Quali articoli sono stati modificati più volte?
+SELECT UNNEST(articoli_modificati) AS art, COUNT(*) AS volte
+FROM 'data/revisioni.parquet'
+WHERE tipo = 'modifica_costituzione'
+GROUP BY art ORDER BY volte DESC;
 ```
 
 ## Fonte
@@ -110,12 +127,13 @@ il wikitext in Markdown strutturato, rimuovendo tag `<ref>`, template wiki e for
 costituzione-italiana/
 ├── Costituzione.md                     ← testo vigente
 ├── data/
-│   ├── articoli.csv                    ← dataset per articolo
-│   └── articoli.parquet
+│   ├── articoli.csv / .parquet         ← dataset per articolo
+│   └── revisioni.csv / .parquet        ← leggi di revisione da italia-corpus
 ├── strumenti/
 │   ├── converti-da-wikisource.py       ← Wikisource → Markdown
-│   └── estrai-articoli.py              ← Markdown → CSV/parquet
-├── tests/test_converti.py              ← 5 test
+│   ├── estrai-articoli.py              ← Markdown → CSV/parquet
+│   └── importa-revisioni.py           ← italia-corpus → revisioni CSV/parquet
+├── tests/test_converti.py              ← 8 test
 ├── dataset.yml                         ← metadati DataCivicLab
 └── pyproject.toml                      ← pacchetto Python
 ```
@@ -130,6 +148,7 @@ python3 strumenti/converti-da-wikisource.py
 
 # Rigenerare dataset derivati
 python3 strumenti/estrai-articoli.py
+python3 strumenti/importa-revisioni.py   # richiede italia-corpus clonato
 
 # Test
 python3 -m pytest tests/ -v
@@ -141,9 +160,6 @@ Vedi [`dataset.yml`](dataset.yml) per la definizione completa dei campi, coverag
 
 ## Prossimi sviluppi
 
-Vedi la [nota di piano](https://github.com/dataciviclab/costituzione-italiana/blob/main/...).
-
-- **Fase 2**: collegamento con `italia-corpus` (leggi costituzionali di revisione)
 - **Fase 3**: dati Corte Costituzionale (norme impugnate → parametri costituzionali)
 - **Fase 4**: mappa articolo ↔ dataset DataCivicLab
 - **Fase 5**: MCP server per ricerca full-text
