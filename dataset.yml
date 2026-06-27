@@ -81,3 +81,22 @@ datasets:
       - articoli_modificati: list(int)
       - n_articoli: integer
       - tipo: string
+
+  - name: atti_promovimento
+    display_name: Atti di promovimento (Corte Costituzionale)
+    path: data/atti-promovimento.parquet
+    description: >
+      Parametri costituzionali evocati nei giudizi di legittimità costituzionale.
+      Fonte: dati.cortecostituzionale.it, aggiornato giornalmente.
+    fields:
+      - tipo: string
+      - anno: integer
+      - numero_atto: integer
+      - numero_parte: integer
+      - parametro_articolo: integer
+      - parametro_comma: string
+      - norma_descrizione: string
+      - norma_numero: string
+      - norma_articolo: string
+      - norme_str: string
+      - n_norme: integer
