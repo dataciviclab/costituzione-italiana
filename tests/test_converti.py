@@ -62,8 +62,33 @@ def test_parquet_articoli():
     mask = [articoli[i].as_py() == 32 for i in range(len(articoli))]
     assert any(mask), "Art. 32 non trovato nel parquet"
 
-    # Tipo colonna deve essere intero
+        # Tipo colonna deve essere intero
     assert str(articoli.type) == "int64", f"Tipo {articoli.type}, atteso int64"
+
+
+def test_corte_csv_esiste():
+    """Il file atti-promovimento.csv deve esistere e avere almeno 1000 righe."""
+    csv_path = REPO_ROOT / "data" / "atti-promovimento.csv"
+    assert csv_path.exists()
+    lines = csv_path.read_text("utf-8").strip().split("\n")
+    assert len(lines) >= 1001, f"{len(lines)} righe, attese almeno 1001"
+
+
+def test_corte_parquet():
+    """Il parquet deve avere ~1100 record e art. 3 tra i parametri."""
+    import pyarrow.parquet as pq
+
+    t = pq.read_table(str(REPO_ROOT / "data" / "atti-promovimento.parquet"))
+    assert t.num_rows >= 1000, f"{t.num_rows} righe, attese >= 1000"
+
+    # Art. 3 deve essere presente
+    artt = t.column("parametro_articolo")
+    assert any(artt[i].as_py() == 3 for i in range(len(artt))), "Art. 3 non trovato"
+
+    # Deve avere entrambi i tipi
+    tipi = set(t.column("tipo").to_pylist())
+    assert "ordinanza" in tipi
+    assert "ricorso" in tipi
 
 
 def test_revisioni_csv_esiste():
