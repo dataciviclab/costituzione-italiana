@@ -41,7 +41,7 @@ L'Italia è una Repubblica democratica, fondata sul lavoro.
 | `articoli.csv` | CSV | Una riga per articolo/disposizione |
 | `articoli.parquet` | Parquet | Stesso contenuto in formato colonnare |
 
-Schema articoli (31 campi):
+Schema articoli (8 campi):
 
 ```
 articolo             # numero (1–139) o null per disposizioni

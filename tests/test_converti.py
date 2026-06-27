@@ -45,3 +45,22 @@ def test_costituzione_md_senza_ref():
     content = (REPO_ROOT / "Costituzione.md").read_text("utf-8")
     assert "<ref>" not in content
     assert "<br" not in content
+
+
+def test_parquet_articoli():
+    """Il parquet deve avere 139 articoli non-null e Art. 32 queryabile."""
+    import pyarrow.parquet as pq
+
+    t = pq.read_table(str(REPO_ROOT / "data/articoli.parquet"))
+    assert t.num_rows == 157, f"{t.num_rows} righe, attese 157"
+
+    articoli = t.column("articolo")
+    non_null = sum(1 for i in range(len(articoli)) if articoli[i].as_py() is not None)
+    assert non_null == 139, f"{non_null} articoli, attesi 139"
+
+    # Art. 32 deve essere presente
+    mask = [articoli[i].as_py() == 32 for i in range(len(articoli))]
+    assert any(mask), "Art. 32 non trovato nel parquet"
+
+    # Tipo colonna deve essere intero
+    assert str(articoli.type) == "int64", f"Tipo {articoli.type}, atteso int64"

@@ -8,7 +8,9 @@ version = "0.1.0"
 description = "Costituzione della Repubblica Italiana — testo strutturato in Markdown"
 license = {text = "CC BY-SA 3.0"}
 requires-python = ">=3.11"
-dependencies = []
+dependencies = [
+    "pyarrow>=14",
+]
 
 [project.optional-dependencies]
 dev = ["pytest"]

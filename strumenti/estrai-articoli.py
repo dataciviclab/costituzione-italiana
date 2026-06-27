@@ -148,17 +148,23 @@ def scrivi_csv(articoli: list[dict], path: Path) -> None:
 
 
 def scrivi_parquet(articoli: list[dict], path: Path) -> None:
-    """Scrive il parquet (richiede pyarrow)."""
-    try:
-        import pyarrow as pa
-        import pyarrow.parquet as pq
-    except ImportError:
-        logger.warning("pyarrow non installato — salto parquet")
-        return
+    """Scrive il parquet."""
+    import pyarrow as pa
+    import pyarrow.parquet as pq
+
+    # Converte articolo in intero dove possibile
+    def articolo_int(v: str | None) -> int | None:
+        if v is None:
+            return None
+        try:
+            # Rimuovi suffisso "bis" se presente
+            return int(v) if v.isdigit() else None
+        except (ValueError, TypeError):
+            return None
 
     table = pa.table(
         {
-            "articolo": [a.get("articario") for a in articoli],
+            "articolo": [articolo_int(a.get("articolo")) for a in articoli],
             "disposizione": [a.get("disposizione") for a in articoli],
             "parte": [a.get("parte", "") for a in articoli],
             "titolo": [a.get("titolo", "") for a in articoli],
