@@ -208,7 +208,7 @@ python3 strumenti/genera-indicatori-costituzionali.py  # richiede dataset-incuba
 ## Schema del dataset (`dataset.yml`)
 
 Vedi [`dataset.yml`](dataset.yml) per la definizione completa dei campi,
-coverage e metriche di tutti e 4 i dataset.
+coverage e metriche di tutti e 5 i dataset.
 
 ## Licenza
 
