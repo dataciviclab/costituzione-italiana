@@ -51,3 +51,33 @@ dataset:
     - cittadinanza
     - ordinamento
     - normativa
+
+datasets:
+  - name: articoli
+    display_name: Articoli della Costituzione
+    path: data/articoli.parquet
+    description: Ogni articolo/disposizione con testo, parte, titolo, sezione.
+    fields:
+      - articolo: integer
+      - disposizione: string
+      - parte: string
+      - titolo: string
+      - sezione: string
+      - heading: string
+      - testo: string
+      - commi: integer
+
+  - name: revisioni
+    display_name: Leggi di revisione costituzionale
+    path: data/revisioni.parquet
+    description: >
+      50 leggi costituzionali da italia-corpus, con gli articoli della
+      Costituzione che modificano. Fonte: italia-corpus/Leggi costituzionali.
+    fields:
+      - urn: string
+      - codice_redazionale: string
+      - data: string
+      - titolo: string
+      - articoli_modificati: list(int)
+      - n_articoli: integer
+      - tipo: string

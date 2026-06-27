@@ -64,3 +64,33 @@ def test_parquet_articoli():
 
     # Tipo colonna deve essere intero
     assert str(articoli.type) == "int64", f"Tipo {articoli.type}, atteso int64"
+
+
+def test_revisioni_csv_esiste():
+    """Il file revisioni.csv deve esistere e avere 50 righe."""
+    csv_path = REPO_ROOT / "data" / "revisioni.csv"
+    assert csv_path.exists()
+    lines = csv_path.read_text("utf-8").strip().split("\n")
+    assert len(lines) == 51, f"{len(lines)} righe (inclusa header), attese 51"
+
+
+def test_revisioni_parquet():
+    """Il parquet revisioni deve avere 50 leggi e almeno 15 modifiche alla Costituzione."""
+    import pyarrow.parquet as pq
+
+    t = pq.read_table(str(REPO_ROOT / "data" / "revisioni.parquet"))
+    assert t.num_rows == 50, f"{t.num_rows} righe, attese 50"
+
+    tipi = t.column("tipo")
+    n_mod = sum(1 for i in range(len(tipi)) if tipi[i].as_py() == "modifica_costituzione")
+    assert n_mod >= 15, f"{n_mod} modifiche, attese almeno 15"
+
+    # Art. 9 deve essere presente tra le modifiche
+    articoli = t.column("articoli_modificati")
+    art9_presente = False
+    for i in range(len(articoli)):
+        vals = articoli[i].as_py()
+        if vals and 9 in vals:
+            art9_presente = True
+            break
+    assert art9_presente, "Art. 9 non trovato tra le modifiche (legge ambiente 2022)"
