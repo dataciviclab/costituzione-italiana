@@ -11,6 +11,18 @@ def test_costituzione_md_esiste():
     assert (REPO_ROOT / "Costituzione.md").exists()
 
 
+def test_massime_parquet_esiste():
+    """Il dataset massime.parquet deve esistere con le colonne attese."""
+    pqt = REPO_ROOT / "data" / "massime.parquet"
+    assert pqt.exists(), f"{pqt} non trovato"
+    import pandas as pd
+    df = pd.read_parquet(pqt)
+    assert "esito" in df.columns
+    assert "parametro_articolo" in df.columns
+    assert "norma_numero" in df.columns
+    assert len(df) > 0
+
+
 def test_costituzione_md_frontmatter():
     """Il frontmatter YAML deve contenere i campi obbligatori."""
     content = (REPO_ROOT / "Costituzione.md").read_text("utf-8")
