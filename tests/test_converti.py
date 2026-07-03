@@ -13,14 +13,15 @@ def test_costituzione_md_esiste():
 
 def test_massime_parquet_esiste():
     """Il dataset massime.parquet deve esistere con le colonne attese."""
+    import pyarrow.parquet as pq
     pqt = REPO_ROOT / "data" / "massime.parquet"
     assert pqt.exists(), f"{pqt} non trovato"
-    import pandas as pd
-    df = pd.read_parquet(pqt)
-    assert "esito" in df.columns
-    assert "parametro_articolo" in df.columns
-    assert "norma_numero" in df.columns
-    assert len(df) > 0
+    table = pq.read_table(pqt)
+    col_names = [f.name for f in table.schema]
+    assert "esito" in col_names
+    assert "parametro_articolo" in col_names
+    assert "norma_numero" in col_names
+    assert table.num_rows > 0
 
 
 def test_costituzione_md_frontmatter():
