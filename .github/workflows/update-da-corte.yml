@@ -26,7 +26,7 @@ jobs:
           if [ -n "$(git status --porcelain data/)" ]; then
             git config user.name "github-actions"
             git config user.email "actions@github.com"
-            git add data/*.parquet data/*.csv
+            git add data/
             git commit -m "chore(data): update da Corte Costituzionale [skip ci]"
             git push
           fi
