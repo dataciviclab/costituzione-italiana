@@ -23,6 +23,9 @@ import os
 import re
 import tempfile
 import urllib.request
+
+import pyarrow as pa
+import pyarrow.parquet as pq
 import zipfile
 from collections import Counter
 from pathlib import Path
@@ -158,10 +161,16 @@ def _parse_massime_xml(xml_data: bytes) -> list[dict]:
         for massima in pronuncia.findall(".//massima"):
             num_massima = massima.findtext("numero", "")
 
+            # Normalizza id_massima a int (vuoto → 0)
+            try:
+                num_massima_int = int(num_massima) if num_massima else 0
+            except ValueError:
+                num_massima_int = 0
+
             for parametro in massima.findall(".//parametri/parametro"):
                 for norma in massima.findall(".//norme/norma"):
                     record = {
-                        "id_massima": num_massima,
+                        "id_massima": num_massima_int,
                         "anno_pronuncia": int(anno) if anno.isdigit() else 0,
                         "numero_pronuncia": int(numero) if numero.isdigit() else 0,
                         "tipologia_pronuncia": tipologia,
@@ -186,7 +195,7 @@ def _parse_massime_xml(xml_data: bytes) -> list[dict]:
             # Massime senza parametri/norme (es. massime di principio)
             if not list(massima.findall(".//parametri/parametro")) and not list(massima.findall(".//norme/norma")):
                 record = {
-                    "id_massima": num_massima,
+                    "id_massima": num_massima_int,
                     "anno_pronuncia": int(anno) if anno.isdigit() else 0,
                     "numero_pronuncia": int(numero) if numero.isdigit() else 0,
                     "tipologia_pronuncia": tipologia,
@@ -296,14 +305,10 @@ def main():
     logger.info(f"\nCSV: {csv_path} ({len(records)} righe)")
 
     # Salva Parquet
-    try:
-        import pandas as pd
-        df = pd.DataFrame(records)
-        pqt = outdir / "massime.parquet"
-        df.to_parquet(pqt, index=False)
-        logger.info(f"Parquet: {pqt} ({len(df)} righe, {len(df.columns)} colonne)")
-    except ImportError:
-        pass
+    pqt = outdir / "massime.parquet"
+    table = pa.Table.from_pylist(records)
+    pq.write_table(table, pqt)
+    logger.info(f"Parquet: {pqt} ({table.num_rows} righe, {table.num_columns} colonne)")
 
     _stampa_metriche(records)
 
