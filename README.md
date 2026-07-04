@@ -20,7 +20,7 @@ Questo repo mette insieme **7 dataset** per rispondere a domande come:
 | Partizioni | 4 Parti · 10 Titoli · 9 Sezioni |
 | Leggi di revisione | **50** (di cui **20** modificano articoli della Costituzione) |
 | Parametri costituzionali in giudizio | **1.101** (da 886 ordinanze + 215 ricorsi) |
-| Sentenze della Corte con esito | **21.534** (coperte da 40.162 massime) |
+| Sentenze della Corte con esito | **21.534** (266.490 record, 40.162 massime univoche) |
 | Citazioni della Costituzione nella legislazione | **15.969** (da 4.712 atti normativi) |
 | Indicatori di attuazione | **59** per **21** articoli |
 | Dataset Lab collegati | **49** slug unici |
@@ -159,7 +159,7 @@ GROUP BY articolo ORDER BY n DESC;
 
 ### 6. `data/massime.parquet` — Esiti dei giudizi costituzionali
 
-**40.162 massime** da **21.534 pronunce** della Corte Costituzionale (1956-2026).
+**266.490 record** (40.162 massime univoche) da **21.534 pronunce** della Corte Costituzionale (1956-2026).
 Per ogni articolo della Costituzione: quante volte è stato dichiarato violato
 (accolto), non violato (respinto), o la questione è stata dichiarata inammissibile.
 
@@ -226,7 +226,7 @@ costituzione-italiana/
 │   ├── articoli.csv / .parquet            ← 157 righe, 8 campi
 │   ├── revisioni.csv / .parquet           ← 50 leggi, 7 campi
 │   ├── atti-promovimento.csv / .parquet   ← 1.101 parametri, 11 campi
-│   ├── massime.csv / .parquet             ← 40.162 massime, 19 campi
+│   ├── massime.csv / .parquet             ← 266.490 record, 19 campi
 │   ├── indicatori-costituzionali.csv/.parquet ← 59 indicatori, 6 campi
 │   └── citazioni-legislative.csv / .parquet  ← 15.969 citazioni, 7 campi
 ├── strumenti/
