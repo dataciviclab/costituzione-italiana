@@ -136,12 +136,12 @@ def main() -> None:
     mapped_slugs = {ds[0] for entries in mapping.values() for ds in entries}
     missing_slugs = mapped_slugs - set(catalog.keys())
     if missing_slugs:
-        logger.error("Slug non trovati in clean_catalog: %s", sorted(missing_slugs))
-        logger.warning("Il mapping YAML contiene slug non ancora pubblicati. Continuo comunque.")
-        for slug in missing_slugs:
-            # Rimuovi entry con slug mancanti
-            for art in list(mapping.keys()):
-                mapping[art] = [(s, d, t) for s, d, t in mapping[art] if s != slug]
+        logger.error(
+            "Slug nel mapping YAML ma non in clean_catalog: %s. "
+            "Correggi il mapping o pubblica i dataset mancanti.",
+            sorted(missing_slugs),
+        )
+        sys.exit(1)
 
     records = genera_mappa(mapping, catalog)
 
