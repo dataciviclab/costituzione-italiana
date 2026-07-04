@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Genera la mappa articoli della Costituzione ↔ dataset del DataCivicLab.
 
-Legge il clean_catalog da dataset-incubator e incrocia con la mappa
-manuale articolo→dataset_slug. Produce data/indicatori-costituzionali.csv/.parquet.
+Legge il clean_catalog da dataset-incubator e la mappa articolo→dataset
+da registry/costituzione-mapping.yaml (sempre in dataset-incubator).
+Produce data/indicatori-costituzionali.csv/.parquet.
 
 Uso:
     python3 strumenti/genera-indicatori-costituzionali.py [--output-dir DIR]
@@ -17,98 +18,62 @@ import sys
 import logging
 from pathlib import Path
 
+import os
+
+import yaml
+
 logger = logging.getLogger("genera-indicatori")
 
-CLEAN_CATALOG = (
-    Path(__file__).resolve().parent.parent.parent
-    / "dataset-incubator"
-    / "registry"
-    / "clean_catalog.json"
-)
+# Path a dataset-incubator: cerca in più posizioni (locale, CI subdirectory, CI sibling)
+_REPO = Path(__file__).resolve().parent.parent.parent
+_DI_CANDIDATES = [
+    _REPO.parent / "dataset-incubator",          # sibling (locale + CI con path: ../)
+    _REPO / "dataset-incubator",                 # subdirectory (CI con path: dataset-incubator)
+]
+if "GITHUB_WORKSPACE" in os.environ:
+    _DI_CANDIDATES.insert(0, Path(os.environ["GITHUB_WORKSPACE"]) / "dataset-incubator")
 
-# Mappa manuale: articolo → [(dataset_slug, dimensione, tipo_indicatore)]
-# dimensione: cosa misura (es. "spesa sanitaria", "disuguaglianza")
-# tipo: outcome/strutturale/territoriale
-MAPPING: dict[int, list[tuple[str, str, str]]] = {
-    # PRINCIPI FONDAMENTALI
-    3: [
-        ("istat_gini_regionale", "disuguaglianza reddito", "outcome"),
-        ("irpef_comunale", "gap reddito territoriale", "territoriale"),
-    ],
-    5: [
-        ("opencivitas_fsc_2025_rso", "Fondo Solidarietà Comunale", "strutturale"),
-        # siope_uscite_comuni — da aggiungere quando sarà in clean_catalog
-    ],
-    9: [
-        ("terna_capacita_rinnovabile", "capacità rinnovabile installata", "strutturale"),
-        ("terna_electricity_by_source", "mix elettrico per fonte", "outcome"),
-        ("ispra_ru_base", "produzione e differenziata rifiuti", "outcome"),
-        ("ispra_consumo_suolo", "consumo di suolo", "outcome"),
-        ("ispra_emissioni_ghg", "emissioni gas serra", "outcome"),
-    ],
+DATASET_INCUBATOR: Path | None = None
+for p in _DI_CANDIDATES:
+    if (p / "registry" / "costituzione-mapping.yaml").exists():
+        DATASET_INCUBATOR = p
+        break
 
-    # PARTE I — DIRITTI E DOVERI
-    32: [
-        ("bdap_lea", "spesa sanitaria regionale", "strutturale"),
-        ("aifa_spesa_consumo", "consumo farmaceutico SSN", "outcome"),
-        ("strutture_asl", "medici di base e pediatri", "strutturale"),
-        ("strutture_ricovero_asl", "posti letto e ricoveri", "strutturale"),
-        ("farmacie", "farmacie sul territorio", "strutturale"),
-    ],
-    33: [
-        ("mim_alunni_corso_eta", "alunni per corso ed età", "strutturale"),
-        ("mur_contribuzione_universitaria", "contribuzione studentesca", "strutturale"),
-    ],
-    34: [
-        ("mim_alunni_corso_eta", "dispersione scolastica implicita", "outcome"),
-    ],
-    38: [
-        ("inps_pensioni_trimestrale", "numero e importo pensioni", "outcome"),
-        ("inps_rdc_pdc", "RdC/PdC per comune", "outcome"),
-    ],
-    41: [
-        ("anac_bandi_gara", "appalti pubblici", "strutturale"),
-        ("rna_aiuti_stato", "aiuti di Stato alle imprese", "strutturale"),
-    ],
-    48: [
-        ("elezioni_politiche_2022", "affluenza e risultati elezioni", "outcome"),
-    ],
-    51: [
-        ("dait_amministratori_locali", "anagrafe amministratori locali", "strutturale"),
-    ],
-    53: [
-        ("irpef_comunale", "redditi e imposte per comune", "territoriale"),
-        ("mef_irpef_regionale", "redditi per classe e regione", "territoriale"),
-        ("istat_gini_regionale", "progressività sistema tributario", "outcome"),
-    ],
+if DATASET_INCUBATOR is None:
+    logger.error(
+        "dataset-incubator non trovato. Cercato in:\n%s",
+        "\n".join(f"  {p}" for p in _DI_CANDIDATES),
+    )
+    raise FileNotFoundError(
+        "dataset-incubator non trovato. Assicurati che sia clonato nel workspace "
+        "come sibling o subdirectory 'dataset-incubator'."
+    )
 
-    # PARTE II — ORDINAMENTO DELLA REPUBBLICA
-    81: [
-        ("bdap_entrate_stato", "entrate statali", "strutturale"),
-        ("bdap_spese_stato", "spese statali", "strutturale"),
-    ],
-    97: [
-        ("dipendenti_pubblici", "occupazione e turnover PA", "strutturale"),
-        ("anac_bandi_gara", "trasparenza appalti", "outcome"),
-        ("consip_consumi_convenzione", "spesa PA in convenzione", "strutturale"),
-    ],
-    111: [
-        ("civile_flussi", "durata processi civili", "outcome"),
-        ("giustizia_penale_indicatori", "clearance rate penale", "outcome"),
-    ],
-    117: [
-        ("opencoesione_progetti", "fondi coesione per regione", "territoriale"),
-        ("bdap_entrate_stato", "entrate statali vs regionali", "territoriale"),
-    ],
-    118: [
-        ("opencivitas_fsc_2025_rso", "FSC per comune", "territoriale"),
-        ("opencoesione_progetti", "progetti coesione territoriale", "territoriale"),
-    ],
-    119: [
-        ("opencivitas_fsc_2025_rso", "Fondo Solidarietà Comunale", "strutturale"),
-        ("irpef_comunale", "autonomia finanziaria comuni", "territoriale"),
-    ],
-}
+CLEAN_CATALOG = DATASET_INCUBATOR / "registry" / "clean_catalog.json"
+MAPPING_YAML = DATASET_INCUBATOR / "registry" / "costituzione-mapping.yaml"
+
+# Mappa letta da registry/costituzione-mapping.yaml in dataset-incubator
+# (vedi leggi_mapping_yaml)
+
+def leggi_mapping_yaml(path: Path) -> dict[int, list[tuple[str, str, str]]]:
+    """Legge il mapping YAML e restituisce dict articolo → [(slug, dim, tipo), ...]."""
+    if not path.exists():
+        raise FileNotFoundError(
+            f"Mapping YAML non trovato: {path}\n"
+            "Assicurati che dataset-incubator sia clonato nel workspace."
+        )
+    with open(path) as f:
+        data = yaml.safe_load(f)
+    mapping: dict[int, list[tuple[str, str, str]]] = {}
+    for entry in data.get("mapping", []):
+        art = entry.get("articolo")
+        slug = entry.get("dataset_slug")
+        dim = entry.get("dimensione", "")
+        tipo = entry.get("tipo", "outcome")
+        if art and slug:
+            mapping.setdefault(art, []).append((slug, dim, tipo))
+    logger.info("Letto mapping YAML: %d articoli", len(mapping))
+    return mapping
 
 
 def leggi_clean_catalog(path: Path) -> dict[str, dict]:
@@ -129,11 +94,14 @@ def leggi_clean_catalog(path: Path) -> dict[str, dict]:
     return slugs
 
 
-def genera_mappa(catalog: dict[str, dict]) -> list[dict]:
+def genera_mappa(
+    mapping: dict[int, list[tuple[str, str, str]]],
+    catalog: dict[str, dict],
+) -> list[dict]:
     """Genera la mappa articolo → dataset."""
     records: list[dict] = []
 
-    for articolo, entries in sorted(MAPPING.items()):
+    for articolo, entries in sorted(mapping.items()):
         for ds_slug, dimensione, tipo in entries:
             ds_info = catalog.get(ds_slug, {})
             records.append(
@@ -185,16 +153,21 @@ def main() -> None:
 
     logging.basicConfig(level=logging.INFO, format="%(levelname)s [%(name)s] %(message)s")
 
+    mapping = leggi_mapping_yaml(MAPPING_YAML)
     catalog = leggi_clean_catalog(CLEAN_CATALOG)
 
-    # Valida che tutti gli slug MAPPING siano nel catalog
-    mapped_slugs = {ds[0] for entries in MAPPING.values() for ds in entries}
+    # Valida che tutti gli slug del mapping siano nel catalog
+    mapped_slugs = {ds[0] for entries in mapping.values() for ds in entries}
     missing_slugs = mapped_slugs - set(catalog.keys())
     if missing_slugs:
-        logger.error("Slug non trovati in clean_catalog: %s", sorted(missing_slugs))
+        logger.error(
+            "Slug nel mapping YAML ma non in clean_catalog: %s. "
+            "Correggi il mapping o pubblica i dataset mancanti.",
+            sorted(missing_slugs),
+        )
         sys.exit(1)
 
-    records = genera_mappa(catalog)
+    records = genera_mappa(mapping, catalog)
 
     args.output_dir.mkdir(parents=True, exist_ok=True)
     scrivi_csv(records, args.output_dir / "indicatori-costituzionali.csv")
