@@ -1,6 +1,16 @@
 # Costituzione della Repubblica Italiana
 
-**Il testo vigente della Costituzione italiana, le sue revisioni, la giurisprudenza costituzionale e gli indicatori di attuazione — tutto in formato queryabile.**
+**Il testo vigente della Costituzione italiana, le sue revisioni, la giurisprudenza costituzionale, le citazioni nella legislazione ordinaria e gli indicatori di attuazione — tutto in formato queryabile.**
+
+## Perché
+
+La Costituzione italiana ha 139 articoli. Alcuni sono famosi (Art. 21, libertà di stampa), altri dimenticati (Art. 46, collaborazione dei lavoratori). Alcuni sono stati modificati più volte, altri mai toccati. Alcuni vengono invocati in continuazione nei processi, altri mai.
+
+Questo repo mette insieme **7 dataset** per rispondere a domande come:
+- *Quali articoli della Costituzione non hanno ancora una legge di attuazione?*
+- *L'Art. 3 (uguaglianza) è il più evocato in giudizio: ma quante volte le leggi vengono effettivamente dichiarate incostituzionali?* (2.816 accolte, 5.202 respinte)
+- *L'Art. 76 (delega legislativa) è citato 5.744 volte nella legislazione ordinaria. È il più "usato"?*
+- *Quali articoli vengono citati nelle leggi ma mai portati davanti alla Corte?*
 
 | | |
 |---|---|
@@ -10,7 +20,10 @@
 | Partizioni | 4 Parti · 10 Titoli · 9 Sezioni |
 | Leggi di revisione | **50** (di cui **20** modificano articoli della Costituzione) |
 | Parametri costituzionali in giudizio | **1.101** (da 886 ordinanze + 215 ricorsi) |
-| Indicatori di attuazione | **38** per 17 articoli |
+| Sentenze della Corte con esito | **21.534** (coperte da 40.162 massime) |
+| Citazioni della Costituzione nella legislazione | **15.969** (da 4.712 atti normativi) |
+| Indicatori di attuazione | **59** per **21** articoli |
+| Dataset Lab collegati | **49** slug unici |
 | Ultimo aggiornamento testo | L.cost. 26 settembre 2023, n. 1 (art. 33, sport) |
 | Licenza | CC BY-SA 3.0 (testo) / MIT (codice) |
 
@@ -116,9 +129,12 @@ WHERE parametro_articolo = 32;
 
 ### 5. `data/indicatori-costituzionali.parquet` — Mappa con i dataset Lab
 
-38 indicatori che collegano 17 articoli della Costituzione ai dataset del
+**59 indicatori** che collegano **21 articoli** della Costituzione ai dataset del
 [DataCivicLab](https://github.com/dataciviclab). Ogni riga collega un articolo
 a uno slug del [clean_catalog](https://github.com/dataciviclab/dataset-incubator/blob/main/registry/clean_catalog.json).
+
+Il mapping è centralizzato in [`registry/costituzione-mapping.yaml`](https://github.com/dataciviclab/dataset-incubator/blob/main/registry/costituzione-mapping.yaml)
+in dataset-incubator — editabile da chiunque, senza toccare codice.
 
 | Articolo | Dimensione | Dataset Lab |
 |---|---|---|
@@ -141,19 +157,64 @@ FROM 'data/indicatori-costituzionali.parquet'
 GROUP BY articolo ORDER BY n DESC;
 ```
 
-### Analisi incrociata
+### 6. `data/massime.parquet` — Esiti dei giudizi costituzionali
 
-I 5 dataset si combinano per rispondere a domande come:
+**40.162 massime** da **21.534 pronunce** della Corte Costituzionale (1956-2026).
+Per ogni articolo della Costituzione: quante volte è stato dichiarato violato
+(accolto), non violato (respinto), o la questione è stata dichiarata inammissibile.
 
 ```sql
--- Art. 9: testo, modifiche, giudizi, indicatori
+-- Quali articoli vengono accolti più spesso?
+SELECT parametro_articolo, COUNT(*) AS n
+FROM 'data/massime.parquet'
+WHERE esito = 'illegittimo'
+GROUP BY parametro_articolo ORDER BY n DESC;
+
+-- Tasso di accoglimento per articolo
+SELECT parametro_articolo,
+    SUM(CASE WHEN esito = 'illegittimo' THEN 1 ELSE 0 END) * 100.0 / COUNT(*) AS pct_accolte
+FROM 'data/massime.parquet'
+GROUP BY parametro_articolo HAVING COUNT(*) > 100
+ORDER BY pct_accolte DESC;
+```
+
+### 7. `data/citazioni-legislative.parquet` — La Costituzione nelle leggi ordinarie
+
+**15.969 citazioni** della Costituzione nella legislazione ordinaria italiana, estratte
+da **4.712 atti normativi** del corpus italia-corpus. Ogni riga collega un atto
+legislativo all'articolo della Costituzione che cita, con contesto testuale.
+
+```sql
+-- Articolo più citato nella legislazione ordinaria
+SELECT articolo, COUNT(*) AS n
+FROM 'data/citazioni-legislative.parquet'
+GROUP BY articolo ORDER BY n DESC;
+
+-- Atti che citano l'Art. 117 (competenze Stato-Regioni)
+SELECT fonte_tipo, fonte_anno, contesto
+FROM 'data/citazioni-legislative.parquet'
+WHERE articolo = 117;
+```
+
+### Analisi incrociata
+
+I **7 dataset** si combinano per rispondere a domande come:
+
+```sql
+-- Art. 9: testo, modifiche, giudizi, esiti, citazioni, indicatori
 SELECT 'Art. 9 — Tutela ambiente' AS articolo,
     (SELECT COUNT(*) FROM 'data/revisioni.parquet'
      WHERE list_has_any(articoli_modificati, [9])) AS modifiche,
     (SELECT COUNT(*) FROM 'data/atti-promovimento.parquet'
-     WHERE parametro_articolo = 9) AS giudizi,
+     WHERE parametro_articolo = 9) AS giudizi_pendenti,
+    (SELECT COUNT(*) FROM 'data/massime.parquet'
+     WHERE parametro_articolo = '9' AND esito = 'illegittimo') AS accolte,
+    (SELECT COUNT(*) FROM 'data/massime.parquet'
+     WHERE parametro_articolo = '9' AND esito = 'non_fondata') AS respinte,
+    (SELECT COUNT(*) FROM 'data/citazioni-legislative.parquet'
+     WHERE articolo = 9) AS citazioni_legislative,
     (SELECT COUNT(*) FROM 'data/indicatori-costituzionali.parquet'
-     WHERE articolo = 9) AS indicatori;
+     WHERE articolo = 9) AS indicatori_lab;
 ```
 
 ## Architettura
@@ -165,15 +226,19 @@ costituzione-italiana/
 │   ├── articoli.csv / .parquet            ← 157 righe, 8 campi
 │   ├── revisioni.csv / .parquet           ← 50 leggi, 7 campi
 │   ├── atti-promovimento.csv / .parquet   ← 1.101 parametri, 11 campi
-│   └── indicatori-costituzionali.csv/.parquet ← 38 indicatori, 6 campi
+│   ├── massime.csv / .parquet             ← 40.162 massime, 19 campi
+│   ├── indicatori-costituzionali.csv/.parquet ← 59 indicatori, 6 campi
+│   └── citazioni-legislative.csv / .parquet  ← 15.969 citazioni, 7 campi
 ├── strumenti/
 │   ├── converti-da-wikisource.py          ← Wikisource → Costituzione.md
 │   ├── estrai-articoli.py                 ← Costituzione.md → articoli.parquet
 │   ├── importa-revisioni.py              ← italia-corpus → revisioni.parquet
 │   ├── importa-corte-costituzionale.py    ← Corte XML → atti-promovimento.parquet
-│   └── genera-indicatori-costituzionali.py ← clean_catalog → indicatori.parquet
+│   ├── importa-massime.py                ← Corte XML → massime.parquet
+│   ├── genera-indicatori-costituzionali.py ← YAML mapping → indicatori.parquet
+│   └── importa-citazioni-da-italia-corpus.py ← italia-corpus → citazioni.parquet
 ├── tests/
-│   └── test_converti.py                   ← 12 test
+│   └── test_converti.py                   ← 14 test
 ├── dataset.yml                            ← metadati DataCivicLab
 └── pyproject.toml                         ← pacchetto Python
 ```
@@ -193,7 +258,9 @@ python3 strumenti/converti-da-wikisource.py
 python3 strumenti/estrai-articoli.py
 python3 strumenti/importa-revisioni.py          # richiede italia-corpus
 python3 strumenti/importa-corte-costituzionale.py
+python3 strumenti/importa-massime.py
 python3 strumenti/genera-indicatori-costituzionali.py  # richiede dataset-incubator
+python3 strumenti/importa-citazioni-da-italia-corpus.py
 ```
 
 ## Fonti
@@ -203,12 +270,14 @@ python3 strumenti/genera-indicatori-costituzionali.py  # richiede dataset-incuba
 | Testo della Costituzione | [Wikisource](https://it.wikisource.org/wiki/Italia,_Repubblica_-_Costituzione) | CC BY-SA 3.0 |
 | Leggi di revisione | [italia-corpus](https://github.com/dataciviclab/italia-corpus) via Normattiva | — |
 | Atti di promovimento | [dati.cortecostituzionale.it](https://dati.cortecostituzionale.it) | CC BY-SA 3.0 |
+| Massime (esiti giudizi) | [dati.cortecostituzionale.it](https://dati.cortecostituzionale.it/Scarica_i_dati/Scarica_i_dati) | CC BY-SA 3.0 |
+| Citazioni legislative | [italia-corpus](https://github.com/dataciviclab/italia-corpus) | — |
 | Dataset Lab | [clean_catalog](https://github.com/dataciviclab/dataset-incubator/blob/main/registry/clean_catalog.json) | Varie |
 
 ## Schema del dataset (`dataset.yml`)
 
 Vedi [`dataset.yml`](dataset.yml) per la definizione completa dei campi,
-coverage e metriche di tutti e 5 i dataset.
+coverage e metriche di tutti e 7 i dataset.
 
 ## Licenza
 
