@@ -1,38 +1,59 @@
 articolo,dataset_slug,dataset_name,fonte,dimensione,tipo_indicatore
 3,istat_gini_regionale,ISTAT - Indice di Gini regionale,"ISTAT — Dataflow 32_221 (Omogeneita del reddito regionale), SDMX-CSV",disuguaglianza reddito,outcome
 3,irpef_comunale,Irpef Comunale,Ministero dell'Economia e delle Finanze - OpenData,gap reddito territoriale,territoriale
+4,istat_occupazione_provinciale,ISTAT — Tasso di Occupazione Provinciale (2018-2025),ISTAT — SDMX (DCCV_TAXOCCU1),tasso di occupazione provinciale,outcome
 5,opencivitas_fsc_2025_rso,Opencivitas Fsc 2025 Rso,OpenCivitas / Sogei,Fondo Solidarietà Comunale,strutturale
 9,terna_capacita_rinnovabile,Terna Capacita Rinnovabile,Terna S.p.A. — dati pubblicati su terna.com,capacità rinnovabile installata,strutturale
 9,terna_electricity_by_source,Terna Electricity By Source,Terna S.p.A. - dati.terna.it,mix elettrico per fonte,outcome
 9,ispra_ru_base,ISPRA - Rifiuti Urbani (dati base),ISPRA,produzione e differenziata rifiuti,outcome
-9,ispra_consumo_suolo,ISPRA - Consumo di Suolo 2024,ISPRA,consumo di suolo,outcome
+9,ispra_consumo_suolo,ISPRA — Consumo di Suolo (serie 2006-2024),ISPRA,consumo di suolo,outcome
 9,ispra_emissioni_ghg,ISPRA — Emissioni GHG da processi energetici per settore (1990-2023),ISPRA — Indicatori Ambientali,emissioni gas serra,outcome
+9,ispra_ru_costi_kg,ISPRA - Costi gestione rifiuti (EUR/kg),ISPRA,costo gestione rifiuti per kg,outcome
+9,ispra_ru_costi_procapite,ISPRA - Costi gestione rifiuti (EUR/abitante),ISPRA,costo gestione rifiuti pro-capite,outcome
+9,silos_infrastrutture,Infrastrutture strategiche e prioritarie (SILOS),https://dati.camera.it/ocd/dump/silos/PISRapportoCSV2024.zip,infrastrutture strategiche,strutturale
+10,centri_accoglienza_italia,"Centri di accoglienza migranti — CAS, CPA, Hotspot (2018-2024)",Centri d'Italia — ActionAid Italia / Fondazione Openpolis,centri di accoglienza migranti,strutturale
+10,sai_progetti_italia,SAI Progetti — Progetti del Sistema Accoglienza e Integrazione (2018-2024),Centri d'Italia — ActionAid Italia / Fondazione Openpolis,progetti SAI accoglienza,strutturale
+10,sai_strutture_italia,SAI Strutture — Strutture del Sistema Accoglienza e Integrazione (2018-2024),Centri d'Italia — ActionAid Italia / Fondazione Openpolis,strutture SAI accoglienza,strutturale
+16,anpr_mobilita_residenziale,ANPR — Mobilita Residenziale Interregionale (2022-2026),ANPR — Anagrafe Nazionale della Popolazione Residente (PCM),mobilità residenziale interregionale,outcome
+21,camera_votazioni_sparql,Votazioni Camera dei Deputati,https://dati.camera.it/sparql,votazioni Camera dei Deputati,outcome
 32,bdap_lea,Bdap Lea,BDAP LEA — Ragioneria Generale dello Stato (MEF),spesa sanitaria regionale,strutturale
 32,aifa_spesa_consumo,AIFA Spesa Farmaceutica Convenzionata,AIFA — Open Data Spesa e Consumo Farmaceutico,consumo farmaceutico SSN,outcome
 32,strutture_asl,Strutture Asl,Ministero della Salute — Open Data Strutture e attività ASL,medici di base e pediatri,strutturale
 32,strutture_ricovero_asl,Strutture Ricovero Asl,Ministero della Salute — Open Data Strutture di ricovero per ASL,posti letto e ricoveri,strutturale
 32,farmacie,Farmacie — Anagrafica farmacie italiane (Ministero Salute),Ministero della Salute — Open Data,farmacie sul territorio,strutturale
+32,posti_letto_stabilimento,Posti Letto Stabilimento,Ministero della Salute — Banca Dati Posti Letto,posti letto per stabilimento,strutturale
+32,reparti_ricovero,Reparti Ricovero,Ministero della Salute — Open Data Dati di struttura e attività dei reparti di ricovero,reparti di ricovero ASL,strutturale
 33,mim_alunni_corso_eta,Alunni per corso ed età — MIM,https://dati.istruzione.it/opendata/ — Ministero dell'Istruzione e del Merito (MIM),alunni per corso ed età,strutturale
 33,mur_contribuzione_universitaria,MUR - Gettito della contribuzione universitaria,MUR / USTAT CKAN,contribuzione studentesca,strutturale
+33,mim_anagrafica_scuole_statali,Mim Anagrafica Scuole Statali,MIM - dati.istruzione.it,anagrafica scuole statali,strutturale
 34,mim_alunni_corso_eta,Alunni per corso ed età — MIM,https://dati.istruzione.it/opendata/ — Ministero dell'Istruzione e del Merito (MIM),dispersione scolastica implicita,outcome
 38,inps_pensioni_trimestrale,INPS Pensioni — trimestrale,https://www.inps.it/gestione-previdenziale,numero e importo pensioni,outcome
 38,inps_rdc_pdc,INPS RdC/PdC — Nuclei percettori per comune (2020),INPS — Open Data (opendata.inps.it),RdC/PdC per comune,outcome
+38,pensioni_pa_dag,Pensioni Pa Dag,INPS - OpenData,pensioni PA per gestione,outcome
 41,anac_bandi_gara,ANAC Bandi di Gara (CIG),ANAC - Autorità Nazionale Anticorruzione,appalti pubblici,strutturale
 41,rna_aiuti_stato,RNA — Aiuti di Stato alle imprese,MIMIT — Registro Nazionale Aiuti di Stato,aiuti di Stato alle imprese,strutturale
+41,openga_ricorsi_appalto,Ricorsi Appalto Consiglio di Stato,OpenGA — Giustizia Amministrativa (Consiglio di Stato),ricorsi appalto Consiglio di Stato,outcome
 48,elezioni_politiche_2022,Elezioni Politiche 2022 — Camera e Senato,Ministero dell'Interno — DAIT (Dipartimento per gli Affari Interni e Territoriali),affluenza e risultati elezioni,outcome
+48,elezioni_regionali,Elezioni Regionali 2018-2024,Ministero dell'Interno — DAIT (Eligendo),risultati elezioni regionali,outcome
 51,dait_amministratori_locali,Amministratori Locali DAIT,Ministero dell'Interno — DAIT (Dipartimento per gli Affari Interni e Territoriali),anagrafe amministratori locali,strutturale
 53,irpef_comunale,Irpef Comunale,Ministero dell'Economia e delle Finanze - OpenData,redditi e imposte per comune,territoriale
 53,mef_irpef_regionale,MEF - Irpef Regionale,https://www.mef.gov.it/,redditi per classe e regione,territoriale
 53,istat_gini_regionale,ISTAT - Indice di Gini regionale,"ISTAT — Dataflow 32_221 (Omogeneita del reddito regionale), SDMX-CSV",progressività sistema tributario,outcome
+53,ade_cinque_per_mille,5x1000 — Beneficiari e importi per ente,Agenzia delle Entrate,5x1000 per ente beneficiario,territoriale
+53,iva_regionale,MEF — IVA Regionale: Volume Affari e VA fiscale (2014-2023),MEF — Dipartimento delle Finanze (CIVATOT0201),volume affari e VA fiscale per regione,territoriale
 81,bdap_entrate_stato,BDAP Entrate Stato - Serie Storica,MEF-BDAP,entrate statali,strutturale
 81,bdap_spese_stato,BDAP Spese Stato,MEF-BDAP,spese statali,strutturale
+81,siope_bilancio_unificato,SIOPE Bilancio Unificato,SIOPE — Sistema Informativo sulle Operazioni degli Enti Pubblici,bilancio enti pubblici,strutturale
+81,pnrr_progetti,PNRR Progetti — Italia Domani,MEF — Italia Domani (italiadomani.gov.it),progetti PNRR,strutturale
 97,dipendenti_pubblici,Dipendenti Pubblici - Occupazione e Turnover,MEF-BDAP,occupazione e turnover PA,strutturale
 97,anac_bandi_gara,ANAC Bandi di Gara (CIG),ANAC - Autorità Nazionale Anticorruzione,trasparenza appalti,outcome
 97,consip_consumi_convenzione,Consip Consumi Convenzione,Consip SpA / MEF — dati.consip.it (CKAN),spesa PA in convenzione,strutturale
+97,anpr_mobilita_residenziale,ANPR — Mobilita Residenziale Interregionale (2022-2026),ANPR — Anagrafe Nazionale della Popolazione Residente (PCM),mobilità residenziale (efficienza PA),outcome
 111,civile_flussi,Flussi Civile — Giustizia civile italiana,https://datiestatistiche.giustizia.it/ (Ministero della Giustizia — Direzione Generale di Statistica),durata processi civili,outcome
 111,giustizia_penale_indicatori,Giustizia Penale — Clearance Rate e Disposition Time,Ministero della Giustizia — Direzione Generale di Statistica e Analisi Organizzativa,clearance rate penale,outcome
 117,opencoesione_progetti,Opencoesione Progetti,PCM-OpenCoesione / dati.gov.it,fondi coesione per regione,territoriale
 117,bdap_entrate_stato,BDAP Entrate Stato - Serie Storica,MEF-BDAP,entrate statali vs regionali,territoriale
+117,fts_eu_grants,Grant UE erogati in Italia (FTS EU Grants),Commissione Europea — Financial Transparency System (FTS),grant UE erogati in Italia,territoriale
 118,opencivitas_fsc_2025_rso,Opencivitas Fsc 2025 Rso,OpenCivitas / Sogei,FSC per comune,territoriale
 118,opencoesione_progetti,Opencoesione Progetti,PCM-OpenCoesione / dati.gov.it,progetti coesione territoriale,territoriale
 119,opencivitas_fsc_2025_rso,Opencivitas Fsc 2025 Rso,OpenCivitas / Sogei,Fondo Solidarietà Comunale,strutturale
