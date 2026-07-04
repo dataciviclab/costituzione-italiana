@@ -155,3 +155,20 @@ def test_indicatori_parquet():
 
     # Art. 32 (salute) deve essere presente
     assert any(artt[i].as_py() == 32 for i in range(len(artt))), "Art. 32 non trovato"
+
+
+def test_citazioni_legislative_parquet():
+    """Il dataset citazioni-legislative deve esistere con le colonne attese."""
+    import pyarrow.parquet as pq
+
+    pqt = REPO_ROOT / "data" / "citazioni-legislative.parquet"
+    if not pqt.exists():
+        return  # skip se non ancora generato (dipende da italia-corpus)
+
+    t = pq.read_table(str(pqt))
+    col_names = {f.name for f in t.schema}
+    assert "articolo" in col_names
+    assert "fonte_filename" in col_names
+    assert "contesto" in col_names
+    assert "articolo_testo" in col_names
+    assert t.num_rows > 0
