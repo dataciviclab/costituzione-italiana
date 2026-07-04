@@ -1,0 +1,27 @@
+name: update-da-italia-corpus
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install -e ".[dev]"
+        timeout-minutes: 5
+      - run: python3 strumenti/importa-citazioni-da-italia-corpus.py
+        timeout-minutes: 5
+      - run: |
+          if [ -n "$(git status --porcelain data/)" ]; then
+            git config user.name "github-actions"
+            git config user.email "actions@github.com"
+            git add data/
+            git commit -m "chore(data): update citazioni legislative da italia-corpus [skip ci]"
+            git push
+          fi
