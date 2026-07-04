@@ -18,13 +18,37 @@ import sys
 import logging
 from pathlib import Path
 
+import os
+
 import yaml
 
 logger = logging.getLogger("genera-indicatori")
 
-DATASET_INCUBATOR = (
-    Path(__file__).resolve().parent.parent.parent / "dataset-incubator"
-)
+# Path a dataset-incubator: cerca in più posizioni (locale, CI subdirectory, CI sibling)
+_REPO = Path(__file__).resolve().parent.parent.parent
+_DI_CANDIDATES = [
+    _REPO.parent / "dataset-incubator",          # sibling (locale + CI con path: ../)
+    _REPO / "dataset-incubator",                 # subdirectory (CI con path: dataset-incubator)
+]
+if "GITHUB_WORKSPACE" in os.environ:
+    _DI_CANDIDATES.insert(0, Path(os.environ["GITHUB_WORKSPACE"]) / "dataset-incubator")
+
+DATASET_INCUBATOR: Path | None = None
+for p in _DI_CANDIDATES:
+    if (p / "registry" / "costituzione-mapping.yaml").exists():
+        DATASET_INCUBATOR = p
+        break
+
+if DATASET_INCUBATOR is None:
+    logger.error(
+        "dataset-incubator non trovato. Cercato in:\n%s",
+        "\n".join(f"  {p}" for p in _DI_CANDIDATES),
+    )
+    raise FileNotFoundError(
+        "dataset-incubator non trovato. Assicurati che sia clonato nel workspace "
+        "come sibling o subdirectory 'dataset-incubator'."
+    )
+
 CLEAN_CATALOG = DATASET_INCUBATOR / "registry" / "clean_catalog.json"
 MAPPING_YAML = DATASET_INCUBATOR / "registry" / "costituzione-mapping.yaml"
 
