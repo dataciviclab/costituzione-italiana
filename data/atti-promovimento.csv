@@ -1,8 +1,4 @@
 tipo,anno,numero_atto,numero_parte,parametro_articolo,parametro_comma,norma_descrizione,norma_numero,norma_articolo,norme_str,n_norme
-ordinanza,2023,82,1,3,,legge,388,80,legge n.388 art.80 c.19,1
-ordinanza,2023,82,1,11,,legge,388,80,legge n.388 art.80 c.19,1
-ordinanza,2023,82,1,38,1,legge,388,80,legge n.388 art.80 c.19,1
-ordinanza,2023,82,1,117,1,legge,388,80,legge n.388 art.80 c.19,1
 ordinanza,2024,65,1,3,,legge,197,1,legge n.197 art.1 c.115; legge n.197 art.1 c.116; legge n.197 art.1 c.117; legge n.197 art.1 c.118; legge n.197 art.1 c.119,5
 ordinanza,2024,65,1,53,,legge,197,1,legge n.197 art.1 c.115; legge n.197 art.1 c.116; legge n.197 art.1 c.117; legge n.197 art.1 c.118; legge n.197 art.1 c.119,5
 ordinanza,2024,65,1,117,1,legge,197,1,legge n.197 art.1 c.115; legge n.197 art.1 c.116; legge n.197 art.1 c.117; legge n.197 art.1 c.118; legge n.197 art.1 c.119,5
@@ -31,7 +27,6 @@ ordinanza,2024,239,1,53,,legge,197,1,legge n.197 art.1 c.115; legge n.197 art.1 
 ordinanza,2025,55,1,36,,decreto-legge,79,3,decreto-legge n.79 art.3 c.2; legge n.140 art. c.; decreto-legge n.78 art.12 c.7; legge n.122 art. c.,4
 ordinanza,2025,61,1,36,,decreto-legge,79,3,decreto-legge n.79 art.3 c.2; legge n.140 art. c.; decreto-legge n.78 art.12 c.7; legge n.122 art. c.,4
 ordinanza,2025,61,1,117,1,decreto-legge,79,3,decreto-legge n.79 art.3 c.2; legge n.140 art. c.; decreto-legge n.78 art.12 c.7; legge n.122 art. c.,4
-ordinanza,2025,94,1,3,,codice di procedura penale,,585,codice di procedura penale art.585 c.1; codice di procedura penale art.581 c.1; legge n.114 art.2 c.1,3
 ordinanza,2025,115,1,3,,decreto-legge,145,16,decreto-legge n.145 art.16 c.1; legge n.187 art. c.; decreto-legge n.13 art.3 c.1; legge n.46 art. c.; decreto-legge n.145 art.16 c.1; legge n.187 art. c.; decreto-legge n.13 art.5 c.; legge n.46 art. c.; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.6 c.5; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.6 c.5; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.6 c.8; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.14 c.6; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.286 art.10 c.3; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.286 art.14 c.6; decreto-legge n.145 art.19 c.; legge n.187 art. c.,28
 ordinanza,2025,115,1,25,1,decreto-legge,145,16,decreto-legge n.145 art.16 c.1; legge n.187 art. c.; decreto-legge n.13 art.3 c.1; legge n.46 art. c.; decreto-legge n.145 art.16 c.1; legge n.187 art. c.; decreto-legge n.13 art.5 c.; legge n.46 art. c.; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.6 c.5; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.6 c.5; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.6 c.8; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.14 c.6; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.286 art.10 c.3; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.286 art.14 c.6; decreto-legge n.145 art.19 c.; legge n.187 art. c.,28
 ordinanza,2025,115,1,77,2,decreto-legge,145,16,decreto-legge n.145 art.16 c.1; legge n.187 art. c.; decreto-legge n.13 art.3 c.1; legge n.46 art. c.; decreto-legge n.145 art.16 c.1; legge n.187 art. c.; decreto-legge n.13 art.5 c.; legge n.46 art. c.; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.6 c.5; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.6 c.5; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.6 c.8; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.14 c.6; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.286 art.10 c.3; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.286 art.14 c.6; decreto-legge n.145 art.19 c.; legge n.187 art. c.,28
@@ -144,10 +139,6 @@ ordinanza,2025,150,1,3,,decreto legislativo,199,20,decreto legislativo n.199 art
 ordinanza,2025,150,1,9,,decreto legislativo,199,20,decreto legislativo n.199 art.20 c.1; decreto-legge n.63 art.5 c.1; legge n.101 art. c.; decreto legislativo n.190 art.2 c.2,4
 ordinanza,2025,150,1,11,,decreto legislativo,199,20,decreto legislativo n.199 art.20 c.1; decreto-legge n.63 art.5 c.1; legge n.101 art. c.; decreto legislativo n.190 art.2 c.2,4
 ordinanza,2025,150,1,117,1,decreto legislativo,199,20,decreto legislativo n.199 art.20 c.1; decreto-legge n.63 art.5 c.1; legge n.101 art. c.; decreto legislativo n.190 art.2 c.2,4
-ordinanza,2025,151,1,3,,decreto-legge,21,37,decreto-legge n.21 art.37 c.; legge n.51 art. c.; decreto-legge n.50 art.55 c.; legge n.91 art. c.; legge n.197 art.1 c.120,5
-ordinanza,2025,151,1,42,,decreto-legge,21,37,decreto-legge n.21 art.37 c.; legge n.51 art. c.; decreto-legge n.50 art.55 c.; legge n.91 art. c.; legge n.197 art.1 c.120,5
-ordinanza,2025,151,1,53,,decreto-legge,21,37,decreto-legge n.21 art.37 c.; legge n.51 art. c.; decreto-legge n.50 art.55 c.; legge n.91 art. c.; legge n.197 art.1 c.120,5
-ordinanza,2025,151,1,117,1,decreto-legge,21,37,decreto-legge n.21 art.37 c.; legge n.51 art. c.; decreto-legge n.50 art.55 c.; legge n.91 art. c.; legge n.197 art.1 c.120,5
 ordinanza,2025,153,1,17,,regio decreto,773,18,regio decreto n.773 art.18 c.3,1
 ordinanza,2025,153,1,21,,regio decreto,773,18,regio decreto n.773 art.18 c.3,1
 ordinanza,2025,153,1,117,1,regio decreto,773,18,regio decreto n.773 art.18 c.3,1
@@ -184,14 +175,6 @@ ordinanza,2025,176,1,102,2,decreto-legge,145,16,decreto-legge n.145 art.16 c.1; 
 ordinanza,2025,178,1,3,,decreto legislativo,199,20,decreto legislativo n.199 art.20 c.1; decreto-legge n.63 art.5 c.1; legge n.101 art. c.; decreto legislativo n.190 art.2 c.2,4
 ordinanza,2025,178,1,11,,decreto legislativo,199,20,decreto legislativo n.199 art.20 c.1; decreto-legge n.63 art.5 c.1; legge n.101 art. c.; decreto legislativo n.190 art.2 c.2,4
 ordinanza,2025,178,1,117,1,decreto legislativo,199,20,decreto legislativo n.199 art.20 c.1; decreto-legge n.63 art.5 c.1; legge n.101 art. c.; decreto legislativo n.190 art.2 c.2,4
-ordinanza,2025,180,1,3,1,legge,354,58,legge n.354 art.58 c.3,1
-ordinanza,2025,180,1,3,2,legge,354,58,legge n.354 art.58 c.3,1
-ordinanza,2025,180,1,13,,legge,354,58,legge n.354 art.58 c.3,1
-ordinanza,2025,180,1,27,3,legge,354,58,legge n.354 art.58 c.3,1
-ordinanza,2025,181,1,3,1,legge,354,58,legge n.354 art.58 c.3,1
-ordinanza,2025,181,1,3,2,legge,354,58,legge n.354 art.58 c.3,1
-ordinanza,2025,181,1,13,,legge,354,58,legge n.354 art.58 c.3,1
-ordinanza,2025,181,1,27,3,legge,354,58,legge n.354 art.58 c.3,1
 ordinanza,2025,183,1,3,,legge,354,69,legge n.354 art.69 c.1; legge n.354 art.69 c.2; legge n.354 art.69 c.3; decreto-legge n.92 art.5 c.3; legge n.112 art. c.,5
 ordinanza,2025,183,1,27,3,legge,354,69,legge n.354 art.69 c.1; legge n.354 art.69 c.2; legge n.354 art.69 c.3; decreto-legge n.92 art.5 c.3; legge n.112 art. c.,5
 ordinanza,2025,190,1,3,,legge,354,69,legge n.354 art.69 c.3; decreto-legge n.92 art.5 c.3; legge n.112 art. c.,3
@@ -243,10 +226,6 @@ ordinanza,2025,198,1,102,2,decreto-legge,145,16,decreto-legge n.145 art.16 c.1; 
 ordinanza,2025,198,1,117,1,decreto-legge,145,16,decreto-legge n.145 art.16 c.1; legge n.187 art. c.; decreto-legge n.13 art.3 c.1; legge n.46 art. c.; decreto-legge n.145 art.16 c.1; legge n.187 art. c.; decreto-legge n.13 art.5 c.; legge n.46 art. c.; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.6 c.5; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.6 c.5; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.6 c.8; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.14 c.6; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.286 art.10 c.3; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.286 art.14 c.6; decreto-legge n.145 art.19 c.; legge n.187 art. c.,28
 ordinanza,2025,209,1,36,,decreto-legge,79,3,decreto-legge n.79 art.3 c.2; legge n.140 art. c.; decreto-legge n.78 art.12 c.7; legge n.122 art. c.,4
 ordinanza,2025,209,1,117,1,decreto-legge,79,3,decreto-legge n.79 art.3 c.2; legge n.140 art. c.; decreto-legge n.78 art.12 c.7; legge n.122 art. c.,4
-ordinanza,2025,212,1,3,1,decreto legislativo,23,9,decreto legislativo n.23 art.9 c.1,1
-ordinanza,2025,212,1,4,,decreto legislativo,23,9,decreto legislativo n.23 art.9 c.1,1
-ordinanza,2025,212,1,35,1,decreto legislativo,23,9,decreto legislativo n.23 art.9 c.1,1
-ordinanza,2025,212,1,117,1,decreto legislativo,23,9,decreto legislativo n.23 art.9 c.1,1
 ordinanza,2025,217,1,3,,codice di procedura penale,,656,codice di procedura penale art.656 c.4,1
 ordinanza,2025,217,1,27,,codice di procedura penale,,656,codice di procedura penale art.656 c.4,1
 ordinanza,2025,219,1,117,2,legge della Regione Lombardia,5,2,legge della Regione Lombardia n.5 art.2 c.7,1
@@ -259,21 +238,10 @@ ordinanza,2025,222,1,25,1,decreto-legge,145,16,decreto-legge n.145 art.16 c.1; l
 ordinanza,2025,222,1,77,2,decreto-legge,145,16,decreto-legge n.145 art.16 c.1; legge n.187 art. c.; decreto-legge n.13 art.3 c.1; legge n.46 art. c.; decreto-legge n.145 art.16 c.1; legge n.187 art. c.; decreto-legge n.13 art.5 c.; legge n.46 art. c.; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.6 c.5; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.6 c.5; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.6 c.8; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.14 c.6; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.286 art.10 c.3; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.286 art.14 c.6; decreto-legge n.145 art.19 c.; legge n.187 art. c.,28
 ordinanza,2025,222,1,102,2,decreto-legge,145,16,decreto-legge n.145 art.16 c.1; legge n.187 art. c.; decreto-legge n.13 art.3 c.1; legge n.46 art. c.; decreto-legge n.145 art.16 c.1; legge n.187 art. c.; decreto-legge n.13 art.5 c.; legge n.46 art. c.; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.6 c.5; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.6 c.5; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.6 c.8; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.14 c.6; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.286 art.10 c.3; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.286 art.14 c.6; decreto-legge n.145 art.19 c.; legge n.187 art. c.,28
 ordinanza,2025,222,1,117,1,decreto-legge,145,16,decreto-legge n.145 art.16 c.1; legge n.187 art. c.; decreto-legge n.13 art.3 c.1; legge n.46 art. c.; decreto-legge n.145 art.16 c.1; legge n.187 art. c.; decreto-legge n.13 art.5 c.; legge n.46 art. c.; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.6 c.5; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.6 c.5; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.6 c.8; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.14 c.6; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.286 art.10 c.3; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.286 art.14 c.6; decreto-legge n.145 art.19 c.; legge n.187 art. c.,28
-ordinanza,2025,223,1,2,,codice penale,,580,codice penale art.580 c.,1
-ordinanza,2025,223,1,3,,codice penale,,580,codice penale art.580 c.,1
-ordinanza,2025,223,1,13,,codice penale,,580,codice penale art.580 c.,1
-ordinanza,2025,223,1,32,2,codice penale,,580,codice penale art.580 c.,1
-ordinanza,2025,223,1,117,1,codice penale,,580,codice penale art.580 c.,1
 ordinanza,2025,224,1,3,1,decreto legislativo,286,40,decreto legislativo n.286 art.40 c.6; legge della Regione Lombardia n.16 art.22 c.1,2
 ordinanza,2025,224,1,3,2,decreto legislativo,286,40,decreto legislativo n.286 art.40 c.6; legge della Regione Lombardia n.16 art.22 c.1,2
-ordinanza,2025,225,1,76,,decreto legislativo,160,23,decreto legislativo n.160 art.23 c.1; decreto legislativo n.171 art.49 c.21; decreto legislativo n.171 art.49 c.21,3
-ordinanza,2025,225,1,77,1,decreto legislativo,160,23,decreto legislativo n.160 art.23 c.1; decreto legislativo n.171 art.49 c.21; decreto legislativo n.171 art.49 c.21,3
-ordinanza,2025,225,1,117,1,decreto legislativo,160,23,decreto legislativo n.160 art.23 c.1; decreto legislativo n.171 art.49 c.21; decreto legislativo n.171 art.49 c.21,3
 ordinanza,2025,226,1,11,,codice penale,,231,codice penale art.231 c.2,1
 ordinanza,2025,226,1,117,1,codice penale,,231,codice penale art.231 c.2,1
-ordinanza,2025,227,1,11,,legge,237,2,legge n.237 art.2 c.; legge n.237 art.4 c.; legge n.237 art.11 c.; legge n.237 art.13 c.,4
-ordinanza,2025,227,1,101,2,legge,237,2,legge n.237 art.2 c.; legge n.237 art.4 c.; legge n.237 art.11 c.; legge n.237 art.13 c.,4
-ordinanza,2025,227,1,117,1,legge,237,2,legge n.237 art.2 c.; legge n.237 art.4 c.; legge n.237 art.11 c.; legge n.237 art.13 c.,4
 ordinanza,2025,228,1,3,,decreto del Presidente della Repubblica,309,73,decreto del Presidente della Repubblica n.309 art.73 c.5; codice penale art.168 c.; codice di procedura penale art.550 c.2,3
 ordinanza,2025,228,1,27,3,decreto del Presidente della Repubblica,309,73,decreto del Presidente della Repubblica n.309 art.73 c.5; codice penale art.168 c.; codice di procedura penale art.550 c.2,3
 ordinanza,2025,229,1,3,1,decreto legislativo,546,58,decreto legislativo n.546 art.58 c.3; decreto legislativo n.220 art.1 c.1,2
@@ -284,11 +252,6 @@ ordinanza,2025,229,1,111,2,decreto legislativo,546,58,decreto legislativo n.546 
 ordinanza,2025,230,1,3,,decreto legislativo,14,278,decreto legislativo n.14 art.278 c.2,1
 ordinanza,2025,230,1,11,,decreto legislativo,14,278,decreto legislativo n.14 art.278 c.2,1
 ordinanza,2025,230,1,117,1,decreto legislativo,14,278,decreto legislativo n.14 art.278 c.2,1
-ordinanza,2025,232,1,3,,codice civile,,297,codice civile art.297 c.2,1
-ordinanza,2025,235,1,3,,decreto-legge,17,13,decreto-legge n.17 art.13 c.1; legge n.34 art. c.; decreto del Presidente della Repubblica n.327 art.4 c.1,3
-ordinanza,2025,235,1,9,,decreto-legge,17,13,decreto-legge n.17 art.13 c.1; legge n.34 art. c.; decreto del Presidente della Repubblica n.327 art.4 c.1,3
-ordinanza,2025,235,1,24,,decreto-legge,17,13,decreto-legge n.17 art.13 c.1; legge n.34 art. c.; decreto del Presidente della Repubblica n.327 art.4 c.1,3
-ordinanza,2025,235,1,77,,decreto-legge,17,13,decreto-legge n.17 art.13 c.1; legge n.34 art. c.; decreto del Presidente della Repubblica n.327 art.4 c.1,3
 ordinanza,2025,236,1,3,,decreto-legge,145,16,decreto-legge n.145 art.16 c.1; legge n.187 art. c.; decreto-legge n.13 art.3 c.1; legge n.46 art. c.; decreto-legge n.145 art.16 c.1; legge n.187 art. c.; decreto-legge n.13 art.5 c.; legge n.46 art. c.; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.6 c.5; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.6 c.5; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.6 c.8; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.14 c.6; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.286 art.10 c.3; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.286 art.14 c.6; decreto-legge n.145 art.19 c.; legge n.187 art. c.,28
 ordinanza,2025,236,1,10,3,decreto-legge,145,16,decreto-legge n.145 art.16 c.1; legge n.187 art. c.; decreto-legge n.13 art.3 c.1; legge n.46 art. c.; decreto-legge n.145 art.16 c.1; legge n.187 art. c.; decreto-legge n.13 art.5 c.; legge n.46 art. c.; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.6 c.5; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.6 c.5; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.6 c.8; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.14 c.6; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.286 art.10 c.3; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.286 art.14 c.6; decreto-legge n.145 art.19 c.; legge n.187 art. c.,28
 ordinanza,2025,236,1,11,,decreto-legge,145,16,decreto-legge n.145 art.16 c.1; legge n.187 art. c.; decreto-legge n.13 art.3 c.1; legge n.46 art. c.; decreto-legge n.145 art.16 c.1; legge n.187 art. c.; decreto-legge n.13 art.5 c.; legge n.46 art. c.; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.6 c.5; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.6 c.5; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.6 c.8; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.14 c.6; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.286 art.10 c.3; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.286 art.14 c.6; decreto-legge n.145 art.19 c.; legge n.187 art. c.,28
@@ -313,8 +276,6 @@ ordinanza,2025,238,1,25,1,decreto-legge,145,16,decreto-legge n.145 art.16 c.1; l
 ordinanza,2025,238,1,77,2,decreto-legge,145,16,decreto-legge n.145 art.16 c.1; legge n.187 art. c.; decreto-legge n.13 art.3 c.1; legge n.46 art. c.; decreto-legge n.145 art.16 c.1; legge n.187 art. c.; decreto-legge n.13 art.5 c.; legge n.46 art. c.; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.6 c.5; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.6 c.5; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.6 c.8; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.14 c.6; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.286 art.10 c.3; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.286 art.14 c.6; decreto-legge n.145 art.19 c.; legge n.187 art. c.,28
 ordinanza,2025,238,1,102,2,decreto-legge,145,16,decreto-legge n.145 art.16 c.1; legge n.187 art. c.; decreto-legge n.13 art.3 c.1; legge n.46 art. c.; decreto-legge n.145 art.16 c.1; legge n.187 art. c.; decreto-legge n.13 art.5 c.; legge n.46 art. c.; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.6 c.5; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.6 c.5; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.6 c.8; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.14 c.6; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.286 art.10 c.3; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.286 art.14 c.6; decreto-legge n.145 art.19 c.; legge n.187 art. c.,28
 ordinanza,2025,238,1,117,1,decreto-legge,145,16,decreto-legge n.145 art.16 c.1; legge n.187 art. c.; decreto-legge n.13 art.3 c.1; legge n.46 art. c.; decreto-legge n.145 art.16 c.1; legge n.187 art. c.; decreto-legge n.13 art.5 c.; legge n.46 art. c.; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.6 c.5; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.6 c.5; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.6 c.8; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.14 c.6; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.286 art.10 c.3; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.286 art.14 c.6; decreto-legge n.145 art.19 c.; legge n.187 art. c.,28
-ordinanza,2025,239,1,111,2,codice di procedura penale,,37,codice di procedura penale art.37 c.; codice di procedura penale art.38 c.; codice di procedura penale art.409 c.2; codice di procedura penale art.409 c.3; codice di procedura penale art.409 c.4; codice di procedura penale art.409 c.5,6
-ordinanza,2025,239,1,117,1,codice di procedura penale,,37,codice di procedura penale art.37 c.; codice di procedura penale art.38 c.; codice di procedura penale art.409 c.2; codice di procedura penale art.409 c.3; codice di procedura penale art.409 c.4; codice di procedura penale art.409 c.5,6
 ordinanza,2025,244,1,21,,codice penale militare di pace,,227,codice penale militare di pace art.227 c.1; codice penale militare di pace art.227 c.2,2
 ordinanza,2025,244,1,52,,codice penale militare di pace,,227,codice penale militare di pace art.227 c.1; codice penale militare di pace art.227 c.2,2
 ordinanza,2025,244,1,117,,codice penale militare di pace,,227,codice penale militare di pace art.227 c.1; codice penale militare di pace art.227 c.2,2
@@ -358,27 +319,11 @@ ordinanza,2025,251,1,103,2,decreto-legge,137,23,decreto-legge n.137 art.23 c.; l
 ordinanza,2025,251,1,111,,decreto-legge,137,23,decreto-legge n.137 art.23 c.; legge di conversione n.176 art. c.,2
 ordinanza,2025,251,1,113,,decreto-legge,137,23,decreto-legge n.137 art.23 c.; legge di conversione n.176 art. c.,2
 ordinanza,2025,251,1,117,1,decreto-legge,137,23,decreto-legge n.137 art.23 c.; legge di conversione n.176 art. c.,2
-ordinanza,2025,254,1,3,,decreto del Presidente della Repubblica,917,5,decreto del Presidente della Repubblica n.917 art.5 c.3; legge n.234 art.1 c.8,2
-ordinanza,2025,254,1,41,,decreto del Presidente della Repubblica,917,5,decreto del Presidente della Repubblica n.917 art.5 c.3; legge n.234 art.1 c.8,2
-ordinanza,2025,254,1,53,1,decreto del Presidente della Repubblica,917,5,decreto del Presidente della Repubblica n.917 art.5 c.3; legge n.234 art.1 c.8,2
 ordinanza,2025,255,1,2,,legge,76,1,legge n.76 art.1 c.20; codice civile art.294 c.2,2
 ordinanza,2025,255,1,3,,legge,76,1,legge n.76 art.1 c.20; codice civile art.294 c.2,2
 ordinanza,2025,255,1,10,,legge,76,1,legge n.76 art.1 c.20; codice civile art.294 c.2,2
 ordinanza,2025,255,1,117,1,legge,76,1,legge n.76 art.1 c.20; codice civile art.294 c.2,2
 ordinanza,2025,257,1,117,1,decreto legislativo,398,9,decreto legislativo n.398 art.9 c.; decreto-legge n.8 art.10 c.5; legge n.68 art. c.,3
-ordinanza,2025,259,1,3,,legge,207,1,legge n.207 art.1 c.812; legge n.207 art.1 c.812; decreto del Presidente della Repubblica n.115 art.14 c.3,3
-ordinanza,2025,259,1,24,,legge,207,1,legge n.207 art.1 c.812; legge n.207 art.1 c.812; decreto del Presidente della Repubblica n.115 art.14 c.3,3
-ordinanza,2025,259,1,111,,legge,207,1,legge n.207 art.1 c.812; legge n.207 art.1 c.812; decreto del Presidente della Repubblica n.115 art.14 c.3,3
-ordinanza,2025,260,1,3,,legge,207,1,legge n.207 art.1 c.812; legge n.207 art.1 c.812; decreto del Presidente della Repubblica art.14 c.3,3
-ordinanza,2025,260,1,24,,legge,207,1,legge n.207 art.1 c.812; legge n.207 art.1 c.812; decreto del Presidente della Repubblica art.14 c.3,3
-ordinanza,2025,260,1,111,,legge,207,1,legge n.207 art.1 c.812; legge n.207 art.1 c.812; decreto del Presidente della Repubblica art.14 c.3,3
-ordinanza,2025,261,1,3,1,decreto del Presidente della Repubblica,426,7,decreto del Presidente della Repubblica n.426 art.7 c.3,1
-ordinanza,2025,261,1,5,,decreto del Presidente della Repubblica,426,7,decreto del Presidente della Repubblica n.426 art.7 c.3,1
-ordinanza,2025,261,1,24,1,decreto del Presidente della Repubblica,426,7,decreto del Presidente della Repubblica n.426 art.7 c.3,1
-ordinanza,2025,261,1,87,1,decreto del Presidente della Repubblica,426,7,decreto del Presidente della Repubblica n.426 art.7 c.3,1
-ordinanza,2025,262,1,2,,decreto legislativo,285,189,decreto legislativo n.285 art.189 c.6; decreto legislativo n.285 art.224 c.3,2
-ordinanza,2025,262,1,3,,decreto legislativo,285,189,decreto legislativo n.285 art.189 c.6; decreto legislativo n.285 art.224 c.3,2
-ordinanza,2025,262,1,27,3,decreto legislativo,285,189,decreto legislativo n.285 art.189 c.6; decreto legislativo n.285 art.224 c.3,2
 ordinanza,2026,1,1,3,,legge,197,1,legge n.197 art.1 c.115; legge n.197 art.1 c.116; legge n.197 art.1 c.117; legge n.197 art.1 c.118; legge n.197 art.1 c.119,5
 ordinanza,2026,1,1,53,,legge,197,1,legge n.197 art.1 c.115; legge n.197 art.1 c.116; legge n.197 art.1 c.117; legge n.197 art.1 c.118; legge n.197 art.1 c.119,5
 ordinanza,2026,2,1,3,,decreto-legge,145,16,decreto-legge n.145 art.16 c.1; legge n.187 art. c.; decreto-legge n.13 art.3 c.1; legge n.46 art. c.; decreto-legge n.145 art.16 c.1; legge n.187 art. c.; decreto-legge n.13 art.5 c.; legge n.46 art. c.; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.6 c.5; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.6 c.5; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.6 c.8; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.14 c.6; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.286 art.10 c.3; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.286 art.14 c.6; decreto-legge n.145 art.19 c.; legge n.187 art. c.,28
@@ -397,18 +342,6 @@ ordinanza,2026,3,1,25,1,decreto-legge,145,16,decreto-legge n.145 art.16 c.1; leg
 ordinanza,2026,3,1,77,2,decreto-legge,145,16,decreto-legge n.145 art.16 c.1; legge n.187 art. c.; decreto-legge n.13 art.3 c.1; legge n.46 art. c.; decreto-legge n.145 art.16 c.1; legge n.187 art. c.; decreto-legge n.13 art.5 c.; legge n.46 art. c.; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.6 c.5; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.6 c.5; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.6 c.8; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.14 c.6; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.286 art.10 c.3; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.286 art.14 c.6; decreto-legge n.145 art.19 c.; legge n.187 art. c.,28
 ordinanza,2026,3,1,102,2,decreto-legge,145,16,decreto-legge n.145 art.16 c.1; legge n.187 art. c.; decreto-legge n.13 art.3 c.1; legge n.46 art. c.; decreto-legge n.145 art.16 c.1; legge n.187 art. c.; decreto-legge n.13 art.5 c.; legge n.46 art. c.; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.6 c.5; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.6 c.5; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.6 c.8; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.14 c.6; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.286 art.10 c.3; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.286 art.14 c.6; decreto-legge n.145 art.19 c.; legge n.187 art. c.,28
 ordinanza,2026,3,1,117,1,decreto-legge,145,16,decreto-legge n.145 art.16 c.1; legge n.187 art. c.; decreto-legge n.13 art.3 c.1; legge n.46 art. c.; decreto-legge n.145 art.16 c.1; legge n.187 art. c.; decreto-legge n.13 art.5 c.; legge n.46 art. c.; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.6 c.5; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.6 c.5; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.6 c.8; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.14 c.6; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.286 art.10 c.3; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.286 art.14 c.6; decreto-legge n.145 art.19 c.; legge n.187 art. c.,28
-ordinanza,2026,4,1,1,,legge,91,3,legge n.91 art.3 c.; decreto-legge n.36 art.1 c.1; legge n.74 art. c.,3
-ordinanza,2026,4,1,1,2,legge,91,3,legge n.91 art.3 c.; decreto-legge n.36 art.1 c.1; legge n.74 art. c.,3
-ordinanza,2026,4,1,2,,legge,91,3,legge n.91 art.3 c.; decreto-legge n.36 art.1 c.1; legge n.74 art. c.,3
-ordinanza,2026,4,1,3,,legge,91,3,legge n.91 art.3 c.; decreto-legge n.36 art.1 c.1; legge n.74 art. c.,3
-ordinanza,2026,4,1,22,,legge,91,3,legge n.91 art.3 c.; decreto-legge n.36 art.1 c.1; legge n.74 art. c.,3
-ordinanza,2026,4,1,24,,legge,91,3,legge n.91 art.3 c.; decreto-legge n.36 art.1 c.1; legge n.74 art. c.,3
-ordinanza,2026,4,1,56,,legge,91,3,legge n.91 art.3 c.; decreto-legge n.36 art.1 c.1; legge n.74 art. c.,3
-ordinanza,2026,4,1,58,,legge,91,3,legge n.91 art.3 c.; decreto-legge n.36 art.1 c.1; legge n.74 art. c.,3
-ordinanza,2026,4,1,72,,legge,91,3,legge n.91 art.3 c.; decreto-legge n.36 art.1 c.1; legge n.74 art. c.,3
-ordinanza,2026,4,1,72,4,legge,91,3,legge n.91 art.3 c.; decreto-legge n.36 art.1 c.1; legge n.74 art. c.,3
-ordinanza,2026,4,1,77,,legge,91,3,legge n.91 art.3 c.; decreto-legge n.36 art.1 c.1; legge n.74 art. c.,3
-ordinanza,2026,4,1,117,1,legge,91,3,legge n.91 art.3 c.; decreto-legge n.36 art.1 c.1; legge n.74 art. c.,3
 ordinanza,2026,5,1,3,,decreto-legge,145,16,decreto-legge n.145 art.16 c.1; legge n.187 art. c.; decreto-legge n.13 art.3 c.1; legge n.46 art. c.; decreto-legge n.145 art.16 c.1; legge n.187 art. c.; decreto-legge n.13 art.5 c.; legge n.46 art. c.; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.6 c.5; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.6 c.5; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.6 c.8; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.14 c.6; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.286 art.10 c.3; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.286 art.14 c.6; decreto-legge n.145 art.19 c.; legge n.187 art. c.,28
 ordinanza,2026,5,1,10,3,decreto-legge,145,16,decreto-legge n.145 art.16 c.1; legge n.187 art. c.; decreto-legge n.13 art.3 c.1; legge n.46 art. c.; decreto-legge n.145 art.16 c.1; legge n.187 art. c.; decreto-legge n.13 art.5 c.; legge n.46 art. c.; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.6 c.5; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.6 c.5; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.6 c.8; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.14 c.6; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.286 art.10 c.3; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.286 art.14 c.6; decreto-legge n.145 art.19 c.; legge n.187 art. c.,28
 ordinanza,2026,5,1,11,,decreto-legge,145,16,decreto-legge n.145 art.16 c.1; legge n.187 art. c.; decreto-legge n.13 art.3 c.1; legge n.46 art. c.; decreto-legge n.145 art.16 c.1; legge n.187 art. c.; decreto-legge n.13 art.5 c.; legge n.46 art. c.; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.6 c.5; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.6 c.5; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.6 c.8; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.142 art.14 c.6; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.286 art.10 c.3; decreto-legge n.145 art.18 c.1; legge n.187 art. c.; decreto legislativo n.286 art.14 c.6; decreto-legge n.145 art.19 c.; legge n.187 art. c.,28
@@ -424,9 +357,6 @@ ordinanza,2026,6,1,97,,legge,51,1,legge n.51 art.1 c.; decreto legislativo n.116
 ordinanza,2026,6,1,101,,legge,51,1,legge n.51 art.1 c.; decreto legislativo n.116 art.31 c.1; legge n.51 art.1 c.; decreto legislativo n.116 art.29 c.7,4
 ordinanza,2026,6,1,106,,legge,51,1,legge n.51 art.1 c.; decreto legislativo n.116 art.31 c.1; legge n.51 art.1 c.; decreto legislativo n.116 art.29 c.7,4
 ordinanza,2026,6,1,117,1,legge,51,1,legge n.51 art.1 c.; decreto legislativo n.116 art.31 c.1; legge n.51 art.1 c.; decreto legislativo n.116 art.29 c.7,4
-ordinanza,2026,7,1,24,,legge,247,4,legge n.247 art.4 c.; legge n.124 art.1 c.141,2
-ordinanza,2026,7,1,41,,legge,247,4,legge n.247 art.4 c.; legge n.124 art.1 c.141,2
-ordinanza,2026,7,1,111,,legge,247,4,legge n.247 art.4 c.; legge n.124 art.1 c.141,2
 ordinanza,2026,8,1,3,,decreto-legge,146,3,decreto-legge n.146 art.3 c.; legge n.215 art. c.; decreto del Presidente della Repubblica n.602 art.12 c.4; decreto legislativo n.33 art.91 c.5,4
 ordinanza,2026,8,1,10,,decreto-legge,146,3,decreto-legge n.146 art.3 c.; legge n.215 art. c.; decreto del Presidente della Repubblica n.602 art.12 c.4; decreto legislativo n.33 art.91 c.5,4
 ordinanza,2026,8,1,11,,decreto-legge,146,3,decreto-legge n.146 art.3 c.; legge n.215 art. c.; decreto del Presidente della Repubblica n.602 art.12 c.4; decreto legislativo n.33 art.91 c.5,4
@@ -461,15 +391,6 @@ ordinanza,2026,19,1,3,,codice penale,,17,codice penale art.17 c.; codice penale 
 ordinanza,2026,19,1,27,1,codice penale,,17,codice penale art.17 c.; codice penale art.24 c.; codice penale art.172 c.; codice penale art.636 c.,4
 ordinanza,2026,19,1,27,3,codice penale,,17,codice penale art.17 c.; codice penale art.24 c.; codice penale art.172 c.; codice penale art.636 c.,4
 ordinanza,2026,19,1,111,2,codice penale,,17,codice penale art.17 c.; codice penale art.24 c.; codice penale art.172 c.; codice penale art.636 c.,4
-ordinanza,2026,20,1,3,1,decreto legislativo,126,14,decreto legislativo n.126 art.14 c.1; decreto legislativo n.95 art.2 c.1,2
-ordinanza,2026,20,1,3,2,decreto legislativo,126,14,decreto legislativo n.126 art.14 c.1; decreto legislativo n.95 art.2 c.1,2
-ordinanza,2026,20,1,97,2,decreto legislativo,126,14,decreto legislativo n.126 art.14 c.1; decreto legislativo n.95 art.2 c.1,2
-ordinanza,2026,21,1,3,1,decreto legislativo,126,14,decreto legislativo n.126 art.14 c.1; decreto legislativo n.95 art.2 c.1,2
-ordinanza,2026,21,1,3,2,decreto legislativo,126,14,decreto legislativo n.126 art.14 c.1; decreto legislativo n.95 art.2 c.1,2
-ordinanza,2026,21,1,97,2,decreto legislativo,126,14,decreto legislativo n.126 art.14 c.1; decreto legislativo n.95 art.2 c.1,2
-ordinanza,2026,22,1,3,1,decreto legislativo,126,14,decreto legislativo n.126 art.14 c.1; decreto legislativo n.95 art.2 c.1,2
-ordinanza,2026,22,1,3,2,decreto legislativo,126,14,decreto legislativo n.126 art.14 c.1; decreto legislativo n.95 art.2 c.1,2
-ordinanza,2026,22,1,97,2,decreto legislativo,126,14,decreto legislativo n.126 art.14 c.1; decreto legislativo n.95 art.2 c.1,2
 ordinanza,2026,23,1,3,,decreto legislativo,286,40,decreto legislativo n.286 art.40 c.6; legge della Regione Piemonte n.3 art.3 c.1; legge della Regione Piemonte n.2 art.2 c.1; legge della Regione Piemonte n.3 art.8 c.1; legge della Regione Piemonte n.2 art.2 c.8,5
 ordinanza,2026,23,1,117,1,decreto legislativo,286,40,decreto legislativo n.286 art.40 c.6; legge della Regione Piemonte n.3 art.3 c.1; legge della Regione Piemonte n.2 art.2 c.1; legge della Regione Piemonte n.3 art.8 c.1; legge della Regione Piemonte n.2 art.2 c.8,5
 ordinanza,2026,24,1,1,1,decreto del Presidente della Repubblica,1092,43,decreto del Presidente della Repubblica n.1092 art.43 c.1; legge n.228 art.1 c.239; legge n.228 art.1 c.243; legge n.228 art.1 c.245,4
@@ -479,9 +400,6 @@ ordinanza,2026,24,1,35,1,decreto del Presidente della Repubblica,1092,43,decreto
 ordinanza,2026,24,1,36,,decreto del Presidente della Repubblica,1092,43,decreto del Presidente della Repubblica n.1092 art.43 c.1; legge n.228 art.1 c.239; legge n.228 art.1 c.243; legge n.228 art.1 c.245,4
 ordinanza,2026,24,1,38,2,decreto del Presidente della Repubblica,1092,43,decreto del Presidente della Repubblica n.1092 art.43 c.1; legge n.228 art.1 c.239; legge n.228 art.1 c.243; legge n.228 art.1 c.245,4
 ordinanza,2026,24,1,98,1,decreto del Presidente della Repubblica,1092,43,decreto del Presidente della Repubblica n.1092 art.43 c.1; legge n.228 art.1 c.239; legge n.228 art.1 c.243; legge n.228 art.1 c.245,4
-ordinanza,2026,25,1,3,,codice di procedura civile,,586,codice di procedura civile art.586 c.,1
-ordinanza,2026,25,1,24,,codice di procedura civile,,586,codice di procedura civile art.586 c.,1
-ordinanza,2026,25,1,42,,codice di procedura civile,,586,codice di procedura civile art.586 c.,1
 ordinanza,2026,26,1,13,,decreto-legge,48,18,decreto-legge n.48 art.18 c.; legge n.80 art. c.; legge n.242 art.1 c.; legge n.242 art.2 c.,4
 ordinanza,2026,26,1,25,2,decreto-legge,48,18,decreto-legge n.48 art.18 c.; legge n.80 art. c.; legge n.242 art.1 c.; legge n.242 art.2 c.,4
 ordinanza,2026,26,1,27,3,decreto-legge,48,18,decreto-legge n.48 art.18 c.; legge n.80 art. c.; legge n.242 art.1 c.; legge n.242 art.2 c.,4
@@ -489,13 +407,7 @@ ordinanza,2026,26,1,77,2,decreto-legge,48,18,decreto-legge n.48 art.18 c.; legge
 ordinanza,2026,26,1,117,1,decreto-legge,48,18,decreto-legge n.48 art.18 c.; legge n.80 art. c.; legge n.242 art.1 c.; legge n.242 art.2 c.,4
 ordinanza,2026,27,1,3,,decreto legislativo,14,278,decreto legislativo n.14 art.278 c.2,1
 ordinanza,2026,27,1,117,1,decreto legislativo,14,278,decreto legislativo n.14 art.278 c.2,1
-ordinanza,2026,28,1,3,,legge,207,1,legge n.207 art.1 c.812; legge n.207 art.1 c.812; decreto del Presidente della Repubblica n.115 art.14 c.3,3
-ordinanza,2026,28,1,24,,legge,207,1,legge n.207 art.1 c.812; legge n.207 art.1 c.812; decreto del Presidente della Repubblica n.115 art.14 c.3,3
-ordinanza,2026,28,1,111,,legge,207,1,legge n.207 art.1 c.812; legge n.207 art.1 c.812; decreto del Presidente della Repubblica n.115 art.14 c.3,3
 ordinanza,2026,29,1,24,,legge,833,35,legge n.833 art.35 c.,1
-ordinanza,2026,30,1,3,,legge,207,1,legge n.207 art.1 c.812; legge n.207 art.1 c.812; decreto del Presidente della Repubblica n.115 art.14 c.3,3
-ordinanza,2026,30,1,24,,legge,207,1,legge n.207 art.1 c.812; legge n.207 art.1 c.812; decreto del Presidente della Repubblica n.115 art.14 c.3,3
-ordinanza,2026,30,1,111,,legge,207,1,legge n.207 art.1 c.812; legge n.207 art.1 c.812; decreto del Presidente della Repubblica n.115 art.14 c.3,3
 ordinanza,2026,31,1,3,,legge,319,4,legge n.319 art.4 c.1; legge n.319 art.4 c.2,2
 ordinanza,2026,31,1,11,,legge,319,4,legge n.319 art.4 c.1; legge n.319 art.4 c.2,2
 ordinanza,2026,31,1,24,2,legge,319,4,legge n.319 art.4 c.1; legge n.319 art.4 c.2,2
@@ -528,20 +440,6 @@ ordinanza,2026,39,1,4,1,legge,604,8,legge n.604 art.8 c.,1
 ordinanza,2026,39,1,35,1,legge,604,8,legge n.604 art.8 c.,1
 ordinanza,2026,39,1,41,2,legge,604,8,legge n.604 art.8 c.,1
 ordinanza,2026,39,1,117,1,legge,604,8,legge n.604 art.8 c.,1
-ordinanza,2026,40,1,2,,legge,91,3,legge n.91 art.3 c.; decreto-legge n.36 art.1 c.1; legge n.74 art. c.,3
-ordinanza,2026,40,1,3,,legge,91,3,legge n.91 art.3 c.; decreto-legge n.36 art.1 c.1; legge n.74 art. c.,3
-ordinanza,2026,40,1,22,,legge,91,3,legge n.91 art.3 c.; decreto-legge n.36 art.1 c.1; legge n.74 art. c.,3
-ordinanza,2026,40,1,72,,legge,91,3,legge n.91 art.3 c.; decreto-legge n.36 art.1 c.1; legge n.74 art. c.,3
-ordinanza,2026,40,1,72,4,legge,91,3,legge n.91 art.3 c.; decreto-legge n.36 art.1 c.1; legge n.74 art. c.,3
-ordinanza,2026,40,1,77,,legge,91,3,legge n.91 art.3 c.; decreto-legge n.36 art.1 c.1; legge n.74 art. c.,3
-ordinanza,2026,40,1,117,1,legge,91,3,legge n.91 art.3 c.; decreto-legge n.36 art.1 c.1; legge n.74 art. c.,3
-ordinanza,2026,41,1,2,,legge,91,3,legge n.91 art.3 c.; decreto-legge n.36 art.1 c.1; legge n.74 art. c.,3
-ordinanza,2026,41,1,3,,legge,91,3,legge n.91 art.3 c.; decreto-legge n.36 art.1 c.1; legge n.74 art. c.,3
-ordinanza,2026,41,1,22,,legge,91,3,legge n.91 art.3 c.; decreto-legge n.36 art.1 c.1; legge n.74 art. c.,3
-ordinanza,2026,41,1,72,,legge,91,3,legge n.91 art.3 c.; decreto-legge n.36 art.1 c.1; legge n.74 art. c.,3
-ordinanza,2026,41,1,72,4,legge,91,3,legge n.91 art.3 c.; decreto-legge n.36 art.1 c.1; legge n.74 art. c.,3
-ordinanza,2026,41,1,77,,legge,91,3,legge n.91 art.3 c.; decreto-legge n.36 art.1 c.1; legge n.74 art. c.,3
-ordinanza,2026,41,1,117,1,legge,91,3,legge n.91 art.3 c.; decreto-legge n.36 art.1 c.1; legge n.74 art. c.,3
 ordinanza,2026,42,1,36,,decreto-legge,79,3,decreto-legge n.79 art.3 c.2; legge n.140 art. c.; decreto-legge n.78 art.12 c.7; legge n.122 art. c.; decreto-legge n.4 art.23 c.1; legge n.26 art. c.,6
 ordinanza,2026,42,1,117,1,decreto-legge,79,3,decreto-legge n.79 art.3 c.2; legge n.140 art. c.; decreto-legge n.78 art.12 c.7; legge n.122 art. c.; decreto-legge n.4 art.23 c.1; legge n.26 art. c.,6
 ordinanza,2026,43,1,3,,codice penale,,168,codice penale art.168 c.; codice penale art.346 c.; codice penale art.353 c.; codice di procedura penale art.550 c.,4
@@ -587,8 +485,6 @@ ordinanza,2026,54,1,111,,legge,207,1,legge n.207 art.1 c.812; legge n.207 art.1 
 ordinanza,2026,55,1,2,,legge,184,29,legge n.184 art.29 c.1,1
 ordinanza,2026,55,1,3,,legge,184,29,legge n.184 art.29 c.1,1
 ordinanza,2026,55,1,117,1,legge,184,29,legge n.184 art.29 c.1,1
-ordinanza,2026,56,1,3,,decreto legislativo,126,14,decreto legislativo n.126 art.14 c.1; decreto legislativo n.95 art.2 c.1,2
-ordinanza,2026,56,1,97,2,decreto legislativo,126,14,decreto legislativo n.126 art.14 c.1; decreto legislativo n.95 art.2 c.1,2
 ordinanza,2026,57,1,3,,codice penale,,131,codice penale art.131 c.3,1
 ordinanza,2026,58,1,3,1,decreto legislativo,504,1,decreto legislativo n.504 art.1 c.2,1
 ordinanza,2026,58,1,42,2,decreto legislativo,504,1,decreto legislativo n.504 art.1 c.2,1
@@ -848,29 +744,33 @@ ordinanza,2026,123,1,24,,codice di procedura penale,,724,codice di procedura pen
 ordinanza,2026,123,1,111,,codice di procedura penale,,724,codice di procedura penale art.724 c.,1
 ordinanza,2026,123,1,111,2,codice di procedura penale,,724,codice di procedura penale art.724 c.,1
 ordinanza,2026,123,1,117,1,codice di procedura penale,,724,codice di procedura penale art.724 c.,1
+ordinanza,2026,124,1,3,,decreto legislativo,286,12,decreto legislativo n.286 art.12 c.3; decreto legislativo n.286 art.12 c.3,2
 ordinanza,2026,124,1,11,,decreto legislativo,286,12,decreto legislativo n.286 art.12 c.3; decreto legislativo n.286 art.12 c.3,2
+ordinanza,2026,124,1,27,,decreto legislativo,286,12,decreto legislativo n.286 art.12 c.3; decreto legislativo n.286 art.12 c.3,2
 ordinanza,2026,124,1,117,1,decreto legislativo,286,12,decreto legislativo n.286 art.12 c.3; decreto legislativo n.286 art.12 c.3,2
 ordinanza,2026,125,1,3,,decreto legislativo,259,34,decreto legislativo n.259 art.34 c.; Allegato n.10 art.1 c.,2
 ordinanza,2026,125,1,11,,decreto legislativo,259,34,decreto legislativo n.259 art.34 c.; Allegato n.10 art.1 c.,2
 ordinanza,2026,125,1,97,,decreto legislativo,259,34,decreto legislativo n.259 art.34 c.; Allegato n.10 art.1 c.,2
 ordinanza,2026,125,1,117,1,decreto legislativo,259,34,decreto legislativo n.259 art.34 c.; Allegato n.10 art.1 c.,2
-ordinanza,2026,126,1,81,1,decreto-legge,73,52,decreto-legge n.73 art.52 c.1,1
-ordinanza,2026,126,1,81,3,decreto-legge,73,52,decreto-legge n.73 art.52 c.1,1
-ordinanza,2026,126,1,97,1,decreto-legge,73,52,decreto-legge n.73 art.52 c.1,1
-ordinanza,2026,126,1,136,,decreto-legge,73,52,decreto-legge n.73 art.52 c.1,1
-ordinanza,2026,127,1,3,,decreto-legge,34,103,decreto-legge n.34 art.103 c.17,1
-ordinanza,2026,127,1,25,,decreto-legge,34,103,decreto-legge n.34 art.103 c.17,1
-ordinanza,2026,127,1,27,,decreto-legge,34,103,decreto-legge n.34 art.103 c.17,1
-ordinanza,2026,128,1,3,,decreto-legge,25,4,decreto-legge n.25 art.4 c.9,1
-ordinanza,2026,128,1,97,,decreto-legge,25,4,decreto-legge n.25 art.4 c.9,1
-ordinanza,2026,129,1,3,,decreto-legge,25,4,decreto-legge n.25 art.4 c.9,1
-ordinanza,2026,129,1,97,,decreto-legge,25,4,decreto-legge n.25 art.4 c.9,1
-ordinanza,2026,130,1,3,,decreto-legge,25,4,decreto-legge n.25 art.4 c.9,1
-ordinanza,2026,130,1,27,,decreto-legge,25,4,decreto-legge n.25 art.4 c.9,1
-ordinanza,2026,131,1,3,,decreto-legge,25,4,decreto-legge n.25 art.4 c.9,1
-ordinanza,2026,131,1,27,,decreto-legge,25,4,decreto-legge n.25 art.4 c.9,1
-ordinanza,2026,132,1,3,,decreto-legge,25,4,decreto-legge n.25 art.4 c.9,1
-ordinanza,2026,132,1,97,,decreto-legge,25,4,decreto-legge n.25 art.4 c.9,1
+ordinanza,2026,126,1,81,1,decreto-legge,73,52,decreto-legge n.73 art.52 c.1; legge n.106 art. c.,2
+ordinanza,2026,126,1,81,3,decreto-legge,73,52,decreto-legge n.73 art.52 c.1; legge n.106 art. c.,2
+ordinanza,2026,126,1,97,1,decreto-legge,73,52,decreto-legge n.73 art.52 c.1; legge n.106 art. c.,2
+ordinanza,2026,126,1,136,,decreto-legge,73,52,decreto-legge n.73 art.52 c.1; legge n.106 art. c.,2
+ordinanza,2026,127,1,3,,decreto-legge,34,103,decreto-legge n.34 art.103 c.17; legge n.77 art. c.,2
+ordinanza,2026,127,1,25,,decreto-legge,34,103,decreto-legge n.34 art.103 c.17; legge n.77 art. c.,2
+ordinanza,2026,127,1,25,2,decreto-legge,34,103,decreto-legge n.34 art.103 c.17; legge n.77 art. c.,2
+ordinanza,2026,127,1,27,1,decreto-legge,34,103,decreto-legge n.34 art.103 c.17; legge n.77 art. c.,2
+ordinanza,2026,127,1,27,3,decreto-legge,34,103,decreto-legge n.34 art.103 c.17; legge n.77 art. c.,2
+ordinanza,2026,128,1,3,,decreto-legge,25,4,decreto-legge n.25 art.4 c.9; legge n.69 art. c.,2
+ordinanza,2026,128,1,97,,decreto-legge,25,4,decreto-legge n.25 art.4 c.9; legge n.69 art. c.,2
+ordinanza,2026,129,1,3,,decreto-legge,25,4,decreto-legge n.25 art.4 c.9; legge n.69 art. c.,2
+ordinanza,2026,129,1,97,,decreto-legge,25,4,decreto-legge n.25 art.4 c.9; legge n.69 art. c.,2
+ordinanza,2026,130,1,3,,decreto-legge,25,4,decreto-legge n.25 art.4 c.9; legge n.69 art. c.,2
+ordinanza,2026,130,1,97,,decreto-legge,25,4,decreto-legge n.25 art.4 c.9; legge n.69 art. c.,2
+ordinanza,2026,131,1,3,,decreto-legge,25,4,decreto-legge n.25 art.4 c.9; legge n.69 art. c.,2
+ordinanza,2026,131,1,97,,decreto-legge,25,4,decreto-legge n.25 art.4 c.9; legge n.69 art. c.,2
+ordinanza,2026,132,1,3,,decreto-legge,25,4,decreto-legge n.25 art.4 c.9; legge n.69 art. c.,2
+ordinanza,2026,132,1,97,,decreto-legge,25,4,decreto-legge n.25 art.4 c.9; legge n.69 art. c.,2
 ricorso,2024,5,1,117,1,legge della Regione Emilia Romagna,17,3,legge della Regione Emilia Romagna n.17 art.3 c.; legge della Regione Emilia Romagna n.26 art.10 c.2,2
 ricorso,2024,5,1,117,2,legge della Regione Emilia Romagna,17,3,legge della Regione Emilia Romagna n.17 art.3 c.; legge della Regione Emilia Romagna n.26 art.10 c.2,2
 ricorso,2024,5,1,117,3,legge della Regione Emilia Romagna,17,3,legge della Regione Emilia Romagna n.17 art.3 c.; legge della Regione Emilia Romagna n.26 art.10 c.2,2
@@ -912,43 +812,6 @@ ricorso,2025,25,1,117,2,legge della Regione autonoma Valle d'Aosta,12,1,legge de
 ricorso,2025,25,1,117,3,legge della Regione autonoma Valle d'Aosta,12,1,legge della Regione autonoma Valle d'Aosta n.12 art.1 c.5,1
 ricorso,2025,26,1,81,3,legge della Regione Toscana,27,2,legge della Regione Toscana n.27 art.2 c.2; legge della Regione Toscana n.27 art.3 c.1; legge della Regione Toscana n.27 art.4 c.1; legge della Regione Toscana n.27 art.4 c.2; legge della Regione Toscana n.27 art.4 c.3; legge della Regione Toscana n.27 art.4 c.4; legge della Regione Toscana n.27 art.4 c.5; legge della Regione Toscana n.27 art.4 c.6; legge della Regione Toscana n.27 art.4 c.7; legge della Regione Toscana n.27 art.5 c.; legge della Regione Toscana n.27 art.6 c.; legge della Regione Toscana n.27 art.7 c.; legge della Regione Toscana n.27 art.8 c.; legge della Regione Toscana n.27 art.9 c.; legge della Regione Toscana n.27 art.10 c.; legge della Regione Toscana n.27 art.11 c.2; legge della Regione Toscana n.27 art.12 c.1; legge della Regione Toscana n.27 art.12 c.3; legge della Regione Toscana n.27 art.13 c.; legge della Regione Toscana n.27 art.13 c.2; legge della Regione Toscana n.27 art.13 c.1; legge della Regione Toscana n.79 art.12 c.,22
 ricorso,2025,26,1,117,2,legge della Regione Toscana,27,2,legge della Regione Toscana n.27 art.2 c.2; legge della Regione Toscana n.27 art.3 c.1; legge della Regione Toscana n.27 art.4 c.1; legge della Regione Toscana n.27 art.4 c.2; legge della Regione Toscana n.27 art.4 c.3; legge della Regione Toscana n.27 art.4 c.4; legge della Regione Toscana n.27 art.4 c.5; legge della Regione Toscana n.27 art.4 c.6; legge della Regione Toscana n.27 art.4 c.7; legge della Regione Toscana n.27 art.5 c.; legge della Regione Toscana n.27 art.6 c.; legge della Regione Toscana n.27 art.7 c.; legge della Regione Toscana n.27 art.8 c.; legge della Regione Toscana n.27 art.9 c.; legge della Regione Toscana n.27 art.10 c.; legge della Regione Toscana n.27 art.11 c.2; legge della Regione Toscana n.27 art.12 c.1; legge della Regione Toscana n.27 art.12 c.3; legge della Regione Toscana n.27 art.13 c.; legge della Regione Toscana n.27 art.13 c.2; legge della Regione Toscana n.27 art.13 c.1; legge della Regione Toscana n.79 art.12 c.,22
-ricorso,2025,34,1,3,,legge,91,12,legge n.91 art.12 c.; legge n.91 art.12 c.1; legge n.91 art.12 c.2; legge n.91 art.12 c.3,4
-ricorso,2025,34,1,5,,legge,91,12,legge n.91 art.12 c.; legge n.91 art.12 c.1; legge n.91 art.12 c.2; legge n.91 art.12 c.3,4
-ricorso,2025,34,1,81,,legge,91,12,legge n.91 art.12 c.; legge n.91 art.12 c.1; legge n.91 art.12 c.2; legge n.91 art.12 c.3,4
-ricorso,2025,34,1,97,,legge,91,12,legge n.91 art.12 c.; legge n.91 art.12 c.1; legge n.91 art.12 c.2; legge n.91 art.12 c.3,4
-ricorso,2025,34,1,117,3,legge,91,12,legge n.91 art.12 c.; legge n.91 art.12 c.1; legge n.91 art.12 c.2; legge n.91 art.12 c.3,4
-ricorso,2025,34,1,117,4,legge,91,12,legge n.91 art.12 c.; legge n.91 art.12 c.1; legge n.91 art.12 c.2; legge n.91 art.12 c.3,4
-ricorso,2025,34,1,118,,legge,91,12,legge n.91 art.12 c.; legge n.91 art.12 c.1; legge n.91 art.12 c.2; legge n.91 art.12 c.3,4
-ricorso,2025,34,1,119,,legge,91,12,legge n.91 art.12 c.; legge n.91 art.12 c.1; legge n.91 art.12 c.2; legge n.91 art.12 c.3,4
-ricorso,2025,34,1,120,2,legge,91,12,legge n.91 art.12 c.; legge n.91 art.12 c.1; legge n.91 art.12 c.2; legge n.91 art.12 c.3,4
-ricorso,2025,35,1,3,,legge,91,12,legge n.91 art.12 c.1; legge n.91 art.12 c.1; legge n.91 art.12 c.2; legge n.91 art.12 c.3,4
-ricorso,2025,35,1,5,,legge,91,12,legge n.91 art.12 c.1; legge n.91 art.12 c.1; legge n.91 art.12 c.2; legge n.91 art.12 c.3,4
-ricorso,2025,35,1,81,3,legge,91,12,legge n.91 art.12 c.1; legge n.91 art.12 c.1; legge n.91 art.12 c.2; legge n.91 art.12 c.3,4
-ricorso,2025,35,1,97,,legge,91,12,legge n.91 art.12 c.1; legge n.91 art.12 c.1; legge n.91 art.12 c.2; legge n.91 art.12 c.3,4
-ricorso,2025,35,1,117,1,legge,91,12,legge n.91 art.12 c.1; legge n.91 art.12 c.1; legge n.91 art.12 c.2; legge n.91 art.12 c.3,4
-ricorso,2025,35,1,117,2,legge,91,12,legge n.91 art.12 c.1; legge n.91 art.12 c.1; legge n.91 art.12 c.2; legge n.91 art.12 c.3,4
-ricorso,2025,35,1,117,3,legge,91,12,legge n.91 art.12 c.1; legge n.91 art.12 c.1; legge n.91 art.12 c.2; legge n.91 art.12 c.3,4
-ricorso,2025,35,1,117,4,legge,91,12,legge n.91 art.12 c.1; legge n.91 art.12 c.1; legge n.91 art.12 c.2; legge n.91 art.12 c.3,4
-ricorso,2025,35,1,118,1,legge,91,12,legge n.91 art.12 c.1; legge n.91 art.12 c.1; legge n.91 art.12 c.2; legge n.91 art.12 c.3,4
-ricorso,2025,35,1,119,4,legge,91,12,legge n.91 art.12 c.1; legge n.91 art.12 c.1; legge n.91 art.12 c.2; legge n.91 art.12 c.3,4
-ricorso,2025,35,1,120,2,legge,91,12,legge n.91 art.12 c.1; legge n.91 art.12 c.1; legge n.91 art.12 c.2; legge n.91 art.12 c.3,4
-ricorso,2025,36,1,3,,legge,91,12,legge n.91 art.12 c.; legge n.91 art.12 c.1; legge n.91 art.12 c.2; legge n.91 art.12 c.3,4
-ricorso,2025,36,1,5,,legge,91,12,legge n.91 art.12 c.; legge n.91 art.12 c.1; legge n.91 art.12 c.2; legge n.91 art.12 c.3,4
-ricorso,2025,36,1,81,3,legge,91,12,legge n.91 art.12 c.; legge n.91 art.12 c.1; legge n.91 art.12 c.2; legge n.91 art.12 c.3,4
-ricorso,2025,36,1,97,,legge,91,12,legge n.91 art.12 c.; legge n.91 art.12 c.1; legge n.91 art.12 c.2; legge n.91 art.12 c.3,4
-ricorso,2025,36,1,117,1,legge,91,12,legge n.91 art.12 c.; legge n.91 art.12 c.1; legge n.91 art.12 c.2; legge n.91 art.12 c.3,4
-ricorso,2025,36,1,117,2,legge,91,12,legge n.91 art.12 c.; legge n.91 art.12 c.1; legge n.91 art.12 c.2; legge n.91 art.12 c.3,4
-ricorso,2025,36,1,117,3,legge,91,12,legge n.91 art.12 c.; legge n.91 art.12 c.1; legge n.91 art.12 c.2; legge n.91 art.12 c.3,4
-ricorso,2025,36,1,117,4,legge,91,12,legge n.91 art.12 c.; legge n.91 art.12 c.1; legge n.91 art.12 c.2; legge n.91 art.12 c.3,4
-ricorso,2025,36,1,118,1,legge,91,12,legge n.91 art.12 c.; legge n.91 art.12 c.1; legge n.91 art.12 c.2; legge n.91 art.12 c.3,4
-ricorso,2025,36,1,119,4,legge,91,12,legge n.91 art.12 c.; legge n.91 art.12 c.1; legge n.91 art.12 c.2; legge n.91 art.12 c.3,4
-ricorso,2025,36,1,120,2,legge,91,12,legge n.91 art.12 c.; legge n.91 art.12 c.1; legge n.91 art.12 c.2; legge n.91 art.12 c.3,4
-ricorso,2025,41,1,9,,legge della Regione Toscana,49,9,legge della Regione Toscana n.49 art.9 c.1; legge della Regione Toscana n.39 art.47 c.6; legge della Regione Toscana n.49 art.13 c.2; legge della Regione Toscana n.39 art.70 c.; legge della Regione Toscana n.49 art.17 c.2; legge della Regione Toscana n.39 art.74 c.2; legge della Regione Toscana n.49 art.17 c.3; legge della Regione Toscana n.39 art.74 c.3; legge della Regione Toscana n.49 art.25 c.; legge della Regione Toscana n.30 art.14 c.; legge della Regione Toscana n.49 art.26 c.; legge della Regione Toscana n.30 art.15 c.; legge della Regione Toscana n.49 art.27 c.; legge della Regione Toscana n.30 art.31 c.; legge della Regione Toscana n.49 art.28 c.; legge della Regione Toscana n.30 art.52 c.; legge della Regione Toscana n.49 art.29 c.; legge della Regione Toscana n.65 art.20 c.,18
-ricorso,2025,41,1,117,2,legge della Regione Toscana,49,9,legge della Regione Toscana n.49 art.9 c.1; legge della Regione Toscana n.39 art.47 c.6; legge della Regione Toscana n.49 art.13 c.2; legge della Regione Toscana n.39 art.70 c.; legge della Regione Toscana n.49 art.17 c.2; legge della Regione Toscana n.39 art.74 c.2; legge della Regione Toscana n.49 art.17 c.3; legge della Regione Toscana n.39 art.74 c.3; legge della Regione Toscana n.49 art.25 c.; legge della Regione Toscana n.30 art.14 c.; legge della Regione Toscana n.49 art.26 c.; legge della Regione Toscana n.30 art.15 c.; legge della Regione Toscana n.49 art.27 c.; legge della Regione Toscana n.30 art.31 c.; legge della Regione Toscana n.49 art.28 c.; legge della Regione Toscana n.30 art.52 c.; legge della Regione Toscana n.49 art.29 c.; legge della Regione Toscana n.65 art.20 c.,18
-ricorso,2025,41,1,117,2,legge della Regione Toscana,49,9,legge della Regione Toscana n.49 art.9 c.1; legge della Regione Toscana n.39 art.47 c.6; legge della Regione Toscana n.49 art.13 c.2; legge della Regione Toscana n.39 art.70 c.; legge della Regione Toscana n.49 art.17 c.2; legge della Regione Toscana n.39 art.74 c.2; legge della Regione Toscana n.49 art.17 c.3; legge della Regione Toscana n.39 art.74 c.3; legge della Regione Toscana n.49 art.25 c.; legge della Regione Toscana n.30 art.14 c.; legge della Regione Toscana n.49 art.26 c.; legge della Regione Toscana n.30 art.15 c.; legge della Regione Toscana n.49 art.27 c.; legge della Regione Toscana n.30 art.31 c.; legge della Regione Toscana n.49 art.28 c.; legge della Regione Toscana n.30 art.52 c.; legge della Regione Toscana n.49 art.29 c.; legge della Regione Toscana n.65 art.20 c.,18
-ricorso,2025,43,1,117,2,legge della Regione autonoma Sardegna,26,,legge della Regione autonoma Sardegna n.26 art. c.; legge della Regione autonoma Sardegna n.26 art.1 c.; legge della Regione autonoma Sardegna n.26 art.2 c.; legge della Regione autonoma Sardegna n.26 art.3 c.; legge della Regione autonoma Sardegna n.26 art.4 c.; legge della Regione autonoma Sardegna n.26 art.6 c.; legge della Regione autonoma Sardegna n.26 art.7 c.,7
-ricorso,2025,43,1,117,2,legge della Regione autonoma Sardegna,26,,legge della Regione autonoma Sardegna n.26 art. c.; legge della Regione autonoma Sardegna n.26 art.1 c.; legge della Regione autonoma Sardegna n.26 art.2 c.; legge della Regione autonoma Sardegna n.26 art.3 c.; legge della Regione autonoma Sardegna n.26 art.4 c.; legge della Regione autonoma Sardegna n.26 art.6 c.; legge della Regione autonoma Sardegna n.26 art.7 c.,7
-ricorso,2025,43,1,117,3,legge della Regione autonoma Sardegna,26,,legge della Regione autonoma Sardegna n.26 art. c.; legge della Regione autonoma Sardegna n.26 art.1 c.; legge della Regione autonoma Sardegna n.26 art.2 c.; legge della Regione autonoma Sardegna n.26 art.3 c.; legge della Regione autonoma Sardegna n.26 art.4 c.; legge della Regione autonoma Sardegna n.26 art.6 c.; legge della Regione autonoma Sardegna n.26 art.7 c.,7
 ricorso,2025,44,1,3,,legge della Regione autonoma Sardegna,28,8,legge della Regione autonoma Sardegna n.28 art.8 c.; legge della Regione autonoma Sardegna n.31 art.33 c.2; legge della Regione autonoma Sardegna n.28 art.17 c.3,3
 ricorso,2025,44,1,39,,legge della Regione autonoma Sardegna,28,8,legge della Regione autonoma Sardegna n.28 art.8 c.; legge della Regione autonoma Sardegna n.31 art.33 c.2; legge della Regione autonoma Sardegna n.28 art.17 c.3,3
 ricorso,2025,44,1,97,,legge della Regione autonoma Sardegna,28,8,legge della Regione autonoma Sardegna n.28 art.8 c.; legge della Regione autonoma Sardegna n.31 art.33 c.2; legge della Regione autonoma Sardegna n.28 art.17 c.3,3
@@ -983,10 +846,6 @@ ricorso,2025,47,3,117,2,legge della Regione Campania,20,1,legge della Regione Ca
 ricorso,2025,47,3,118,,legge della Regione Campania,20,1,legge della Regione Campania n.20 art.1 c.1; legge della Regione Campania n.7 art.6 c.1; legge della Regione Campania n.20 art.1 c.1; legge della Regione Campania n.7 art.10 c.2; legge della Regione Campania n.20 art.1 c.1; legge della Regione Campania n.7 art.10 c.4; legge della Regione Campania n.20 art.1 c.1; legge della Regione Campania n.7 art.11 c.1; legge della Regione Campania n.20 art.1 c.1; legge della Regione Campania n.7 art.11 c.2; legge della Regione Campania n.20 art.1 c.1; legge della Regione Campania n.7 art.18 c.; legge della Regione Campania n.20 art.1 c.1; legge della Regione Campania n.7 art.18 c.1; legge della Regione Campania n.20 art.1 c.1; legge della Regione Campania n.7 art.18 c.2; legge della Regione Campania n.20 art.1 c.1; legge della Regione Campania n.7 art.18 c.3; legge della Regione Campania n.20 art.1 c.1; legge della Regione Campania n.7 art.19 c.7; legge della Regione Campania n.20 art.1 c.1; legge della Regione Campania n.7 art.20 c.1; legge della Regione Campania n.20 art.1 c.1; legge della Regione Campania n.7 art.28 c.3; legge della Regione Campania n.20 art.1 c.1; legge della Regione Campania n.7 art.28 c.5; legge della Regione Campania n.20 art.1 c.1; legge della Regione Campania n.7 art.28 c.8; legge della Regione Campania n.20 art.1 c.1; legge della Regione Campania n.7 art.28 c.9; legge della Regione Campania n.20 art.1 c.1; legge della Regione Campania n.7 art.28 c.11; legge della Regione Campania n.20 art.1 c.1; legge della Regione Campania n.7 art.38 c.3; legge della Regione Campania n.20 art.1 c.1; legge della Regione Campania n.7 art.43 c.2; legge della Regione Campania n.20 art.1 c.1; legge della Regione Campania n.7 art.55 c.1; legge della Regione Campania n.20 art.1 c.1; legge della Regione Campania n.7 art.55 c.1; legge della Regione Campania n.20 art.1 c.1; legge della Regione Campania n.7 art.55 c.2; legge della Regione Campania n.20 art.1 c.1; legge della Regione Campania n.7 art.55 c.2; legge della Regione Campania n.20 art.1 c.1; legge della Regione Campania n.7 art.55 c.3; legge della Regione Campania n.20 art.1 c.1; legge della Regione Campania n.7 art.55 c.10; legge della Regione Campania n.20 art.1 c.1; legge della Regione Campania n.7 art.68 c.; legge della Regione Campania n.20 art.1 c.1; legge della Regione Campania n.7 art.158 c.,52
 ricorso,2025,48,1,117,3,legge della Regione Umbria,7,1,legge della Regione Umbria n.7 art.1 c.2; legge della Regione Umbria n.7 art.3 c.1; legge della Regione Umbria n.7 art. c.; legge della Regione Umbria n.7 art. c.; legge della Regione Umbria n.7 art.4 c.; legge della Regione Umbria n.7 art.5 c.1,6
 ricorso,2025,49,1,117,2,legge della Provincia autonoma di Bolzano,12,4,legge della Provincia autonoma di Bolzano n.12 art.4 c.2; legge della Provincia autonoma di Bolzano n.7 art.7 c.4,2
-ricorso,2026,1,1,3,,legge della Regione autonoma Sardegna,31,1,legge della Regione autonoma Sardegna n.31 art.1 c.1,1
-ricorso,2026,1,1,41,,legge della Regione autonoma Sardegna,31,1,legge della Regione autonoma Sardegna n.31 art.1 c.1,1
-ricorso,2026,1,1,97,,legge della Regione autonoma Sardegna,31,1,legge della Regione autonoma Sardegna n.31 art.1 c.1,1
-ricorso,2026,1,1,117,3,legge della Regione autonoma Sardegna,31,1,legge della Regione autonoma Sardegna n.31 art.1 c.1,1
 ricorso,2026,2,1,3,,legge della Regione Emilia Romagna,10,4,legge della Regione Emilia Romagna n.10 art.4 c.; legge della Regione Emilia Romagna n.10 art.4 c.1; legge della Regione Emilia Romagna n.10 art.4 c.2; legge della Regione Emilia Romagna n.10 art.5 c.; legge della Regione Emilia Romagna n.10 art.5 c.5; legge della Regione Emilia Romagna n.10 art.5 c.5; legge della Regione Emilia Romagna n.10 art.5 c.5,7
 ricorso,2026,2,1,41,,legge della Regione Emilia Romagna,10,4,legge della Regione Emilia Romagna n.10 art.4 c.; legge della Regione Emilia Romagna n.10 art.4 c.1; legge della Regione Emilia Romagna n.10 art.4 c.2; legge della Regione Emilia Romagna n.10 art.5 c.; legge della Regione Emilia Romagna n.10 art.5 c.5; legge della Regione Emilia Romagna n.10 art.5 c.5; legge della Regione Emilia Romagna n.10 art.5 c.5,7
 ricorso,2026,2,1,42,,legge della Regione Emilia Romagna,10,4,legge della Regione Emilia Romagna n.10 art.4 c.; legge della Regione Emilia Romagna n.10 art.4 c.1; legge della Regione Emilia Romagna n.10 art.4 c.2; legge della Regione Emilia Romagna n.10 art.5 c.; legge della Regione Emilia Romagna n.10 art.5 c.5; legge della Regione Emilia Romagna n.10 art.5 c.5; legge della Regione Emilia Romagna n.10 art.5 c.5,7
