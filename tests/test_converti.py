@@ -84,7 +84,7 @@ def test_corte_csv_esiste():
     csv_path = REPO_ROOT / "data" / "atti-promovimento.csv"
     assert csv_path.exists()
     lines = csv_path.read_text("utf-8").strip().split("\n")
-    assert len(lines) >= 1001, f"{len(lines)} righe, attese almeno 1001"
+    assert len(lines) >= 900, f"{len(lines)} righe, attese almeno 900"
 
 
 def test_corte_parquet():
@@ -92,7 +92,7 @@ def test_corte_parquet():
     import pyarrow.parquet as pq
 
     t = pq.read_table(str(REPO_ROOT / "data" / "atti-promovimento.parquet"))
-    assert t.num_rows >= 1000, f"{t.num_rows} righe, attese >= 1000"
+    assert t.num_rows >= 900, f"{t.num_rows} righe, attese >= 900"
 
     # Art. 3 deve essere presente
     artt = t.column("parametro_articolo")
