@@ -67,7 +67,7 @@ Tutti i dataset sono in `data/` nel repo.
 ## Approfondimenti
 
 - [Discussion: Come decide la Consulta?](https://github.com/orgs/dataciviclab/discussions/288)
-- [Analisi: La Costituzione italiana in dati](https://github.com/dataciviclab/dataciviclab/tree/main/analisi/costituzione_master)
+- [Annuncio: costituzione_master — nuovo dataset pubblicato](https://github.com/dataciviclab/dataciviclab/issues/369)
 
 ## Dataset in dettaglio
 
@@ -77,7 +77,7 @@ Vedi: [dataset.yml](dataset.yml) per la definizione completa dei campi.
 ## Partecipa
 
 - **Hai una domanda su questi dati?** Apri una [Discussion](https://github.com/orgs/dataciviclab/discussions/new?category=Domanda)
-- **Vuoi contribuire?** Vedi [CONTRIBUTING.md](CONTRIBUTING.md)
+- **Vuoi contribuire?** Vedi [come contribuire al Lab](https://github.com/dataciviclab/dataciviclab/blob/main/docs/come-contribuire.md)
 
 ## Architettura
 
