@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Genera la mappa articoli della Costituzione ↔ dataset del DataCivicLab.
 
-Legge il clean_catalog da dataset-incubator e la mappa articolo→dataset
-da registry/costituzione-mapping.yaml (sempre in dataset-incubator).
+Legge la mappa articolo→dataset da strumenti/costituzione-mapping.yaml
+(questo repo) e la sezione datasets del registry.json da dataset-incubator
+(clean_catalog.json è stato rimosso con il fusion ADR).
 Produce data/indicatori-costituzionali.csv/.parquet.
 
 Uso:
@@ -24,8 +25,12 @@ import yaml
 
 logger = logging.getLogger("genera-indicatori")
 
-# Path a dataset-incubator: cerca in più posizioni (locale, CI subdirectory, CI sibling)
+# Root del repo corrente (costituzione-italiana) e del workspace.
 _REPO = Path(__file__).resolve().parent.parent.parent
+_CI_REPO = Path(__file__).resolve().parent.parent
+MAPPING_YAML = _CI_REPO / "strumenti" / "costituzione-mapping.yaml"
+
+# Path a dataset-incubator: cerca in più posizioni (locale, CI subdirectory, CI sibling)
 _DI_CANDIDATES = [
     _REPO.parent / "dataset-incubator",          # sibling (locale + CI con path: ../)
     _REPO / "dataset-incubator",                 # subdirectory (CI con path: dataset-incubator)
@@ -35,7 +40,7 @@ if "GITHUB_WORKSPACE" in os.environ:
 
 DATASET_INCUBATOR: Path | None = None
 for p in _DI_CANDIDATES:
-    if (p / "registry" / "costituzione-mapping.yaml").exists():
+    if (p / "registry" / "registry.json").exists():
         DATASET_INCUBATOR = p
         break
 
@@ -49,18 +54,14 @@ if DATASET_INCUBATOR is None:
         "come sibling o subdirectory 'dataset-incubator'."
     )
 
-CLEAN_CATALOG = DATASET_INCUBATOR / "registry" / "clean_catalog.json"
-MAPPING_YAML = DATASET_INCUBATOR / "registry" / "costituzione-mapping.yaml"
-
-# Mappa letta da registry/costituzione-mapping.yaml in dataset-incubator
-# (vedi leggi_mapping_yaml)
+REGISTRY = DATASET_INCUBATOR / "registry" / "registry.json"
 
 def leggi_mapping_yaml(path: Path) -> dict[int, list[tuple[str, str, str]]]:
     """Legge il mapping YAML e restituisce dict articolo → [(slug, dim, tipo), ...]."""
     if not path.exists():
         raise FileNotFoundError(
             f"Mapping YAML non trovato: {path}\n"
-            "Assicurati che dataset-incubator sia clonato nel workspace."
+            "Assicurati di essere nel repo costituzione-italiana."
         )
     with open(path) as f:
         data = yaml.safe_load(f)
@@ -76,21 +77,21 @@ def leggi_mapping_yaml(path: Path) -> dict[int, list[tuple[str, str, str]]]:
     return mapping
 
 
-def leggi_clean_catalog(path: Path) -> dict[str, dict]:
-    """Legge il clean_catalog e restituisce dict slug → info."""
+def leggi_registry(path: Path) -> dict[str, dict]:
+    """Legge il registry.json e restituisce dict slug → info (sezione datasets)."""
     if not path.exists():
         raise FileNotFoundError(
-            f"clean_catalog non trovato: {path}\n"
+            f"registry.json non trovato: {path}\n"
             "Assicurati che dataset-incubator sia clonato nel workspace."
         )
     with open(path) as f:
-        catalog = json.load(f)
+        registry = json.load(f)
     slugs: dict[str, dict] = {}
-    for ds in catalog.get("datasets", []):
+    for ds in registry.get("datasets", []):
         slug = ds.get("slug", "")
         if slug:
             slugs[slug] = ds
-    logger.info("Letto clean_catalog: %d dataset", len(slugs))
+    logger.info("Letto registry.json: %d dataset", len(slugs))
     return slugs
 
 
@@ -154,14 +155,14 @@ def main() -> None:
     logging.basicConfig(level=logging.INFO, format="%(levelname)s [%(name)s] %(message)s")
 
     mapping = leggi_mapping_yaml(MAPPING_YAML)
-    catalog = leggi_clean_catalog(CLEAN_CATALOG)
+    catalog = leggi_registry(REGISTRY)
 
-    # Valida che tutti gli slug del mapping siano nel catalog
+    # Valida che tutti gli slug del mapping siano nel registry
     mapped_slugs = {ds[0] for entries in mapping.values() for ds in entries}
     missing_slugs = mapped_slugs - set(catalog.keys())
     if missing_slugs:
         logger.error(
-            "Slug nel mapping YAML ma non in clean_catalog: %s. "
+            "Slug nel mapping YAML ma non nel registry: %s. "
             "Correggi il mapping o pubblica i dataset mancanti.",
             sorted(missing_slugs),
         )
