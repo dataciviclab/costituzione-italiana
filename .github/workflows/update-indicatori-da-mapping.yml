@@ -9,14 +9,15 @@ jobs:
   update:
     runs-on: ubuntu-latest
     steps:
-      # Checkout costituzione-italiana + dataset-incubator (per mapping YAML + clean_catalog)
+      # Checkout costituzione-italiana (mapping YAML nel repo) + dataset-incubator
+      # (registry.json per la sezione datasets — clean_catalog è stato rimosso).
       - uses: actions/checkout@v7
       - uses: actions/checkout@v7
         with:
           repository: dataciviclab/dataset-incubator
           path: dataset-incubator
           sparse-checkout: |
-            registry/
+            registry/registry.json
       - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
