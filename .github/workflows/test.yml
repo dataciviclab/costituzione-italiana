@@ -9,9 +9,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/setup-python@v6
+      - uses: dataciviclab/.github/actions/python-setup@main
         with:
-          python-version: "3.12"
-      - run: pip install -e ".[dev]"
+          extra-packages: -e ".[dev]"
         timeout-minutes: 5
       - run: python -m pytest tests/ -v
