@@ -1,10 +1,5 @@
 """Citazioni — La Costituzione nella legislazione ordinaria."""
 
-import sys
-from pathlib import Path
-
-sys.path.insert(0, str(Path(__file__).parent.parent))
-
 import streamlit as st
 import altair as alt
 from lab_connectors.formatters import fmt_num

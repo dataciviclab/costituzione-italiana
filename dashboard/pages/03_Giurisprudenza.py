@@ -1,10 +1,5 @@
 """Giurisprudenza — La Corte Costituzionale e i parametri della Costituzione."""
 
-import sys
-from pathlib import Path
-
-sys.path.insert(0, str(Path(__file__).parent.parent))
-
 import streamlit as st
 import altair as alt
 import pandas as pd
