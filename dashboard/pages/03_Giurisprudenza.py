@@ -58,7 +58,7 @@ chart_trend = (
     )
     .properties(height=300)
 )
-st.altair_chart(chart_trend, use_container_width=True)
+st.altair_chart(chart_trend, width='stretch')
 
 st.markdown("---")
 
@@ -99,7 +99,7 @@ chart_param = (
     )
     .properties(height=400)
 )
-st.altair_chart(chart_param, use_container_width=True)
+st.altair_chart(chart_param, width='stretch')
 
 st.markdown("---")
 
@@ -131,7 +131,7 @@ with col1:
         )
         .properties(height=350)
     )
-    st.altair_chart(chart_pie, use_container_width=True)
+    st.altair_chart(chart_pie, width='stretch')
 
 with col2:
     for _, row in df_esiti.iterrows():

@@ -79,7 +79,7 @@ with col_a:
             )
             .properties(height=250)
         )
-        st.altair_chart(chart, use_container_width=True)
+        st.altair_chart(chart, width='stretch')
     else:
         st.info("Nessuna massima trovata per questo articolo.")
 
@@ -88,7 +88,7 @@ with col_b:
     if not df_atti.empty:
         st.dataframe(
             df_atti[["anno", "numero_atto", "tipo", "parametro_comma", "n_norme"]],
-            use_container_width=True,
+            width='stretch',
             hide_index=True,
         )
     else:
@@ -101,7 +101,7 @@ st.subheader("📝 Citazioni nella legislazione")
 if not df_cit.empty:
     st.dataframe(
         df_cit,
-        use_container_width=True,
+        width='stretch',
         hide_index=True,
     )
 else:

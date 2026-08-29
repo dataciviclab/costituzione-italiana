@@ -74,7 +74,7 @@ with col_left:
         )
         .properties(height=180)
     )
-    st.altair_chart(chart_parti, use_container_width=True)
+    st.altair_chart(chart_parti, width='stretch')
 
 with col_right:
     st.markdown("**Giudizi per parte**")
@@ -95,7 +95,7 @@ with col_right:
         )
         .properties(height=180)
     )
-    st.altair_chart(chart_giudizi, use_container_width=True)
+    st.altair_chart(chart_giudizi, width='stretch')
 
 st.markdown("---")
 
@@ -134,7 +134,7 @@ chart_top = (
     )
     .properties(height=350)
 )
-st.altair_chart(chart_top, use_container_width=True)
+st.altair_chart(chart_top, width='stretch')
 
 st.markdown("---")
 
@@ -153,7 +153,7 @@ chart_cit = (
     )
     .properties(height=300)
 )
-st.altair_chart(chart_cit, use_container_width=True)
+st.altair_chart(chart_cit, width='stretch')
 
 st.caption(
     "Fonte: costituzione-italiana · DataCivicLab · "

@@ -63,7 +63,7 @@ chart_tl = (
     )
     .properties(height=280)
 )
-st.altair_chart(chart_tl, use_container_width=True)
+st.altair_chart(chart_tl, width='stretch')
 
 st.markdown("---")
 
@@ -99,7 +99,7 @@ if records:
         )
         .properties(height=380)
     )
-    st.altair_chart(chart_mod, use_container_width=True)
+    st.altair_chart(chart_mod, width='stretch')
 
 st.markdown("---")
 
@@ -110,7 +110,7 @@ df_display = df_rev[["codice_redazionale", "data", "titolo", "n_articoli"]].copy
 df_display.columns = ["Codice", "Data", "Titolo", "Art. modificati"]
 df_display["Data"] = pd.to_datetime(df_display["Data"]).dt.strftime("%d/%m/%Y")
 
-st.dataframe(df_display, use_container_width=True, hide_index=True, height=400)
+st.dataframe(df_display, width='stretch', hide_index=True, height=400)
 
 st.caption(
     "Fonte: italia-corpus · Leggi costituzionali della Repubblica Italiana"

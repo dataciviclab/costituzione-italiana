@@ -52,7 +52,7 @@ chart_top = (
     )
     .properties(height=450)
 )
-st.altair_chart(chart_top, use_container_width=True)
+st.altair_chart(chart_top, width='stretch')
 
 st.markdown("---")
 
@@ -76,7 +76,7 @@ chart_trend = (
     )
     .properties(height=280)
 )
-st.altair_chart(chart_trend, use_container_width=True)
+st.altair_chart(chart_trend, width='stretch')
 
 st.markdown("---")
 
@@ -100,7 +100,7 @@ if not df_tipo.empty:
         )
         .properties(height=200)
     )
-    st.altair_chart(chart_tipo, use_container_width=True)
+    st.altair_chart(chart_tipo, width='stretch')
 
 st.caption(
     "Fonte: italia-corpus · Riferimenti nella legislazione ordinaria "

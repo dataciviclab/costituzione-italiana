@@ -60,6 +60,6 @@ if st.button("▶️ Esegui", type="primary"):
         con = get_connection()
         result = con.execute(sql).fetchdf()
         st.success(f"{len(result)} righe")
-        st.dataframe(result, use_container_width=True, hide_index=True)
+        st.dataframe(result, width='stretch', hide_index=True)
     except Exception as e:
         st.error(f"Errore: {e}")
