@@ -101,16 +101,45 @@ datasets:
       - norme_str: string
       - n_norme: integer
 
-  - name: indicatori_costituzionali
-    display_name: Indicatori Costituzionali
-    path: data/indicatori-costituzionali.parquet
+  - name: massime
+    display_name: Massime della Corte Costituzionale
+    path: data/massime.parquet
     description: >
-      Mappa articoli della Costituzione ↔ dataset del DataCivicLab.
-      Ogni riga collega un articolo a un dataset che ne misura l'attuazione.
+      Massime delle sentenze della Corte Costituzionale (1956-2026).
+      Ogni riga = un punto decisorio con esito (illegittimo, non_fondata, inammissibile...).
+      Fonte: dati.cortecostituzionale.it, aggiornato giornalmente.
     fields:
+      - id_massima: integer
+      - anno_pronuncia: integer
+      - numero_pronuncia: integer
+      - tipologia_pronuncia: string
+      - data_decisione: string
+      - data_deposito: string
+      - esito: string
+      - parametro_codice: string
+      - parametro_descrizione: string
+      - parametro_articolo: string
+      - parametro_comma: string
+      - norma_codice: string
+      - norma_descrizione: string
+      - norma_numero: string
+      - norma_data: string
+      - norma_articolo: string
+      - norma_specificazione_articolo: string
+      - norma_comma: string
+      - norma_specificazione_comma: string
+
+  - name: citazioni_legislative
+    display_name: Citazioni legislative
+    path: data/citazioni-legislative.parquet
+    description: >
+      Riferimenti agli articoli della Costituzione nella legislazione ordinaria.
+      Fonte: italia-corpus.
+    fields:
+      - fonte_filename: string
+      - fonte_collezione: string
+      - fonte_anno: integer
+      - fonte_tipo: string
       - articolo: integer
-      - dataset_slug: string
-      - dataset_name: string
-      - fonte: string
-      - dimensione: string
-      - tipo_indicatore: string
+      - contesto: string
+      - articolo_testo: string
