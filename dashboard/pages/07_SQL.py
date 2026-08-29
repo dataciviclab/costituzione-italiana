@@ -35,19 +35,21 @@ WHERE parametro_articolo IS NOT NULL AND parametro_articolo != ''
 GROUP BY 1 HAVING COUNT(*) > 50
 ORDER BY pct DESC
 """,
-    "Articoli senza leggi di attuazione": """
+    "Articoli mai modificati": """
 SELECT a.articolo, a.heading
 FROM articoli a
 LEFT JOIN (
-    SELECT articoli_modificati[i] AS articolo
-    FROM revisioni, UNNEST(articoli_modificati) AS t(i)
+    SELECT val AS articolo
+    FROM revisioni, UNNEST(articoli_modificati) AS t(val)
+    WHERE val IS NOT NULL
 ) r ON a.articolo = r.articolo
 WHERE r.articolo IS NULL AND a.articolo IS NOT NULL
 ORDER BY a.articolo
 """,
     "Citazioni per decennio": """
-SELECT (fonte_anno / 10) * 10 AS decennio, COUNT(*) AS n
+SELECT (fonte_anno // 10) * 10 AS decennio, COUNT(*) AS n
 FROM citazioni_legislative
+WHERE fonte_anno >= 1948
 GROUP BY 1 ORDER BY 1
 """,
 }
