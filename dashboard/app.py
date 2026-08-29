@@ -35,6 +35,6 @@ pg = st.navigation(pages, position="sidebar")
 st.sidebar.markdown("---")
 st.sidebar.caption("Dati: [costituzione-italiana](https://github.com/dataciviclab/costituzione-italiana)")
 st.sidebar.caption("Codice: [dataciviclab/costituzione-italiana](https://github.com/dataciviclab/costituzione-italiana)")
-st.sidebar.caption("[DataCivicLab](https://dataciviclab.org/) · CC BY-SA 3.0")
+st.sidebar.caption("[DataCivicLab](https://dataciviclab.org/) · CC BY 4.0")
 
 pg.run()
