@@ -1,4 +1,4 @@
-# Costituzione italiana — testo, revisioni, giurisprudenza e attuazione
+# Costituzione italiana — testo, revisioni, giurisprudenza e citazioni
 
 **139 articoli, 21.534 sentenze, 15.969 citazioni nella legislazione. La Costituzione italiana come non l'hai mai vista: interrogabile.**
 
@@ -6,8 +6,7 @@ La Costituzione italiana ha 139 articoli. Alcuni sono famosi (Art. 21, libertà 
 altri dimenticati (Art. 46, collaborazione dei lavoratori). Alcuni vengono invocati in
 continuazione nei processi, altri mai.
 
-Questo repo mette insieme **7 dataset** per rispondere a domande come:
-- *Quali articoli non hanno ancora una legge di attuazione?*
+Questo repo mette insieme **6 dataset** per rispondere a domande come:
 - *L'Art. 3 (uguaglianza) è il più evocato in giudizio: ma quante volte le leggi vengono
   effettivamente dichiarate incostituzionali?* (2.816 accolte, 5.202 respinte)
 - *L'Art. 76 (delega legislativa) è citato 5.744 volte nella legislazione ordinaria.*
@@ -20,10 +19,9 @@ Questo repo mette insieme **7 dataset** per rispondere a domande come:
 | **Testo** | Costituzione.md (139 art. + 18 disposizioni) | 425 commi |
 | **Articoli** | Ogni articolo con heading e partizione | 157 righe |
 | **Revisioni** | Leggi di revisione costituzionale (1948-2023) | 50 leggi |
-| **Giurisprudenza** | Parametri costituzionali evocati in giudizio | 1.101 parametri |
-| **Massime** | Esiti della Corte Costituzionale (1956-2026) | 21.534 sentenze |
+| **Giurisprudenza** | Parametri costituzionali evocati in giudizio | 1.006 parametri |
+| **Massime** | Esiti della Corte Costituzionale (1956-2026) | 266.770 massime |
 | **Citazioni** | La Costituzione nella legislazione ordinaria | 15.969 citazioni |
-| **Indicatori** | 59 indicatori che collegano 21 articoli ai dataset del Lab | 59 mapping |
 
 ## Esempi di domande
 
@@ -31,13 +29,12 @@ Questo repo mette insieme **7 dataset** per rispondere a domande come:
 - **L'Art. 9 (ambiente) è stato invocato in giudizio? Con che esito?**
 - **Quali leggi ordinarie citano l'Art. 117 (competenze Stato-Regioni)?**
 - **Quali articoli hanno il più alto tasso di accoglimento in Corte Costituzionale?**
-- **Quali dataset del Lab misurano l'attuazione dell'Art. 32 (salute)?**
 
 ## Tre modi per accedere ai dati
 
-### 1. Via MCP (clean-query)
+### 1. Via MCP (toolkit)
 
-I 7 dataset sono accessibili via SQL dal server MCP clean-query del Lab.
+I 6 dataset sono accessibili via SQL dal server MCP toolkit del Lab.
 
 ```
 "Quali articoli sono stati accolti più spesso dalla Corte?"
@@ -64,29 +61,29 @@ ORDER BY pct DESC;
 
 Tutti i dataset sono in `data/` nel repo.
 
+## Dashboard Streamlit
+
+Una dashboard interattiva è disponibile nella cartella `dashboard/`:
+
+```bash
+pip install -r dashboard/requirements.txt
+streamlit run dashboard/app.py
+```
+
 ## Approfondimenti
 
 - [Discussion: Come decide la Consulta?](https://github.com/orgs/dataciviclab/discussions/288)
 - [Annuncio: costituzione_master — nuovo dataset pubblicato](https://github.com/dataciviclab/dataciviclab/issues/369)
-
-## Dataset in dettaglio
-
-Ogni dataset ha la sua documentazione con schema e SQL nel resto di questo README.
-Vedi: [dataset.yml](dataset.yml) per la definizione completa dei campi.
-
-## Partecipa
-
-- **Hai una domanda su questi dati?** Apri una [Discussion](https://github.com/orgs/dataciviclab/discussions/new?category=Domanda)
-- **Vuoi contribuire?** Vedi [come contribuire al Lab](https://github.com/dataciviclab/dataciviclab/blob/main/docs/come-contribuire.md)
 
 ## Architettura
 
 ```
 costituzione-italiana/
 ├── Costituzione.md                     ← testo vigente
-├── data/                               ← 7 dataset in parquet + CSV
-├── strumenti/                          ← 7 script di import/export
-├── tests/                              ← 14 test
+├── data/                               ← 6 dataset in parquet + CSV
+├── dashboard/                          ← dashboard Streamlit interattiva
+├── strumenti/                          ← script di import/export
+├── tests/                              ← test
 ├── dataset.yml
 └── pyproject.toml
 ```
@@ -100,7 +97,6 @@ costituzione-italiana/
 | Atti di promovimento | dati.cortecostituzionale.it | CC BY-SA 3.0 |
 | Massime | dati.cortecostituzionale.it | CC BY-SA 3.0 |
 | Citazioni legislative | italia-corpus | — |
-| Dataset Lab | clean_catalog | Varie |
 
 ## Licenza
 
