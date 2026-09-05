@@ -5,12 +5,18 @@ Costituzione Italiana · Dashboard Streamlit
 """
 
 import streamlit as st
+from lab_connectors.branding import apply_branding
 
 st.set_page_config(
     page_title="Costituzione Italiana · Dashboard",
     page_icon="⚖️",
     layout="wide",
     initial_sidebar_state="expanded",
+)
+
+apply_branding(
+    repo_name="costituzione-italiana",
+    repo_url="https://github.com/dataciviclab/costituzione-italiana",
 )
 
 pages = {
@@ -31,10 +37,5 @@ pages = {
 }
 
 pg = st.navigation(pages, position="sidebar")
-
-st.sidebar.markdown("---")
-st.sidebar.caption("Dati: [costituzione-italiana](https://github.com/dataciviclab/costituzione-italiana)")
-st.sidebar.caption("Codice: [dataciviclab/costituzione-italiana](https://github.com/dataciviclab/costituzione-italiana)")
-st.sidebar.caption("[DataCivicLab](https://dataciviclab.org/) · CC BY 4.0")
 
 pg.run()
