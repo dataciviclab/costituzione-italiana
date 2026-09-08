@@ -3,7 +3,7 @@
 import streamlit as st
 import altair as alt
 from lab_connectors.formatters import fmt_num
-from sources import load_mart
+from sources import query, load_mart
 
 st.title("⚖️ Giurisprudenza Costituzionale")
 st.markdown(
@@ -89,13 +89,19 @@ st.markdown("---")
 # ── Distribuzione esiti ─────────────────────────────────────────────
 st.subheader("🎯 Distribuzione complessiva esiti")
 
+df_esiti = query("""
+    SELECT esito, COUNT(*) AS n
+    FROM massime
+    GROUP BY esito ORDER BY n DESC
+""")
+
 col1, col2 = st.columns(2)
 with col1:
     chart_pie = (
         alt.Chart(df_esiti)
         .mark_arc(innerRadius=50)
         .encode(
-            theta=alt.Theta("n_massime:Q"),
+            theta=alt.Theta("n:Q"),
             color=alt.Color(
                 "esito:N",
                 scale=alt.Scale(
@@ -104,7 +110,7 @@ with col1:
                     range=["#dc2626", "#f59e0b", "#9ca3af", "#16a34a", "#6b7280", "#a3a3a3"],
                 ),
             ),
-            tooltip=["esito", alt.Tooltip("n_massime:Q", title="N.", format=",")],
+            tooltip=["esito", alt.Tooltip("n:Q", title="N.", format=",")],
         )
         .properties(height=350)
     )
@@ -112,7 +118,7 @@ with col1:
 
 with col2:
     for _, row in df_esiti.iterrows():
-        st.markdown(f"**{row['esito']}** — {fmt_num(int(row['n_massime']))}")
+        st.markdown(f"**{row['esito']}** — {fmt_num(int(row['n']))}")
 
 st.caption(
     "Fonte: dati.cortecostituzionale.it · CC BY-SA 3.0 · "
