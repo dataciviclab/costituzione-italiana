@@ -1,0 +1,4 @@
+dataciviclab-toolkit @ git+https://github.com/dataciviclab/toolkit.git
+duckdb>=1.5.3
+pyarrow>=14
+PyYAML>=6
