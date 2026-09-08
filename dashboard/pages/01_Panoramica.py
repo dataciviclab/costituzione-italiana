@@ -4,22 +4,16 @@ import streamlit as st
 import altair as alt
 import pandas as pd
 from lab_connectors.formatters import fmt_num
-from sources import query, load_clean_view, load_mart
+from sources import query
 
 st.title("📊 La Costituzione in Numeri")
 
-# ── Carica dati (mart leggeri + clean solo se serve) ────────────────
-load_clean_view("articoli")
-load_clean_view("revisioni")
-load_clean_view("atti_promovimento")
-load_clean_view("massime")
-load_clean_view("citazioni_legislative")
-
 # ── KPI ─────────────────────────────────────────────────────────────
-df = query("SELECT * FROM articoli")
-
-n_articoli = len(df)
-n_modifiche = int(query("SELECT COUNT(*) as n FROM revisioni").iloc[0]["n"])
+n_articoli = int(query("SELECT COUNT(*) AS n FROM articoli").iloc[0]["n"])
+n_modifiche = int(query("SELECT COUNT(*) AS n FROM revisioni").iloc[0]["n"])
+n_giudizi = int(query("SELECT COUNT(*) AS n FROM atti_promovimento").iloc[0]["n"])
+n_citazioni = int(query("SELECT COUNT(*) AS n FROM citazioni_legislative").iloc[0]["n"])
+n_pronunce = int(query("SELECT COUNT(*) AS n FROM pronunce").iloc[0]["n"])
 
 df_esiti = query("""
     SELECT
@@ -31,10 +25,6 @@ df_esiti = query("""
 n_accolte = int(df_esiti.iloc[0]["n_accolte"])
 n_respinte = int(df_esiti.iloc[0]["n_respinte"])
 n_inammissibili = int(df_esiti.iloc[0]["n_inammissibili"])
-
-n_giudizi = int(query("SELECT COUNT(*) as n FROM atti_promovimento").iloc[0]["n"])
-n_citazioni = int(query("SELECT COUNT(*) as n FROM citazioni_legislative").iloc[0]["n"])
-n_pronunce = int(query("SELECT COUNT(*) as n FROM pronunce").iloc[0]["n"])
 
 k1, k2, k3, k4 = st.columns(4)
 k1.metric("📜 Articoli", fmt_num(n_articoli))
@@ -59,7 +49,6 @@ parti_order = [
     "Parte seconda: ordinamento della repubblica",
 ]
 
-# Aggrega da massime per parte (usa parametro_articolo -> articoli.parte)
 df_heat = query("""
     SELECT
         a.parte,

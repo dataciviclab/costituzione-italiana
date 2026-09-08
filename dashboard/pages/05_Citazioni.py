@@ -3,16 +3,13 @@
 import streamlit as st
 import altair as alt
 from lab_connectors.formatters import fmt_num
-from sources import query, load_clean_view
+from sources import query
 
 st.title("📝 Citazioni Legislative")
 st.markdown(
     "Ogni volta che una legge ordinaria cita un articolo della Costituzione, "
     "lo registriamo. Ecco quali articoli sono più richiamati dal legislatore."
 )
-
-# ── Carica clean ────────────────────────────────────────────────────
-load_clean_view("citazioni_legislative")
 
 # ── KPI ─────────────────────────────────────────────────────────────
 df_kpi = query("""

@@ -1,7 +1,7 @@
 """Query SQL — Interroga direttamente la Costituzione con DuckDB."""
 
 import streamlit as st
-from sources import get_connection, load_clean_view, SLUGS
+from sources import get_connection
 
 st.title("🧪 Query SQL")
 st.markdown(
@@ -10,10 +10,6 @@ st.markdown(
     "``atti_promovimento``, ``massime``, ``citazioni_legislative``, "
     "``pronunce``, ``giudici``, ``sentenze_complete``."
 )
-
-# ── Carica tutti i clean (serve per SQL libero) ─────────────────────
-for view_name in SLUGS:
-    load_clean_view(view_name)
 
 # ── Esempi ──────────────────────────────────────────────────────────
 examples = {

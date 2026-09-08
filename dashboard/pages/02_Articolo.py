@@ -3,15 +3,9 @@
 import streamlit as st
 import altair as alt
 from lab_connectors.formatters import fmt_num
-from sources import query, load_clean_view, load_mart
+from sources import query
 
 st.title("📜 Esplora un Articolo")
-
-# ── Carica clean (serve per drill-down) ─────────────────────────────
-load_clean_view("articoli")
-load_clean_view("atti_promovimento")
-load_clean_view("massime")
-load_clean_view("citazioni_legislative")
 
 # ── Selectbox ───────────────────────────────────────────────────────
 df_all = query("SELECT articolo, heading, parte FROM articoli ORDER BY articolo")
@@ -41,8 +35,6 @@ df_cit = query(f"""
     ORDER BY fonte_anno DESC
     LIMIT 20
 """)
-
-# Conteggi
 n_modifiche = int(query(f"""
     SELECT COUNT(*) AS n FROM revisioni, UNNEST(articoli_modificati) AS t(val)
     WHERE val = {articolo_n} AND tipo = 'modifica_costituzione'
@@ -53,8 +45,7 @@ col1, col2 = st.columns([3, 1])
 with col1:
     st.subheader(selected)
     if not df_art.empty:
-        testo = df_art["testo"].iloc[0]
-        st.markdown(f"> {testo}")
+        st.markdown(f"> {df_art['testo'].iloc[0]}")
 
 with col2:
     st.metric("🔧 Revisioni", fmt_num(n_modifiche))
@@ -76,8 +67,7 @@ with col_a:
                 y=alt.Y("esito:N", title="", sort="-x"),
                 x=alt.X("n:Q", title="N. massime"),
                 color=alt.Color(
-                    "esito:N",
-                    legend=None,
+                    "esito:N", legend=None,
                     scale=alt.Scale(
                         domain=["illegittimo", "misto", "inammissibile",
                                 "non_fondata", "manifestamente_infondata", "altro"],
@@ -97,8 +87,7 @@ with col_b:
     if not df_atti.empty:
         st.dataframe(
             df_atti[["anno", "numero_atto", "tipo", "parametro_comma", "n_norme"]],
-            width='stretch',
-            hide_index=True,
+            width='stretch', hide_index=True,
         )
     else:
         st.info("Nessun atto di promovimento trovato.")
