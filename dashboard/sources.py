@@ -1,11 +1,7 @@
 """Fonti dati per la dashboard Costituzione Italiana.
 
-Strategia: DuckDB legge i parquet direttamente via read_parquet(),
-nessun passaggio intermedio DataFrame. Le view vengono créate una volta
-e cachate da Streamlit (@st.cache_resource).
-
-- Mart (pre-aggregati, ~8k righe) → caricati subito
-- Clean → lazy, creati come view DuckDB su parquet files
+In dev: legge da out/data/ (auto-rilevato).
+In prod (Streamlit Cloud): legge da GCS via HTTPS (nessun local_root).
 """
 
 from __future__ import annotations
@@ -21,11 +17,12 @@ from lab_connectors.formatters import fmt_num
 
 logger = logging.getLogger(__name__)
 
-# ── Path locale al repo ────────────────────────────────────────────
+# ── Config ──────────────────────────────────────────────────────────
+PREFIX = "costituzione-italiana/"
+
 _REPO_ROOT = Path(__file__).resolve().parent.parent
 _OUT_DATA = _REPO_ROOT / "out" / "data"
 
-# ── Slug dei dataset (dal toolkit pipeline) ──────────────────────
 SLUGS = {
     "articoli": "articoli_costituzione",
     "revisioni": "revisioni_costituzionali",
@@ -41,14 +38,14 @@ YEARS = [2026]
 
 
 def _clean_path(slug: str, year: int = 2026) -> str | None:
-    """Trova il path del clean parquet per uno slug."""
+    """Trova il path del clean parquet per uno slug (solo locale)."""
     pattern = str(_OUT_DATA / "clean" / slug / str(year) / f"*_{year}_clean.parquet")
     files = glob.glob(pattern)
     return files[0] if files else None
 
 
 def _mart_path(slug: str, table: str, year: int = 2026) -> str | None:
-    """Trova il path del mart parquet per uno slug/table."""
+    """Trova il path del mart parquet (solo locale)."""
     pattern = str(_OUT_DATA / "mart" / slug / str(year) / f"{table}.parquet")
     files = glob.glob(pattern)
     return files[0] if files else None
@@ -56,13 +53,12 @@ def _mart_path(slug: str, table: str, year: int = 2026) -> str | None:
 
 @st.cache_resource(show_spinner=False)
 def get_connection() -> duckdb.DuckDBPyConnection:
-    """DuckDB connection con view sui parquet files direttamente."""
+    """DuckDB connection con view sui parquet files."""
     con = duckdb.connect(database=":memory:")
 
     for view_name, slug in SLUGS.items():
         path = _clean_path(slug)
         if path:
-            # view_name == "sentenze_complete": NaN in esito from LEFT JOIN
             if view_name == "sentenze_complete":
                 con.execute(
                     f"CREATE OR REPLACE VIEW {view_name} AS "
@@ -88,10 +84,14 @@ def query(sql: str):
 
 
 def load_mart(slug_key: str, table: str):
-    """Carica un mart come DataFrame pandas."""
+    """Carica un mart come DataFrame. Locale da out/ o GCS via lab_connectors."""
+    from lab_connectors.duckdb.queries import load_mart_table
+
     slug = SLUGS.get(slug_key, slug_key)
+    # Prova locale prima, poi GCS
     path = _mart_path(slug, table)
-    if not path:
-        raise FileNotFoundError(f"Mart not found: {slug}/{table}")
-    con = duckdb.connect(database=":memory:")
-    return con.execute(f"SELECT * FROM read_parquet('{path}')").fetchdf()
+    if path:
+        con = duckdb.connect(database=":memory:")
+        return con.execute(f"SELECT * FROM read_parquet('{path}')").fetchdf()
+    # Fallback GCS (production)
+    return load_mart_table(slug, table, YEARS[0], prefix=PREFIX)
