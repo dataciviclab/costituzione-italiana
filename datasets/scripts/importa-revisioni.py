@@ -281,6 +281,7 @@ def _ensure_corpus(corpus_dir: Path) -> Path:
         return corpus_dir
     import subprocess, tempfile
     base = Path(tempfile.mkdtemp()) / "italia-corpus"
+    target = base / "Leggi costituzionali"
     logger.info("Scaricamento Leggi costituzionali da GitHub...")
     subprocess.run(["git", "init", str(base)], check=True, capture_output=True)
     subprocess.run(
@@ -296,9 +297,9 @@ def _ensure_corpus(corpus_dir: Path) -> Path:
         ["git", "pull", "--depth", "1", "origin", "main"],
         cwd=str(base), check=True, capture_output=True,
     )
-    if corpus_dir.exists():
-        return corpus_dir
-    logger.error("Directory non trovata: %s", corpus_dir)
+    if target.exists():
+        return target
+    logger.error("Directory non trovata dopo download: %s", target)
     sys.exit(1)
 
 
