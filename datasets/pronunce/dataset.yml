@@ -1,0 +1,66 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "pronunce_corte_costituzionale"
+  source_id: "corte_costituzionale"
+  tags: [costituzione, giurisprudenza, corte_costituzionale, pronunce]
+  category: giurisprudenza
+  years: [2026]
+  time_coverage:
+    start_year: 1956
+    end_year: 2026
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "pronunce_xml"
+      type: "script"
+      args:
+        command: "python3 ../scripts/importa-pronunce.py --output-dir ."
+        output: "pronunce.parquet"
+        filename: "pronunce.parquet"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: auto
+    mode: latest
+  required_columns:
+    - anno_pronuncia
+    - numero_pronuncia
+    - ecli
+    - tipologia_pronuncia
+    - presidente
+    - relatore_pronuncia
+    - data_decisione
+    - data_deposito
+    - collegio
+    - testo
+    - dispositivo
+  validate:
+    min_rows: 10000
+    not_null:
+      - anno_pronuncia
+      - numero_pronuncia
+
+mart:
+  tables:
+    - name: "mart_relatore_per_annuale"
+      sql: "sql/mart/mart_relatore_per_annuale.sql"
+    - name: "mart_collegio_composizione"
+      sql: "sql/mart/mart_collegio_composizione.sql"
+  required_tables:
+    - "mart_relatore_per_annuale"
+    - "mart_collegio_composizione"
+  validate:
+    table_rules:
+      mart_relatore_per_annuale:
+        primary_key: [anno_pronuncia, relatore_pronuncia]
+        min_rows: 500
+      mart_collegio_composizione:
+        min_rows: 10
+
+validation:
+  fail_on_error: true

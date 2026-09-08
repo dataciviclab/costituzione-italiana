@@ -17,9 +17,13 @@ jobs:
         with:
           extra-packages: -e ".[dev]"
         timeout-minutes: 5
-      - run: python3 strumenti/importa-corte-costituzionale.py
+      - run: python3 datasets/scripts/importa-corte-costituzionale.py --output-dir data
         timeout-minutes: 10
-      - run: python3 strumenti/importa-massime.py
+      - run: python3 datasets/scripts/importa-massime.py --output-dir data
+        timeout-minutes: 10
+      - run: python3 datasets/scripts/importa-pronunce.py --output-dir data
+        timeout-minutes: 10
+      - run: python3 datasets/scripts/importa-giudici.py --output-dir data
         timeout-minutes: 10
       - run: |
           if [ -n "$(git status --porcelain data/)" ]; then

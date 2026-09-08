@@ -1,0 +1,54 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "revisioni_costituzionali"
+  source_id: "italia_corpus"
+  tags: [costituzione, revisioni, leggi_costituzionali]
+  category: normativa
+  years: [2026]
+  time_coverage:
+    start_year: 1948
+    end_year: 2023
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "revisioni_corpus"
+      type: "script"
+      args:
+        command: 'python3 ../scripts/importa-revisioni.py --corpus-dir "/home/gabry/dev/dataciviclab-workspace/italia-corpus/Leggi costituzionali" --output-dir .'
+        output: "revisioni.parquet"
+        filename: "revisioni.parquet"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: auto
+    mode: latest
+  required_columns:
+    - urn
+    - codice_redazionale
+    - data
+    - titolo
+    - articoli_modificati
+    - n_articoli
+    - tipo
+  validate:
+    min_rows: 40
+
+mart:
+  tables:
+    - name: "mart_revisioni_per_articolo"
+      sql: "sql/mart/mart_revisioni_per_articolo.sql"
+  required_tables:
+    - "mart_revisioni_per_articolo"
+  validate:
+    table_rules:
+      mart_revisioni_per_articolo:
+        primary_key: [articolo]
+        min_rows: 10
+
+validation:
+  fail_on_error: true

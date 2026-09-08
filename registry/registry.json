@@ -1,0 +1,1203 @@
+{
+  "schema_version": 1,
+  "repo": "costituzione-italiana",
+  "source_repo": "dataciviclab/costituzione-italiana",
+  "updated_at": "2026-09-08",
+  "datasets": [
+    {
+      "slug": "articoli_costituzione",
+      "name": "Articoli Costituzione",
+      "description": "",
+      "source": "",
+      "source_id": "costituzione_italiana",
+      "period": {
+        "start": 2026,
+        "end": 2026
+      },
+      "tags": [
+        "costituzione",
+        "diritti",
+        "ordinamento"
+      ],
+      "category": "normativa",
+      "columns": [
+        {
+          "name": "articolo",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "disposizione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "parte",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "titolo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "sezione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "heading",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "testo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "commi",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/costituzione-italiana/articoli_costituzione/2026/articoli_costituzione_2026_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "incubating",
+      "mart_refs": [
+        "articoli_costituzione__mart_riepilogo_per_parte"
+      ]
+    },
+    {
+      "slug": "atti_promovimento_corte_costituzionale",
+      "name": "Atti Promovimento Corte Costituzionale",
+      "description": "",
+      "source": "",
+      "source_id": "corte_costituzionale",
+      "period": {
+        "start": 1956,
+        "end": 2026
+      },
+      "tags": [
+        "costituzione",
+        "giurisprudenza",
+        "corte_costituzionale",
+        "promovimento"
+      ],
+      "category": "giurisprudenza",
+      "columns": [
+        {
+          "name": "tipo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "",
+          "semantic_type": "year"
+        },
+        {
+          "name": "numero_atto",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "numero_parte",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "parametro_articolo",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "parametro_comma",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "norma_descrizione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "norma_numero",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "norma_articolo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "norme_str",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "n_norme",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/costituzione-italiana/atti_promovimento_corte_costituzionale/2026/atti_promovimento_corte_costituzionale_2026_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "incubating",
+      "mart_refs": [
+        "atti_promovimento_corte_costituzionale__mart_parametri_per_annuale",
+        "atti_promovimento_corte_costituzionale__mart_tipi_giudizio_per_annuale"
+      ]
+    },
+    {
+      "slug": "citazioni_costituzionali",
+      "name": "Citazioni Costituzionali",
+      "description": "",
+      "source": "",
+      "source_id": "italia_corpus",
+      "period": {
+        "start": 2026,
+        "end": 2026
+      },
+      "tags": [
+        "costituzione",
+        "legislazione",
+        "citazioni"
+      ],
+      "category": "normativa",
+      "columns": [
+        {
+          "name": "fonte_filename",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "fonte_collezione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "fonte_anno",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "fonte_tipo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "articolo",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "contesto",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/costituzione-italiana/citazioni_costituzionali/2026/citazioni_costituzionali_2026_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "incubating",
+      "mart_refs": [
+        "citazioni_costituzionali__mart_citazioni_per_articolo"
+      ]
+    },
+    {
+      "slug": "giudici_corte_costituzionale",
+      "name": "Giudici Corte Costituzionale",
+      "description": "",
+      "source": "",
+      "source_id": "corte_costituzionale",
+      "period": {
+        "start": 2026,
+        "end": 2026
+      },
+      "tags": [
+        "costituzione",
+        "giurisprudenza",
+        "corte_costituzionale",
+        "giudici"
+      ],
+      "category": "giurisprudenza",
+      "columns": [
+        {
+          "name": "nome_cognome",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "cognome",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "nome",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "titolo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "eletto_da",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "data_nomina",
+          "type": "DATE",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "data_giuramento",
+          "type": "DATE",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "data_cessazione",
+          "type": "DATE",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "nota_biografica",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/costituzione-italiana/giudici_corte_costituzionale/2026/giudici_corte_costituzionale_2026_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "incubating",
+      "mart_refs": [
+        "giudici_corte_costituzionale__mart_giudici_per_origine"
+      ]
+    },
+    {
+      "slug": "massime_corte_costituzionale",
+      "name": "Massime Corte Costituzionale",
+      "description": "",
+      "source": "",
+      "source_id": "corte_costituzionale",
+      "period": {
+        "start": 1956,
+        "end": 2026
+      },
+      "tags": [
+        "costituzione",
+        "giurisprudenza",
+        "corte_costituzionale",
+        "massime"
+      ],
+      "category": "giurisprudenza",
+      "columns": [
+        {
+          "name": "id_massima",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "anno_pronuncia",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "numero_pronuncia",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "tipologia_pronuncia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "tipologia_giudizio",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "data_decisione",
+          "type": "DATE",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "data_deposito",
+          "type": "DATE",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "esito",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "titolo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "testo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "parametro_codice",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "parametro_descrizione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "parametro_articolo",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "parametro_comma",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "norma_codice",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "norma_descrizione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "norma_numero",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "norma_data",
+          "type": "DATE",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "norma_articolo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "norma_specificazione_articolo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "norma_comma",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "norma_specificazione_comma",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/costituzione-italiana/massime_corte_costituzionale/2026/massime_corte_costituzionale_2026_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "incubating",
+      "mart_refs": [
+        "massime_corte_costituzionale__mart_sentenze_per_annuale",
+        "massime_corte_costituzionale__mart_parametri_per_annuale",
+        "massime_corte_costituzionale__mart_esiti_per_giudizio"
+      ]
+    },
+    {
+      "slug": "pronunce_corte_costituzionale",
+      "name": "Pronunce Corte Costituzionale",
+      "description": "",
+      "source": "",
+      "source_id": "corte_costituzionale",
+      "period": {
+        "start": 1956,
+        "end": 2026
+      },
+      "tags": [
+        "costituzione",
+        "giurisprudenza",
+        "corte_costituzionale",
+        "pronunce"
+      ],
+      "category": "giurisprudenza",
+      "columns": [
+        {
+          "name": "anno_pronuncia",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "numero_pronuncia",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "ecli",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "tipologia_pronuncia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "presidente",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "relatore_pronuncia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "redattore_pronuncia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "data_decisione",
+          "type": "DATE",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "data_deposito",
+          "type": "DATE",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "collegio",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "testo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "dispositivo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/costituzione-italiana/pronunce_corte_costituzionale/2026/pronunce_corte_costituzionale_2026_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "incubating",
+      "mart_refs": [
+        "pronunce_corte_costituzionale__mart_relatore_per_annuale",
+        "pronunce_corte_costituzionale__mart_collegio_composizione"
+      ]
+    },
+    {
+      "slug": "revisioni_costituzionali",
+      "name": "Revisioni Costituzionali",
+      "description": "",
+      "source": "",
+      "source_id": "italia_corpus",
+      "period": {
+        "start": 1948,
+        "end": 2023
+      },
+      "tags": [
+        "costituzione",
+        "revisioni",
+        "leggi_costituzionali"
+      ],
+      "category": "normativa",
+      "columns": [
+        {
+          "name": "urn",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "codice_redazionale",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "data",
+          "type": "DATE",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "titolo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "articoli_modificati",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "n_articoli",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "tipo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/costituzione-italiana/revisioni_costituzionali/2026/revisioni_costituzionali_2026_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "incubating",
+      "mart_refs": [
+        "revisioni_costituzionali__mart_revisioni_per_articolo"
+      ]
+    },
+    {
+      "slug": "sentenze_complete",
+      "name": "Sentenze Complete",
+      "description": "SentenzeComplete: pronunce della Corte Costituzionaliunite con massime (esiti, parametri, norme) e anagrafica giudici (eletto_da). Una riga per pronuncia × massima.\n",
+      "source": "",
+      "source_id": "corte_costituzionale",
+      "period": {
+        "start": 1956,
+        "end": 2026
+      },
+      "tags": [
+        "costituzione",
+        "giurisprudenza",
+        "corte_costituzionale",
+        "sentenze",
+        "compose"
+      ],
+      "category": "giurisprudenza",
+      "columns": [
+        {
+          "name": "anno_pronuncia",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "numero_pronuncia",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "ecli",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "tipologia_pronuncia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "presidente",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "relatore_pronuncia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "redattore_pronuncia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "data_decisione",
+          "type": "DATE",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "data_deposito",
+          "type": "DATE",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "collegio",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "dispositivo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "esito",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "tipologia_giudizio",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "parametro_articolo",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "parametro_comma",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "norma_descrizione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "norma_articolo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "relatore_eletto_da",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "relatore_nomina",
+          "type": "DATE",
+          "role": "dimension",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/costituzione-italiana/sentenze_complete/2026/sentenze_complete_2026_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "incubating",
+      "mart_refs": [
+        "sentenze_complete__mart_relatore_esiti",
+        "sentenze_complete__mart_sentenze_per_articolo"
+      ]
+    }
+  ],
+  "marts": [
+    {
+      "slug": "articoli_costituzione__mart_riepilogo_per_parte",
+      "dataset": "articoli_costituzione",
+      "table": "mart_riepilogo_per_parte",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/costituzione-italiana/articoli_costituzione/2026/mart_riepilogo_per_parte.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "atti_promovimento_corte_costituzionale__mart_parametri_per_annuale",
+      "dataset": "atti_promovimento_corte_costituzionale",
+      "table": "mart_parametri_per_annuale",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/costituzione-italiana/atti_promovimento_corte_costituzionale/2026/mart_parametri_per_annuale.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "atti_promovimento_corte_costituzionale__mart_tipi_giudizio_per_annuale",
+      "dataset": "atti_promovimento_corte_costituzionale",
+      "table": "mart_tipi_giudizio_per_annuale",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/costituzione-italiana/atti_promovimento_corte_costituzionale/2026/mart_tipi_giudizio_per_annuale.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "citazioni_costituzionali__mart_citazioni_per_articolo",
+      "dataset": "citazioni_costituzionali",
+      "table": "mart_citazioni_per_articolo",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/costituzione-italiana/citazioni_costituzionali/2026/mart_citazioni_per_articolo.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "giudici_corte_costituzionale__mart_giudici_per_origine",
+      "dataset": "giudici_corte_costituzionale",
+      "table": "mart_giudici_per_origine",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/costituzione-italiana/giudici_corte_costituzionale/2026/mart_giudici_per_origine.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "massime_corte_costituzionale__mart_esiti_per_giudizio",
+      "dataset": "massime_corte_costituzionale",
+      "table": "mart_esiti_per_giudizio",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/costituzione-italiana/massime_corte_costituzionale/2026/mart_esiti_per_giudizio.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "massime_corte_costituzionale__mart_parametri_per_annuale",
+      "dataset": "massime_corte_costituzionale",
+      "table": "mart_parametri_per_annuale",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/costituzione-italiana/massime_corte_costituzionale/2026/mart_parametri_per_annuale.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "massime_corte_costituzionale__mart_sentenze_per_annuale",
+      "dataset": "massime_corte_costituzionale",
+      "table": "mart_sentenze_per_annuale",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/costituzione-italiana/massime_corte_costituzionale/2026/mart_sentenze_per_annuale.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "pronunce_corte_costituzionale__mart_collegio_composizione",
+      "dataset": "pronunce_corte_costituzionale",
+      "table": "mart_collegio_composizione",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/costituzione-italiana/pronunce_corte_costituzionale/2026/mart_collegio_composizione.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "pronunce_corte_costituzionale__mart_relatore_per_annuale",
+      "dataset": "pronunce_corte_costituzionale",
+      "table": "mart_relatore_per_annuale",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/costituzione-italiana/pronunce_corte_costituzionale/2026/mart_relatore_per_annuale.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "revisioni_costituzionali__mart_revisioni_per_articolo",
+      "dataset": "revisioni_costituzionali",
+      "table": "mart_revisioni_per_articolo",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/costituzione-italiana/revisioni_costituzionali/2026/mart_revisioni_per_articolo.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "sentenze_complete__mart_relatore_esiti",
+      "dataset": "sentenze_complete",
+      "table": "mart_relatore_esiti",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/costituzione-italiana/sentenze_complete/2026/mart_relatore_esiti.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "sentenze_complete__mart_sentenze_per_articolo",
+      "dataset": "sentenze_complete",
+      "table": "mart_sentenze_per_articolo",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/costituzione-italiana/sentenze_complete/2026/mart_sentenze_per_articolo.parquet",
+        "multi_file": false
+      }
+    }
+  ],
+  "signals": [
+    {
+      "id": "compose:sentenze_complete",
+      "source_id": "corte_costituzionale",
+      "status": "ok",
+      "label": "sentenze_complete",
+      "detail": "anno 2026 — mart: si",
+      "action": "",
+      "run": {
+        "run_id": "20260908T092936Z_d00980c9",
+        "year": 2026,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 100,
+          "mart": 100
+        },
+        "output_rows": {
+          "clean": 267635,
+          "mart": 332
+        },
+        "output_bytes": {
+          "raw": 4673844,
+          "clean": 4173345,
+          "mart": 7328
+        },
+        "started_at": "2026-09-08T09:29:36.025848+00:00",
+        "finished_at": "2026-09-08T09:29:40.946385+00:00",
+        "duration_seconds": 4.921
+      }
+    },
+    {
+      "id": "articoli_costituzione",
+      "source_id": "costituzione_italiana",
+      "status": "ok",
+      "label": "articoli_costituzione",
+      "detail": "anno 2026 — mart: si",
+      "action": "",
+      "run": {
+        "run_id": "20260907T225637Z_5ffafa35",
+        "year": 2026,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 100,
+          "mart": 100
+        },
+        "output_rows": {
+          "clean": 157,
+          "mart": 4
+        },
+        "output_bytes": {
+          "raw": 39140,
+          "clean": 25226,
+          "mart": 1267
+        },
+        "started_at": "2026-09-07T22:56:37.741993+00:00",
+        "finished_at": "2026-09-07T22:56:39.091108+00:00",
+        "duration_seconds": 1.349
+      }
+    },
+    {
+      "id": "atti_promovimento_corte_costituzionale",
+      "source_id": "corte_costituzionale",
+      "status": "ok",
+      "label": "atti_promovimento_corte_costituzionale",
+      "detail": "anno 2026 — mart: si",
+      "action": "",
+      "run": {
+        "run_id": "20260907T225908Z_891330d7",
+        "year": 2026,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 100,
+          "mart": 100
+        },
+        "output_rows": {
+          "clean": 1008,
+          "mart": 97
+        },
+        "output_bytes": {
+          "raw": 15065,
+          "clean": 11933,
+          "mart": 2271
+        },
+        "started_at": "2026-09-07T22:59:08.688932+00:00",
+        "finished_at": "2026-09-07T22:59:10.619070+00:00",
+        "duration_seconds": 1.93
+      }
+    },
+    {
+      "id": "citazioni_costituzionali",
+      "source_id": "italia_corpus",
+      "status": "ok",
+      "label": "citazioni_costituzionali",
+      "detail": "anno 2026 — mart: si",
+      "action": "",
+      "run": {
+        "run_id": "20260907T230617Z_df4d5133",
+        "year": 2026,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 100,
+          "mart": 100
+        },
+        "output_rows": {
+          "clean": 18182,
+          "mart": 107
+        },
+        "output_bytes": {
+          "raw": 351094,
+          "clean": 227354,
+          "mart": 1965
+        },
+        "started_at": "2026-09-07T23:06:17.293225+00:00",
+        "finished_at": "2026-09-07T23:06:20.097292+00:00",
+        "duration_seconds": 2.804
+      }
+    },
+    {
+      "id": "giudici_corte_costituzionale",
+      "source_id": "corte_costituzionale",
+      "status": "ok",
+      "label": "giudici_corte_costituzionale",
+      "detail": "anno 2026 — mart: si",
+      "action": "",
+      "run": {
+        "run_id": "20260907T231915Z_de81cbcf",
+        "year": 2026,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 100,
+          "mart": 100
+        },
+        "output_rows": {
+          "clean": 133,
+          "mart": 6
+        },
+        "output_bytes": {
+          "raw": 19658,
+          "clean": 12390,
+          "mart": 932
+        },
+        "started_at": "2026-09-07T23:19:15.697076+00:00",
+        "finished_at": "2026-09-07T23:19:17.085830+00:00",
+        "duration_seconds": 1.389
+      }
+    },
+    {
+      "id": "massime_corte_costituzionale",
+      "source_id": "corte_costituzionale",
+      "status": "ok",
+      "label": "massime_corte_costituzionale",
+      "detail": "anno 2026 — mart: si",
+      "action": "",
+      "run": {
+        "run_id": "20260907T225224Z_3b9478fb",
+        "year": 2026,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 100,
+          "mart": 100
+        },
+        "output_rows": {
+          "clean": 266811,
+          "mart": 6554
+        },
+        "output_bytes": {
+          "raw": 67402426,
+          "clean": 18658633,
+          "mart": 36168
+        },
+        "started_at": "2026-09-07T22:52:24.284146+00:00",
+        "finished_at": "2026-09-07T22:54:06.289671+00:00",
+        "duration_seconds": 102.006
+      }
+    },
+    {
+      "id": "pronunce_corte_costituzionale",
+      "source_id": "corte_costituzionale",
+      "status": "ok",
+      "label": "pronunce_corte_costituzionale",
+      "detail": "anno 2026 — mart: si",
+      "action": "",
+      "run": {
+        "run_id": "20260907T231836Z_cde1b66d",
+        "year": 2026,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 100,
+          "mart": 100
+        },
+        "output_rows": {
+          "clean": 22389,
+          "mart": 1038
+        },
+        "output_bytes": {
+          "raw": 9992988,
+          "clean": 4673844,
+          "mart": 10102
+        },
+        "started_at": "2026-09-07T23:18:36.086118+00:00",
+        "finished_at": "2026-09-07T23:19:04.038749+00:00",
+        "duration_seconds": 27.953
+      }
+    },
+    {
+      "id": "revisioni_costituzionali",
+      "source_id": "italia_corpus",
+      "status": "ok",
+      "label": "revisioni_costituzionali",
+      "detail": "anno 2026 — mart: si",
+      "action": "",
+      "run": {
+        "run_id": "20260907T230321Z_595e89ab",
+        "year": 2026,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 100,
+          "mart": 100
+        },
+        "output_rows": {
+          "clean": 50,
+          "mart": 40
+        },
+        "output_bytes": {
+          "raw": 7399,
+          "clean": 4673,
+          "mart": 585
+        },
+        "started_at": "2026-09-07T23:03:21.219851+00:00",
+        "finished_at": "2026-09-07T23:03:22.628139+00:00",
+        "duration_seconds": 1.408
+      }
+    }
+  ],
+  "codelists": [],
+  "entities": {
+    "entities": {
+      "Tempo": {
+        "entity": "Tempo",
+        "label": "Tempo / data",
+        "datasets": [
+          {
+            "slug": "atti_promovimento_corte_costituzionale",
+            "name": "Atti Promovimento Corte Costituzionale",
+            "column": "anno",
+            "semantic_type": "year"
+          }
+        ],
+        "types": {
+          "year": 1
+        }
+      }
+    },
+    "bridges": []
+  }
+}

@@ -1,0 +1,52 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "citazioni_costituzionali"
+  source_id: "italia_corpus"
+  tags: [costituzione, legislazione, citazioni]
+  category: normativa
+  years: [2026]
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "citazioni_italia_corpus"
+      type: "script"
+      args:
+        command: "python3 ../scripts/importa-citazioni-da-italia-corpus.py --output-dir ."
+        output: "citazioni-legislative.parquet"
+        filename: "citazioni-legislative.parquet"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: auto
+    mode: latest
+  required_columns:
+    - fonte_filename
+    - fonte_collezione
+    - fonte_anno
+    - fonte_tipo
+    - articolo
+    - contesto
+  validate:
+    min_rows: 10000
+    not_null:
+      - articolo
+
+mart:
+  tables:
+    - name: "mart_citazioni_per_articolo"
+      sql: "sql/mart/mart_citazioni_per_articolo.sql"
+  required_tables:
+    - "mart_citazioni_per_articolo"
+  validate:
+    table_rules:
+      mart_citazioni_per_articolo:
+        primary_key: [articolo]
+        min_rows: 50
+
+validation:
+  fail_on_error: true

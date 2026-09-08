@@ -14,7 +14,7 @@ jobs:
         with:
           extra-packages: -e ".[dev]"
         timeout-minutes: 5
-      - run: python3 strumenti/importa-citazioni-da-italia-corpus.py
+      - run: python3 datasets/scripts/importa-citazioni-da-italia-corpus.py --output-dir data
         timeout-minutes: 5
       - run: |
           if [ -n "$(git status --porcelain data/)" ]; then
