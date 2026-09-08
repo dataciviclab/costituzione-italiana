@@ -1,8 +1,8 @@
 """Revisioni — Le 50 leggi di revisione costituzionale dal 1948."""
 
-import streamlit as st
 import altair as alt
 import pandas as pd
+import streamlit as st
 from lab_connectors.formatters import fmt_num
 from sources import query
 

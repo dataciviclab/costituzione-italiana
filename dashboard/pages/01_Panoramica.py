@@ -1,19 +1,28 @@
 """Panoramica — La Costituzione italiana in numeri."""
 
-import streamlit as st
 import altair as alt
 import pandas as pd
+import streamlit as st
 from lab_connectors.formatters import fmt_num
 from sources import query
 
 st.title("📊 La Costituzione in Numeri")
 
 # ── KPI ─────────────────────────────────────────────────────────────
-n_articoli = int(query("SELECT COUNT(*) AS n FROM articoli").iloc[0]["n"])
-n_modifiche = int(query("SELECT COUNT(*) AS n FROM revisioni").iloc[0]["n"])
-n_giudizi = int(query("SELECT COUNT(*) AS n FROM atti_promovimento").iloc[0]["n"])
-n_citazioni = int(query("SELECT COUNT(*) AS n FROM citazioni_legislative").iloc[0]["n"])
-n_pronunce = int(query("SELECT COUNT(*) AS n FROM pronunce").iloc[0]["n"])
+df_kpi = query("""
+    SELECT
+        (SELECT COUNT(*) FROM articoli) AS n_articoli,
+        (SELECT COUNT(*) FROM revisioni) AS n_modifiche,
+        (SELECT COUNT(*) FROM atti_promovimento) AS n_giudizi,
+        (SELECT COUNT(*) FROM citazioni_legislative) AS n_citazioni,
+        (SELECT COUNT(*) FROM pronunce) AS n_pronunce
+""")
+k = df_kpi.iloc[0]
+n_articoli = int(k["n_articoli"])
+n_modifiche = int(k["n_modifiche"])
+n_giudizi = int(k["n_giudizi"])
+n_citazioni = int(k["n_citazioni"])
+n_pronunce = int(k["n_pronunce"])
 
 df_esiti = query("""
     SELECT
