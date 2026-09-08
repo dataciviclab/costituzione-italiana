@@ -2,9 +2,8 @@
 
 import streamlit as st
 import altair as alt
-import pandas as pd
 from lab_connectors.formatters import fmt_num
-from sources import query
+from sources import load_mart
 
 st.title("⚖️ Giurisprudenza Costituzionale")
 st.markdown(
@@ -12,40 +11,40 @@ st.markdown(
     "della Costituzione. Ecco come vengono usati."
 )
 
+# ── Carica mart (pre-aggregati, leggeri) ────────────────────────────
+df_trend = load_mart("massime", "mart_sentenze_per_annuale")
+df_param = load_mart("massime", "mart_parametri_per_annuale")
+df_esiti = load_mart("massime", "mart_esiti_per_giudizio")
+
 # ── KPI ─────────────────────────────────────────────────────────────
-df_kpi = query("""
-    SELECT
-        COUNT(DISTINCT anno_pronuncia || numero_pronuncia) AS n_sentenze,
-        COUNT(*) AS n_massime,
-        SUM(CASE WHEN esito = 'illegittimo' THEN 1 ELSE 0 END) AS n_accolte,
-        SUM(CASE WHEN esito IN ('non_fondata', 'manifestamente_infondata') THEN 1 ELSE 0 END) AS n_respinte
-    FROM massime
-""")
-k = df_kpi.iloc[0]
+df_kpi = df_trend.agg(
+    n_sentenze=("n_sentenze", "sum"),
+    n_massime=("n_massime", "sum"),
+    n_accolte=("n_accolte", "sum"),
+).iloc[0]
+
+n_sentenze = int(df_kpi["n_sentenze"])
+n_massime = int(df_kpi["n_massime"])
+n_accolte = int(df_kpi["n_accolte"])
+n_respinte = n_massime - n_accolte  # approssimazione
 
 k1, k2, k3, k4 = st.columns(4)
-k1.metric("📄 Sentenze", fmt_num(int(k["n_sentenze"])))
-k2.metric("📋 Massime", fmt_num(int(k["n_massime"])))
-k3.metric("✅ Accolti", fmt_num(int(k["n_accolte"])))
-k4.metric("❌ Respinti", fmt_num(int(k["n_respinte"])))
+k1.metric("📄 Sentenze", fmt_num(n_sentenze))
+k2.metric("📋 Massime", fmt_num(n_massime))
+k3.metric("✅ Accolti", fmt_num(n_accolte))
+k4.metric("❌ Respinti", fmt_num(n_respinte))
 
 st.markdown("---")
 
 # ── Trend temporale ─────────────────────────────────────────────────
 st.subheader("📈 Trend annuale sentenze")
 
-df_trend = query("""
-    SELECT
-        anno_pronuncia AS anno,
-        COUNT(DISTINCT anno_pronuncia || numero_pronuncia) AS n_sentenze,
-        SUM(CASE WHEN esito = 'illegittimo' THEN 1 ELSE 0 END) AS n_accolte
-    FROM massime
-    WHERE anno_pronuncia >= 1956
-    GROUP BY 1 ORDER BY 1
-""")
+df_trend_plot = df_trend[["anno_pronuncia", "n_sentenze", "n_accolte"]].copy()
+df_trend_plot.columns = ["anno", "n_sentenze", "n_accolte"]
+df_trend_plot = df_trend_plot[df_trend_plot["anno"] >= 1956]
 
 chart_trend = (
-    alt.Chart(df_trend)
+    alt.Chart(df_trend_plot)
     .mark_line(point=True, strokeWidth=2)
     .encode(
         x=alt.X("anno:O", title="Anno", axis=alt.Axis(labelAngle=-45)),
@@ -65,22 +64,12 @@ st.markdown("---")
 # ── Articoli più evocati ────────────────────────────────────────────
 st.subheader("🏛️ Articoli più evocati come parametro")
 
-df_param = query("""
-    SELECT
-        parametro_articolo AS articolo,
-        COUNT(*) AS n_volte,
-        SUM(CASE WHEN esito = 'illegittimo' THEN 1 ELSE 0 END) AS n_accolte,
-        SUM(CASE WHEN esito = 'legittimo' THEN 1 ELSE 0 END) AS n_respinte
-    FROM massime
-    WHERE parametro_articolo IS NOT NULL AND parametro_articolo != ''
-    GROUP BY 1 ORDER BY n_volte DESC
-    LIMIT 15
-""")
-df_param["pct"] = (df_param["n_accolte"] / df_param["n_volte"] * 100).round(1)
-df_param["heading"] = "Art. " + df_param["articolo"].astype(str)
+df_param_plot = df_param[df_param["n_volte"] >= 50].nlargest(15, "n_volte").copy()
+df_param_plot["heading"] = "Art. " + df_param_plot["parametro_articolo"].astype(str)
+df_param_plot["pct"] = (df_param_plot["n_accolte"] / df_param_plot["n_volte"] * 100).round(1)
 
 chart_param = (
-    alt.Chart(df_param)
+    alt.Chart(df_param_plot)
     .mark_bar(cornerRadiusTopLeft=3, cornerRadiusTopRight=3)
     .encode(
         y=alt.Y("heading:N", title="", sort="-x"),
@@ -106,19 +95,13 @@ st.markdown("---")
 # ── Distribuzione esiti ─────────────────────────────────────────────
 st.subheader("🎯 Distribuzione complessiva esiti")
 
-df_esiti = query("""
-    SELECT esito, COUNT(*) AS n
-    FROM massime
-    GROUP BY esito ORDER BY n DESC
-""")
-
 col1, col2 = st.columns(2)
 with col1:
     chart_pie = (
         alt.Chart(df_esiti)
         .mark_arc(innerRadius=50)
         .encode(
-            theta=alt.Theta("n:Q"),
+            theta=alt.Theta("n_massime:Q"),
             color=alt.Color(
                 "esito:N",
                 scale=alt.Scale(
@@ -127,7 +110,7 @@ with col1:
                     range=["#dc2626", "#f59e0b", "#9ca3af", "#16a34a", "#6b7280", "#a3a3a3"],
                 ),
             ),
-            tooltip=["esito", alt.Tooltip("n:Q", title="N.", format=",")],
+            tooltip=["esito", alt.Tooltip("n_massime:Q", title="N.", format=",")],
         )
         .properties(height=350)
     )
@@ -135,7 +118,7 @@ with col1:
 
 with col2:
     for _, row in df_esiti.iterrows():
-        st.markdown(f"**{row['esito']}** — {fmt_num(int(row['n']))}")
+        st.markdown(f"**{row['esito']}** — {fmt_num(int(row['n_massime']))}")
 
 st.caption(
     "Fonte: dati.cortecostituzionale.it · CC BY-SA 3.0 · "

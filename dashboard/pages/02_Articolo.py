@@ -3,9 +3,15 @@
 import streamlit as st
 import altair as alt
 from lab_connectors.formatters import fmt_num
-from sources import query
+from sources import query, load_clean_view, load_mart
 
 st.title("📜 Esplora un Articolo")
+
+# ── Carica clean (serve per drill-down) ─────────────────────────────
+load_clean_view("articoli")
+load_clean_view("atti_promovimento")
+load_clean_view("massime")
+load_clean_view("citazioni_legislative")
 
 # ── Selectbox ───────────────────────────────────────────────────────
 df_all = query("SELECT articolo, heading, parte FROM articoli ORDER BY articolo")
@@ -16,7 +22,6 @@ articolo_n = options[selected]
 
 # ── Dati articolo ───────────────────────────────────────────────────
 df_art = query(f"SELECT * FROM articoli WHERE articolo = {articolo_n}")
-df_rip = query(f"SELECT * FROM articoli_riepilogo WHERE articolo = {articolo_n}")
 df_atti = query(f"""
     SELECT * FROM atti_promovimento
     WHERE parametro_articolo = {articolo_n}
@@ -37,6 +42,12 @@ df_cit = query(f"""
     LIMIT 20
 """)
 
+# Conteggi
+n_modifiche = int(query(f"""
+    SELECT COUNT(*) AS n FROM revisioni, UNNEST(articoli_modificati) AS t(val)
+    WHERE val = {articolo_n} AND tipo = 'modifica_costituzione'
+""").iloc[0]["n"])
+
 # ── Header ──────────────────────────────────────────────────────────
 col1, col2 = st.columns([3, 1])
 with col1:
@@ -46,11 +57,9 @@ with col1:
         st.markdown(f"> {testo}")
 
 with col2:
-    if not df_rip.empty:
-        row = df_rip.iloc[0]
-        st.metric("🔧 Revisioni", fmt_num(int(row["n_modifiche"])))
-        st.metric("⚖️ Giudizi", fmt_num(int(row["n_giudizi"])))
-        st.metric("📝 Citazioni", fmt_num(int(row["n_citazioni"])))
+    st.metric("🔧 Revisioni", fmt_num(n_modifiche))
+    st.metric("⚖️ Giudizi", fmt_num(len(df_atti)))
+    st.metric("📝 Citazioni", fmt_num(len(df_cit)))
 
 st.markdown("---")
 
@@ -99,10 +108,6 @@ st.markdown("---")
 # ── Citazioni legislative ───────────────────────────────────────────
 st.subheader("📝 Citazioni nella legislazione")
 if not df_cit.empty:
-    st.dataframe(
-        df_cit,
-        width='stretch',
-        hide_index=True,
-    )
+    st.dataframe(df_cit, width='stretch', hide_index=True)
 else:
     st.info("Nessuna citazione trovata per questo articolo.")

@@ -1,15 +1,19 @@
 """Query SQL — Interroga direttamente la Costituzione con DuckDB."""
 
 import streamlit as st
-from sources import get_connection
+from sources import get_connection, load_clean_view, SLUGS
 
 st.title("🧪 Query SQL")
 st.markdown(
     "Interroga direttamente i dataset della Costituzione con DuckDB. "
     "Le tabelle disponibili sono: ``articoli``, ``revisioni``, "
     "``atti_promovimento``, ``massime``, ``citazioni_legislative``, "
-    "``articoli_riepilogo``."
+    "``pronunce``, ``giudici``, ``sentenze_complete``."
 )
+
+# ── Carica tutti i clean (serve per SQL libero) ─────────────────────
+for view_name in SLUGS:
+    load_clean_view(view_name)
 
 # ── Esempi ──────────────────────────────────────────────────────────
 examples = {
@@ -29,6 +33,14 @@ FROM massime
 WHERE parametro_articolo IS NOT NULL AND parametro_articolo != ''
 GROUP BY 1 HAVING COUNT(*) > 50
 ORDER BY pct DESC
+""",
+    "Relatori con più sentenze illegittime": """
+SELECT relatore_pronuncia, n_illegittime, pct_illegittime
+FROM sentenze_complete
+WHERE relatore_pronuncia != ''
+GROUP BY relatore_pronuncia, n_illegittime, pct_illegittime
+HAVING n_illegittime >= 10
+ORDER BY n_illegittime DESC LIMIT 15
 """,
     "Articoli mai modificati": """
 SELECT a.articolo, a.heading

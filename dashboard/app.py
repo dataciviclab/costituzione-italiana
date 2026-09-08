@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Costituzione Italiana · Dashboard Streamlit
-139 articoli, 50 revisioni, 266k massime, 16k citazioni — la Costituzione come non l'hai mai vista.
+139 articoli, 22k pronunce, 266k massime, 16k citazioni — la Costituzione come non l'hai mai vista.
 """
 
 import streamlit as st
@@ -26,6 +26,11 @@ pages = {
     "Esplora": [
         st.Page("pages/02_Articolo.py", title="Articolo", icon="📜"),
         st.Page("pages/03_Giurisprudenza.py", title="Giurisprudenza", icon="⚖️"),
+    ],
+    "Corte Costituzionale": [
+        st.Page("pages/06_Pronunce.py", title="Pronunce", icon="📋"),
+        st.Page("pages/08_Giudici.py", title="Giudici", icon="🏛️"),
+        st.Page("pages/09_Sentenze.py", title="Sentenze Complete", icon="⚡"),
     ],
     "Dati": [
         st.Page("pages/04_Revisioni.py", title="Revisioni", icon="🔧"),

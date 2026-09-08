@@ -4,13 +4,16 @@ import streamlit as st
 import altair as alt
 import pandas as pd
 from lab_connectors.formatters import fmt_num
-from sources import query
+from sources import query, load_clean_view
 
 st.title("🔧 Revisioni Costituzionali")
 st.markdown(
     "50 leggi costituzionali dal 1948 a oggi. "
     "Quali articoli sono stati modificati più volte?"
 )
+
+# ── Carica clean ────────────────────────────────────────────────────
+load_clean_view("revisioni")
 
 # ── Dati ────────────────────────────────────────────────────────────
 df_rev = query("""
