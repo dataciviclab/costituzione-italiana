@@ -1,4 +1,4 @@
-"""Test conversione Wikisource → Markdown."""
+"""Test conversione Wikisource → Markdown e output pipeline."""
 from __future__ import annotations
 
 from pathlib import Path
@@ -9,19 +9,6 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 def test_costituzione_md_esiste():
     """Il file Costituzione.md deve esistere."""
     assert (REPO_ROOT / "Costituzione.md").exists()
-
-
-def test_massime_parquet_esiste():
-    """Il dataset massime.parquet deve esistere con le colonne attese."""
-    import pyarrow.parquet as pq
-    pqt = REPO_ROOT / "data" / "massime.parquet"
-    assert pqt.exists(), f"{pqt} non trovato"
-    table = pq.read_table(pqt)
-    col_names = [f.name for f in table.schema]
-    assert "esito" in col_names
-    assert "parametro_articolo" in col_names
-    assert "norma_numero" in col_names
-    assert table.num_rows > 0
 
 
 def test_costituzione_md_frontmatter():
@@ -43,9 +30,6 @@ def test_costituzione_md_articoli():
 def test_costituzione_md_disposizioni():
     """Devono esserci 18 disposizioni transitorie."""
     content = (REPO_ROOT / "Costituzione.md").read_text("utf-8")
-    n = content.count("### ")
-    # Tolgo le sezioni (che sono anche ###) e conto solo quelle dopo
-    # "Disposizioni transitorie e finali"
     idx = content.find("Disposizioni transitorie e finali")
     if idx > 0:
         resto = content[idx:]
@@ -60,92 +44,43 @@ def test_costituzione_md_senza_ref():
     assert "<br" not in content
 
 
-def test_parquet_articoli():
-    """Il parquet deve avere 139 articoli non-null e Art. 32 queryabile."""
-    import pyarrow.parquet as pq
-
-    t = pq.read_table(str(REPO_ROOT / "data/articoli.parquet"))
-    assert t.num_rows == 157, f"{t.num_rows} righe, attese 157"
-
-    articoli = t.column("articolo")
-    non_null = sum(1 for i in range(len(articoli)) if articoli[i].as_py() is not None)
-    assert non_null == 139, f"{non_null} articoli, attesi 139"
-
-    # Art. 32 deve essere presente
-    mask = [articoli[i].as_py() == 32 for i in range(len(articoli))]
-    assert any(mask), "Art. 32 non trovato nel parquet"
-
-        # Tipo colonna deve essere intero
-    assert str(articoli.type) == "int64", f"Tipo {articoli.type}, atteso int64"
+def test_dataset_yml_per_slug():
+    """Ogni dataset deve avere il proprio dataset.yml."""
+    datasets_dir = REPO_ROOT / "datasets"
+    expected = [
+        "articoli", "revisioni", "atti-promovimento", "massime",
+        "citazioni-legislative", "pronunce", "giudici",
+    ]
+    for slug in expected:
+        cfg = datasets_dir / slug / "dataset.yml"
+        assert cfg.exists(), f"{cfg} mancante"
 
 
-def test_corte_csv_esiste():
-    """Il file atti-promovimento.csv deve esistere e avere almeno 1000 righe."""
-    csv_path = REPO_ROOT / "data" / "atti-promovimento.csv"
-    assert csv_path.exists()
-    lines = csv_path.read_text("utf-8").strip().split("\n")
-    assert len(lines) >= 900, f"{len(lines)} righe, attese almeno 900"
+def test_compose_sentenze_complete():
+    """Il compose sentenze-complete deve avere dataset.yml e SQL."""
+    compose = REPO_ROOT / "compose" / "sentenze-complete"
+    assert (compose / "dataset.yml").exists()
+    assert (compose / "sql" / "clean.sql").exists()
+    assert (compose / "sql" / "mart_relatore_esiti.sql").exists()
+    assert (compose / "sql" / "mart_sentenze_per_articolo.sql").exists()
 
 
-def test_corte_parquet():
-    """Il parquet deve avere ~1100 record e art. 3 tra i parametri."""
-    import pyarrow.parquet as pq
-
-    t = pq.read_table(str(REPO_ROOT / "data" / "atti-promovimento.parquet"))
-    assert t.num_rows >= 900, f"{t.num_rows} righe, attese >= 900"
-
-    # Art. 3 deve essere presente
-    artt = t.column("parametro_articolo")
-    assert any(artt[i].as_py() == 3 for i in range(len(artt))), "Art. 3 non trovato"
-
-    # Deve avere entrambi i tipi
-    tipi = set(t.column("tipo").to_pylist())
-    assert "ordinanza" in tipi
-    assert "ricorso" in tipi
+def test_makefile_esiste():
+    """Il Makefile deve avere i target principali."""
+    mk = REPO_ROOT / "Makefile"
+    assert mk.exists()
+    content = mk.read_text()
+    assert "run-all" in content
+    assert "registry" in content
+    assert "check" in content
 
 
-def test_revisioni_csv_esiste():
-    """Il file revisioni.csv deve esistere e avere 50 righe."""
-    csv_path = REPO_ROOT / "data" / "revisioni.csv"
-    assert csv_path.exists()
-    lines = csv_path.read_text("utf-8").strip().split("\n")
-    assert len(lines) == 51, f"{len(lines)} righe (inclusa header), attese 51"
-
-
-def test_revisioni_parquet():
-    """Il parquet revisioni deve avere 50 leggi e almeno 15 modifiche alla Costituzione."""
-    import pyarrow.parquet as pq
-
-    t = pq.read_table(str(REPO_ROOT / "data" / "revisioni.parquet"))
-    assert t.num_rows == 50, f"{t.num_rows} righe, attese 50"
-
-    tipi = t.column("tipo")
-    n_mod = sum(1 for i in range(len(tipi)) if tipi[i].as_py() == "modifica_costituzione")
-    assert n_mod >= 15, f"{n_mod} modifiche, attese almeno 15"
-
-    # Art. 9 deve essere presente tra le modifiche
-    articoli = t.column("articoli_modificati")
-    art9_presente = False
-    for i in range(len(articoli)):
-        vals = articoli[i].as_py()
-        if vals and 9 in vals:
-            art9_presente = True
-            break
-    assert art9_presente, "Art. 9 non trovato tra le modifiche (legge ambiente 2022)"
-
-
-def test_citazioni_legislative_parquet():
-    """Il dataset citazioni-legislative deve esistere con le colonne attese."""
-    import pyarrow.parquet as pq
-
-    pqt = REPO_ROOT / "data" / "citazioni-legislative.parquet"
-    if not pqt.exists():
-        return  # skip se non ancora generato (dipende da italia-corpus)
-
-    t = pq.read_table(str(pqt))
-    col_names = {f.name for f in t.schema}
-    assert "articolo" in col_names
-    assert "fonte_filename" in col_names
-    assert "contesto" in col_names
-    assert "articolo_testo" in col_names
-    assert t.num_rows > 0
+def test_registry_esiste():
+    """Il registry.json deve esistere e avere i dataset."""
+    import json
+    reg = REPO_ROOT / "registry" / "registry.json"
+    assert reg.exists()
+    data = json.loads(reg.read_text())
+    slugs = {ds["slug"] for ds in data["datasets"]}
+    assert "sentenze_complete" in slugs
+    assert "massime_corte_costituzionale" in slugs

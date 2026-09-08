@@ -45,9 +45,12 @@ FIELDNAMES = [
     "anno_pronuncia",
     "numero_pronuncia",
     "tipologia_pronuncia",
+    "tipologia_giudizio",
     "data_decisione",
     "data_deposito",
     "esito",
+    "titolo",
+    "testo",
     "parametro_codice",
     "parametro_descrizione",
     "parametro_articolo",
@@ -142,6 +145,7 @@ def _parse_massime_xml(xml_data: bytes) -> list[dict]:
         anno = pt.findtext("anno_pronuncia", "")
         numero = pt.findtext("numero_pronuncia", "")
         tipologia = pt.findtext("tipologia_pronuncia", "")
+        tipologia_giudizio = pt.findtext("tipologia_giudizio", "")
         data_dec = pt.findtext("data_decisione", "")
         data_dep = pt.findtext("data_deposito", "")
 
@@ -174,9 +178,12 @@ def _parse_massime_xml(xml_data: bytes) -> list[dict]:
                         "anno_pronuncia": int(anno) if anno.isdigit() else 0,
                         "numero_pronuncia": int(numero) if numero.isdigit() else 0,
                         "tipologia_pronuncia": tipologia,
+                        "tipologia_giudizio": tipologia_giudizio,
                         "data_decisione": data_dec,
                         "data_deposito": data_dep,
                         "esito": esito_pronuncia,
+                        "titolo": massima.findtext("titolo", ""),
+                        "testo": massima.findtext("testo", ""),
                         "parametro_codice": parametro.findtext("codice", ""),
                         "parametro_descrizione": parametro.findtext("descrizione", ""),
                         "parametro_articolo": parametro.findtext("articolo", ""),
@@ -199,9 +206,12 @@ def _parse_massime_xml(xml_data: bytes) -> list[dict]:
                     "anno_pronuncia": int(anno) if anno.isdigit() else 0,
                     "numero_pronuncia": int(numero) if numero.isdigit() else 0,
                     "tipologia_pronuncia": tipologia,
+                    "tipologia_giudizio": tipologia_giudizio,
                     "data_decisione": data_dec,
                     "data_deposito": data_dep,
                     "esito": esito_pronuncia,
+                    "titolo": massima.findtext("titolo", ""),
+                    "testo": massima.findtext("testo", ""),
                     "parametro_codice": "",
                     "parametro_descrizione": "",
                     "parametro_articolo": "",
@@ -231,6 +241,11 @@ def _stampa_metriche(records: list[dict]):
     pronunce = len({(r["anno_pronuncia"], r["numero_pronuncia"]) for r in records})
     massime_univoche = len({r["id_massima"] for r in records})
     con_esito = sum(1 for r in records if r["esito"] != "altro")
+    con_titolo = sum(1 for r in records if r.get("titolo"))
+    con_testo = sum(1 for r in records if r.get("testo"))
+
+    # Distribuzione tipologia_giudizio
+    tipi_giudizio = Counter(r["tipologia_giudizio"] for r in records if r.get("tipologia_giudizio"))
 
     print(f"\n📊 Massime — metriche")
     print(f"{'='*40}")
@@ -238,9 +253,15 @@ def _stampa_metriche(records: list[dict]):
     print(f"  Pronunce coperte:         {pronunce:>8,}")
     print(f"  Massime univoche:         {massime_univoche:>8,}")
     print(f"  Con esito determinato:    {con_esito:>8,} ({con_esito/total*100:.1f}%)")
+    print(f"  Con titolo:               {con_titolo:>8,} ({con_titolo/total*100:.1f}%)")
+    print(f"  Con testo:                {con_testo:>8,} ({con_testo/total*100:.1f}%)")
     print(f"\n  Distribuzione esiti:")
     for k, v in esiti.most_common():
         print(f"    {k:30s} {v:>6,} ({v/total*100:.1f}%)")
+    if tipi_giudizio:
+        print(f"\n  Distribuzione tipologia giudizio:")
+        for k, v in tipi_giudizio.most_common():
+            print(f"    {k:60s} {v:>6,} ({v/total*100:.1f}%)")
 
 
 def main():

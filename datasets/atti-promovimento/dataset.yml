@@ -1,0 +1,67 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "atti_promovimento_corte_costituzionale"
+  source_id: "corte_costituzionale"
+  tags: [costituzione, giurisprudenza, corte_costituzionale, promovimento]
+  category: giurisprudenza
+  years: [2026]
+  time_coverage:
+    start_year: 1956
+    end_year: 2026
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "atti_promovimento_xml"
+      type: "script"
+      args:
+        command: "python3 ../scripts/importa-corte-costituzionale.py --output-dir ."
+        output: "atti-promovimento.parquet"
+        filename: "atti-promovimento.parquet"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: auto
+    mode: latest
+  required_columns:
+    - tipo
+    - anno
+    - numero_atto
+    - numero_parte
+    - parametro_articolo
+    - parametro_comma
+    - norma_descrizione
+    - norma_numero
+    - norma_articolo
+    - norme_str
+    - n_norme
+  validate:
+    min_rows: 1000
+    not_null:
+      - anno
+      - parametro_articolo
+
+mart:
+  tables:
+    - name: "mart_parametri_per_annuale"
+      sql: "sql/mart/mart_parametri_per_annuale.sql"
+    - name: "mart_tipi_giudizio_per_annuale"
+      sql: "sql/mart/mart_tipi_giudizio_per_annuale.sql"
+  required_tables:
+    - "mart_parametri_per_annuale"
+    - "mart_tipi_giudizio_per_annuale"
+  validate:
+    table_rules:
+      mart_parametri_per_annuale:
+        primary_key: [anno, parametro_articolo]
+        min_rows: 50
+      mart_tipi_giudizio_per_annuale:
+        primary_key: [anno, tipo]
+        min_rows: 3
+
+validation:
+  fail_on_error: true

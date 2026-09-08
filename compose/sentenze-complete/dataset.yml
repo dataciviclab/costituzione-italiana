@@ -1,0 +1,84 @@
+# sentenze_complete — pronunce + massime + giudici della Corte Costituzionale
+#
+# Cross-dataset: unisce le pronunce (presidente, relatore, collegio)
+# con le massime (esito, parametro articolo, norma) e l'anagrafica
+# giudici (eletto_da).  Fonte primaria: pronunce; massime e giudici
+# vengono come support.
+
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "sentenze_complete"
+  source_id: "corte_costituzionale"
+  tags: [costituzione, giurisprudenza, corte_costituzionale, sentenze, compose]
+  category: giurisprudenza
+  description: >
+    SentenzeComplete: pronunce della Corte Costituzionaliunite con massime
+    (esiti, parametri, norme) e anagrafica giudici (eletto_da).
+    Una riga per pronuncia × massima.
+  years: [2026]
+  time_coverage:
+    start_year: 1956
+    end_year: 2026
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "pronunce"
+      type: "local_file"
+      args:
+        path: "../../out/data/clean/pronunce_corte_costituzionale/2026/pronunce_corte_costituzionale_2026_clean.parquet"
+        filename: "pronunce.parquet"
+      primary: true
+
+support:
+  - type: dataset
+    name: massime
+    config: ../../datasets/massime/dataset.yml
+    years: [2026]
+  - type: dataset
+    name: giudici
+    config: ../../datasets/giudici/dataset.yml
+    years: [2026]
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: config_only
+    mode: latest
+  required_columns:
+    - anno_pronuncia
+    - numero_pronuncia
+    - ecli
+    - tipologia_pronuncia
+    - presidente
+    - relatore_pronuncia
+    - data_decisione
+    - data_deposito
+    - collegio
+    - esito
+    - parametro_articolo
+    - norma_descrizione
+    - relatore_eletto_da
+  validate:
+    min_rows: 10000
+
+mart:
+  tables:
+    - name: "mart_relatore_esiti"
+      sql: "sql/mart_relatore_esiti.sql"
+    - name: "mart_sentenze_per_articolo"
+      sql: "sql/mart_sentenze_per_articolo.sql"
+  required_tables:
+    - "mart_relatore_esiti"
+    - "mart_sentenze_per_articolo"
+  validate:
+    table_rules:
+      mart_relatore_esiti:
+        min_rows: 50
+      mart_sentenze_per_articolo:
+        min_rows: 20
+
+validation:
+  fail_on_error: true

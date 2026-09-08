@@ -1,0 +1,84 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "massime_corte_costituzionale"
+  source_id: "corte_costituzionale"
+  tags: [costituzione, giurisprudenza, corte_costituzionale, massime]
+  category: giurisprudenza
+  years: [2026]
+  time_coverage:
+    start_year: 1956
+    end_year: 2026
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "massime_xml"
+      type: "script"
+      args:
+        command: "python3 ../scripts/importa-massime.py --output-dir ."
+        output: "massime.parquet"
+        filename: "massime.parquet"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: auto
+    mode: latest
+  required_columns:
+    - id_massima
+    - anno_pronuncia
+    - numero_pronuncia
+    - tipologia_pronuncia
+    - tipologia_giudizio
+    - data_decisione
+    - data_deposito
+    - esito
+    - titolo
+    - testo
+    - parametro_codice
+    - parametro_descrizione
+    - parametro_articolo
+    - parametro_comma
+    - norma_codice
+    - norma_descrizione
+    - norma_numero
+    - norma_data
+    - norma_articolo
+    - norma_specificazione_articolo
+    - norma_comma
+    - norma_specificazione_comma
+  validate:
+    min_rows: 100000
+    not_null:
+      - anno_pronuncia
+      - numero_pronuncia
+
+mart:
+  tables:
+    - name: "mart_sentenze_per_annuale"
+      sql: "sql/mart/mart_sentenze_per_annuale.sql"
+    - name: "mart_parametri_per_annuale"
+      sql: "sql/mart/mart_parametri_per_annuale.sql"
+    - name: "mart_esiti_per_giudizio"
+      sql: "sql/mart/mart_esiti_per_giudizio.sql"
+  required_tables:
+    - "mart_sentenze_per_annuale"
+    - "mart_parametri_per_annuale"
+    - "mart_esiti_per_giudizio"
+  validate:
+    table_rules:
+      mart_sentenze_per_annuale:
+        primary_key: [anno_pronuncia]
+        min_rows: 50
+      mart_parametri_per_annuale:
+        primary_key: [anno_pronuncia, parametro_articolo]
+        min_rows: 500
+      mart_esiti_per_giudizio:
+        primary_key: [tipologia_giudizio]
+        min_rows: 5
+
+validation:
+  fail_on_error: true

@@ -1,0 +1,54 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "giudici_corte_costituzionale"
+  source_id: "corte_costituzionale"
+  tags: [costituzione, giurisprudenza, corte_costituzionale, giudici]
+  category: giurisprudenza
+  years: [2026]
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "anagrafica_giudici"
+      type: "script"
+      args:
+        command: "python3 ../scripts/importa-giudici.py --output-dir ."
+        output: "giudici.parquet"
+        filename: "giudici.parquet"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: auto
+    mode: latest
+  required_columns:
+    - nome_cognome
+    - cognome
+    - nome
+    - titolo
+    - eletto_da
+    - data_nomina
+    - data_giuramento
+    - data_cessazione
+    - nota_biografica
+  validate:
+    min_rows: 100
+    not_null:
+      - nome_cognome
+
+mart:
+  tables:
+    - name: "mart_giudici_per_origine"
+      sql: "sql/mart/mart_giudici_per_origine.sql"
+  required_tables:
+    - "mart_giudici_per_origine"
+  validate:
+    table_rules:
+      mart_giudici_per_origine:
+        min_rows: 3
+
+validation:
+  fail_on_error: true

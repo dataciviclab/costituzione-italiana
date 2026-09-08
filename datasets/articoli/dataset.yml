@@ -1,0 +1,54 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "articoli_costituzione"
+  source_id: "costituzione_italiana"
+  tags: [costituzione, diritti, ordinamento]
+  category: normativa
+  years: [2026]
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "articoli_md"
+      type: "script"
+      args:
+        command: "python3 ../scripts/estrai-articoli.py -i ../../Costituzione.md --output-dir ."
+        output: "articoli.parquet"
+        filename: "articoli.parquet"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: auto
+    mode: latest
+  required_columns:
+    - articolo
+    - disposizione
+    - parte
+    - titolo
+    - sezione
+    - heading
+    - testo
+    - commi
+  validate:
+    min_rows: 130
+    not_null:
+      - heading
+
+mart:
+  tables:
+    - name: "mart_riepilogo_per_parte"
+      sql: "sql/mart/mart_riepilogo_per_parte.sql"
+  required_tables:
+    - "mart_riepilogo_per_parte"
+  validate:
+    table_rules:
+      mart_riepilogo_per_parte:
+        primary_key: [parte]
+        min_rows: 3
+
+validation:
+  fail_on_error: true

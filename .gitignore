@@ -8,7 +8,12 @@ __pycache__/
 venv/
 
 # Output derivati (non committare dati generati)
-# data/articoli.csv e .parquet sono committati perché sono dataset pubblici
+out/
+datasets/*/{raw_dir}/
+datasets/*/*.csv
+datasets/*/*.parquet
+data/*.csv
+data/*.parquet
 
 # IDE
 .vscode/
