@@ -10,8 +10,8 @@ SELECT
     normalize_string(presidente) AS presidente,
     normalize_string(relatore_pronuncia) AS relatore_pronuncia,
     normalize_string(redattore_pronuncia) AS redattore_pronuncia,
-    TRY_CAST(data_decisione AS DATE) AS data_decisione,
-    TRY_CAST(data_deposito AS DATE) AS data_deposito,
+    TRY_CAST(strptime(NULLIF(data_decisione, ''), '%d/%m/%Y') AS DATE) AS data_decisione,
+    TRY_CAST(strptime(NULLIF(data_deposito, ''), '%d/%m/%Y') AS DATE) AS data_deposito,
     normalize_string(collegio) AS collegio,
     normalize_string(testo) AS testo,
     normalize_string(dispositivo) AS dispositivo

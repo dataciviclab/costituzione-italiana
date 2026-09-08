@@ -1,7 +1,7 @@
 """Pronunce — Le pronunce della Corte Costituzionale con presidente, relatore, collegio."""
 
-import streamlit as st
 import altair as alt
+import streamlit as st
 from lab_connectors.formatters import fmt_num
 from sources import load_mart
 

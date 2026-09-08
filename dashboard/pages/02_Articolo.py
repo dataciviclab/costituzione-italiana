@@ -1,7 +1,7 @@
 """Articolo — Drill-down su un singolo articolo della Costituzione."""
 
-import streamlit as st
 import altair as alt
+import streamlit as st
 from lab_connectors.formatters import fmt_num
 from sources import query
 
@@ -25,7 +25,7 @@ df_atti = query(f"""
 df_massime = query(f"""
     SELECT esito, COUNT(*) AS n
     FROM massime
-    WHERE parametro_articolo = '{articolo_n}'
+    WHERE parametro_articolo = {articolo_n}
     GROUP BY esito ORDER BY n DESC
 """)
 df_cit = query(f"""

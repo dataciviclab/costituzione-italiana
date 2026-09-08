@@ -2,15 +2,15 @@
 
 from __future__ import annotations
 
-import glob
 from pathlib import Path
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    import pandas as pd
 
 import duckdb
 import streamlit as st
-
-from lab_connectors.duckdb.queries import load_mart_table
-from lab_connectors.gcs.paths import https_url
-from lab_connectors.formatters import fmt_num
+from lab_connectors.duckdb.queries import _detect_local_root, _resolve_url
 
 PREFIX = "costituzione-italiana/"
 _REPO = Path(__file__).resolve().parent.parent
@@ -30,18 +30,29 @@ SLUGS = {
 YEARS = [2026]
 
 
+def _local_root() -> str | None:
+    """Rileva out/data/ locale, con fallback al path del repo."""
+    detected = _detect_local_root()
+    if detected:
+        return detected
+    local = _REPO / "out" / "data"
+    if local.is_dir():
+        return str(local)
+    return None
+
+
 def _clean_url(slug: str, year: int = 2026) -> str:
-    local = glob.glob(str(_LOCAL / "clean" / slug / str(year) / f"*_{year}_clean.parquet"))
-    if local:
-        return local[0]
-    return https_url("clean", "clean_parquet", prefix=PREFIX, slug=slug, year=year)
+    lr = _local_root()
+    return _resolve_url(
+        "clean", "clean_parquet", prefix=PREFIX, local_root=lr, slug=slug, year=year,
+    )
 
 
 def _mart_url(slug: str, table: str, year: int = 2026) -> str:
-    local = glob.glob(str(_LOCAL / "mart" / slug / str(year) / f"{table}.parquet"))
-    if local:
-        return local[0]
-    return https_url("mart", "mart_parquet", prefix=PREFIX, slug=slug, year=year, table=table)
+    lr = _local_root()
+    return _resolve_url(
+        "mart", "mart_parquet", prefix=PREFIX, local_root=lr, slug=slug, year=year, table=table,
+    )
 
 
 @st.cache_resource(show_spinner=False)
@@ -51,7 +62,10 @@ def get_connection() -> duckdb.DuckDBPyConnection:
         url = _clean_url(slug)
         try:
             if view == "sentenze_complete":
-                con.execute(f"CREATE VIEW {view} AS SELECT *, COALESCE(esito,'') AS esito FROM read_parquet('{url}')")
+                con.execute(
+                    f"CREATE VIEW {view} AS "
+                    f"SELECT *, COALESCE(esito,'') AS esito FROM read_parquet('{url}')"
+                )
             else:
                 con.execute(f"CREATE VIEW {view} AS SELECT * FROM read_parquet('{url}')")
         except Exception:
@@ -59,11 +73,13 @@ def get_connection() -> duckdb.DuckDBPyConnection:
     return con
 
 
-def query(sql: str):
+@st.cache_data(ttl=3600, show_spinner=False)
+def query(sql: str) -> pd.DataFrame:
     return get_connection().execute(sql).fetchdf()
 
 
-def load_mart(slug_key: str, table: str):
+@st.cache_data(ttl=3600, show_spinner=False)
+def load_mart(slug_key: str, table: str) -> pd.DataFrame:
     slug = SLUGS.get(slug_key, slug_key)
     url = _mart_url(slug, table)
     return duckdb.connect().execute(f"SELECT * FROM read_parquet('{url}')").fetchdf()

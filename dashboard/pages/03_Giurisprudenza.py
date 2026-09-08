@@ -1,9 +1,9 @@
 """Giurisprudenza — La Corte Costituzionale e i parametri della Costituzione."""
 
-import streamlit as st
 import altair as alt
+import streamlit as st
 from lab_connectors.formatters import fmt_num
-from sources import query, load_mart
+from sources import load_mart, query
 
 st.title("⚖️ Giurisprudenza Costituzionale")
 st.markdown(

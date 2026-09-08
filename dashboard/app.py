@@ -44,3 +44,12 @@ pages = {
 pg = st.navigation(pages, position="sidebar")
 
 pg.run()
+
+st.sidebar.caption(
+    "Dati: dati.cortecostituzionale.it (CC BY-SA 3.0), "
+    "Wikisource (CC BY-SA 3.0), italia-corpus"
+)
+st.sidebar.caption(
+    "[Repository](https://github.com/dataciviclab/costituzione-italiana) · "
+    "© DataCivicLab · CC BY 4.0"
+)
