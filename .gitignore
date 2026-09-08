@@ -13,6 +13,7 @@ datasets/*/{raw_dir}/
 datasets/*/*.csv
 datasets/*/*.parquet
 data/*.csv
+data/*.parquet
 
 # IDE
 .vscode/
