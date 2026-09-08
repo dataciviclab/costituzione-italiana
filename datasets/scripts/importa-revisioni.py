@@ -275,6 +275,33 @@ def importa_revisioni(corpus_dir: Path) -> list[dict]:
     return revisioni
 
 
+def _ensure_corpus(corpus_dir: Path) -> Path:
+    """Se la directory corpus non esiste, scarica solo Leggi costituzionali da GitHub."""
+    if corpus_dir.exists() and any(corpus_dir.glob("*.md")):
+        return corpus_dir
+    import subprocess, tempfile
+    base = Path(tempfile.mkdtemp()) / "italia-corpus"
+    logger.info("Scaricamento Leggi costituzionali da GitHub...")
+    subprocess.run(["git", "init", str(base)], check=True, capture_output=True)
+    subprocess.run(
+        ["git", "remote", "add", "origin", "https://github.com/dataciviclab/italia-corpus.git"],
+        cwd=str(base), check=True, capture_output=True,
+    )
+    subprocess.run(
+        ["git", "config", "core.sparseCheckout", "true"],
+        cwd=str(base), check=True, capture_output=True,
+    )
+    (base / ".git" / "info" / "sparse-checkout").write_text("Leggi costituzionali/\n")
+    subprocess.run(
+        ["git", "pull", "--depth", "1", "origin", "main"],
+        cwd=str(base), check=True, capture_output=True,
+    )
+    if corpus_dir.exists():
+        return corpus_dir
+    logger.error("Directory non trovata: %s", corpus_dir)
+    sys.exit(1)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--corpus-dir", type=Path, default=DEFAULT_CORPUS)
@@ -283,7 +310,8 @@ def main() -> None:
 
     logging.basicConfig(level=logging.INFO, format="%(levelname)s [%(name)s] %(message)s")
 
-    revisioni = importa_revisioni(args.corpus_dir)
+    corpus_dir = _ensure_corpus(args.corpus_dir)
+    revisioni = importa_revisioni(corpus_dir)
     if not revisioni:
         sys.exit(1)
 
