@@ -10,6 +10,8 @@ venv/
 # Output derivati (non committare dati generati)
 out/
 datasets/*/{raw_dir}/
+datasets/*/*.csv
+datasets/*/*.parquet
 data/*.csv
 
 # IDE
