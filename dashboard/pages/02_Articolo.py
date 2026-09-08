@@ -8,8 +8,11 @@ from sources import query
 st.title("📜 Esplora un Articolo")
 
 # ── Selectbox ───────────────────────────────────────────────────────
-df_all = query("SELECT articolo, heading, parte FROM articoli ORDER BY articolo")
-options = {row["heading"]: row["articolo"] for _, row in df_all.iterrows()}
+df_all = query(
+    "SELECT articolo, heading, parte FROM articoli "
+    "WHERE articolo IS NOT NULL ORDER BY articolo"
+)
+options = {row["heading"]: int(row["articolo"]) for _, row in df_all.iterrows()}
 
 selected = st.selectbox("Scegli un articolo", list(options.keys()))
 articolo_n = options[selected]
