@@ -1,73 +1,16 @@
-"""Query SQL — Interroga direttamente la Costituzione con DuckDB."""
+"""Query SQL — Interroga direttamente i dati."""
 
-import streamlit as st
-from sources import get_connection
+from lab_connectors.duckdb.sql_page import render_sql_query
+from lab_connectors.registry import load_registry_local
 
-st.title("🧪 Query SQL")
-st.markdown(
-    "Interroga direttamente i dataset della Costituzione con DuckDB. "
-    "Le tabelle disponibili sono: ``articoli``, ``revisioni``, "
-    "``atti_promovimento``, ``massime``, ``citazioni_legislative``, "
-    "``pronunce``, ``giudici``, ``sentenze_complete``."
+render_sql_query(
+    registry=load_registry_local("registry/registry.json"),
+    prefix="costituzione-italiana/",
+    default_slug="massime_corte_costituzionale",
+    title="🧪 Query SQL",
+    description=(
+        "Interroga direttamente i dati della Costituzione. "
+        "Scrivi SQL su ``clean_input`` — "
+        "viene risolta automaticamente sui Parquet GCS."
+    ),
 )
-
-# ── Esempi ──────────────────────────────────────────────────────────
-examples = {
-    "Articoli più evocati in giudizio": """
-SELECT parametro_articolo, COUNT(*) AS n
-FROM massime
-WHERE parametro_articolo IS NOT NULL AND parametro_articolo != ''
-GROUP BY 1 ORDER BY n DESC LIMIT 15
-""",
-    "Tasso di accoglimento per articolo": """
-SELECT
-    parametro_articolo,
-    COUNT(*) AS n_totale,
-    SUM(CASE WHEN esito = 'illegittimo' THEN 1 ELSE 0 END) AS n_accolte,
-    ROUND(SUM(CASE WHEN esito = 'illegittimo' THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 1) AS pct
-FROM massime
-WHERE parametro_articolo IS NOT NULL AND parametro_articolo != ''
-GROUP BY 1 HAVING COUNT(*) > 50
-ORDER BY pct DESC
-""",
-    "Relatori con più sentenze illegittime": """
-SELECT relatore_pronuncia, n_illegittime, pct_illegittime
-FROM sentenze_complete
-WHERE relatore_pronuncia != ''
-GROUP BY relatore_pronuncia, n_illegittime, pct_illegittime
-HAVING n_illegittime >= 10
-ORDER BY n_illegittime DESC LIMIT 15
-""",
-    "Articoli mai modificati": """
-SELECT a.articolo, a.heading
-FROM articoli a
-LEFT JOIN (
-    SELECT val AS articolo
-    FROM revisioni, UNNEST(articoli_modificati) AS t(val)
-    WHERE val IS NOT NULL
-) r ON a.articolo = r.articolo
-WHERE r.articolo IS NULL AND a.articolo IS NOT NULL
-ORDER BY a.articolo
-""",
-    "Citazioni per decennio": """
-SELECT (fonte_anno // 10) * 10 AS decennio, COUNT(*) AS n
-FROM citazioni_legislative
-WHERE fonte_anno >= 1948
-GROUP BY 1 ORDER BY 1
-""",
-}
-
-selected_example = st.selectbox("💡 Esempi", list(examples.keys()))
-default_sql = examples[selected_example]
-
-# ── Editor SQL ──────────────────────────────────────────────────────
-sql = st.text_area("SQL", value=default_sql.strip(), height=180)
-
-if st.button("▶️ Esegui", type="primary"):
-    try:
-        con = get_connection()
-        result = con.execute(sql).fetchdf()
-        st.success(f"{len(result)} righe")
-        st.dataframe(result, width='stretch', hide_index=True)
-    except Exception as e:
-        st.error(f"Errore: {e}")
