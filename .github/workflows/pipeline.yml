@@ -15,6 +15,9 @@ on:
         required: false
         default: ""
 
+env:
+  TOOLKIT_ALLOW_SCRIPT_SOURCE: "1"
+
 jobs:
   pipeline:
     if: github.event.pull_request.merged == true || github.event_name != 'pull_request'
