@@ -17,15 +17,9 @@ df_param = load_mart("massime", "mart_parametri_per_annuale")
 df_esiti = load_mart("massime", "mart_esiti_per_giudizio")
 
 # ── KPI ─────────────────────────────────────────────────────────────
-df_kpi = df_trend.agg(
-    n_sentenze=("n_sentenze", "sum"),
-    n_massime=("n_massime", "sum"),
-    n_accolte=("n_accolte", "sum"),
-).iloc[0]
-
-n_sentenze = int(df_kpi["n_sentenze"])
-n_massime = int(df_kpi["n_massime"])
-n_accolte = int(df_kpi["n_accolte"])
+n_sentenze = int(df_trend["n_sentenze"].sum() or 0)
+n_massime = int(df_trend["n_massime"].sum() or 0)
+n_accolte = int(df_trend["n_accolte"].sum() or 0)
 n_respinte = n_massime - n_accolte  # approssimazione
 
 k1, k2, k3, k4 = st.columns(4)

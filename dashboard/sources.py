@@ -62,9 +62,17 @@ def get_connection() -> duckdb.DuckDBPyConnection:
     for view_name, slug in SLUGS.items():
         path = _clean_path(slug)
         if path:
-            con.execute(
-                f"CREATE OR REPLACE VIEW {view_name} AS SELECT * FROM read_parquet('{path}')"
-            )
+            # view_name == "sentenze_complete": NaN in esito from LEFT JOIN
+            if view_name == "sentenze_complete":
+                con.execute(
+                    f"CREATE OR REPLACE VIEW {view_name} AS "
+                    f"SELECT *, COALESCE(esito, '') AS esito "
+                    f"FROM read_parquet('{path}')"
+                )
+            else:
+                con.execute(
+                    f"CREATE OR REPLACE VIEW {view_name} AS SELECT * FROM read_parquet('{path}')"
+                )
             logger.info(f"View {view_name} → {Path(path).name}")
         else:
             con.execute(f"CREATE OR REPLACE VIEW {view_name} AS SELECT NULL AS _missing LIMIT 0")

@@ -120,7 +120,7 @@ df_elenco = query("""
         data_nomina,
         data_giuramento,
         data_cessazione,
-        CASE WHEN data_cessazione IS NULL THEN '✅ In carica' ELSE '🔚 Cessato' AS stato
+        CASE WHEN data_cessazione IS NULL THEN 'In carica' ELSE 'Cessato' AS stato
     FROM giudici
     ORDER BY data_nomina DESC
 """)
