@@ -25,6 +25,7 @@ jobs:
     with:
       repo-slug: "costituzione-italiana"
       run-command: "make run-all"
+      extra-env: "TOOLKIT_ALLOW_SCRIPT_SOURCE=1"
     permissions:
       contents: write
       pull-requests: write
