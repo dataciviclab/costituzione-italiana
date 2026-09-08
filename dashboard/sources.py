@@ -1,27 +1,20 @@
-"""Fonti dati per la dashboard Costituzione Italiana.
-
-In dev: legge da out/data/ (auto-rilevato).
-In prod (Streamlit Cloud): legge da GCS via HTTPS (nessun local_root).
-"""
+"""Fonti dati per la dashboard Costituzione Italiana."""
 
 from __future__ import annotations
 
 import glob
-import logging
 from pathlib import Path
 
 import duckdb
 import streamlit as st
 
+from lab_connectors.duckdb.queries import load_mart_table
+from lab_connectors.gcs.paths import https_url
 from lab_connectors.formatters import fmt_num
 
-logger = logging.getLogger(__name__)
-
-# ── Config ──────────────────────────────────────────────────────────
 PREFIX = "costituzione-italiana/"
-
-_REPO_ROOT = Path(__file__).resolve().parent.parent
-_OUT_DATA = _REPO_ROOT / "out" / "data"
+_REPO = Path(__file__).resolve().parent.parent
+_LOCAL = _REPO / "out" / "data"
 
 SLUGS = {
     "articoli": "articoli_costituzione",
@@ -37,61 +30,40 @@ SLUGS = {
 YEARS = [2026]
 
 
-def _clean_path(slug: str, year: int = 2026) -> str | None:
-    """Trova il path del clean parquet per uno slug (solo locale)."""
-    pattern = str(_OUT_DATA / "clean" / slug / str(year) / f"*_{year}_clean.parquet")
-    files = glob.glob(pattern)
-    return files[0] if files else None
+def _clean_url(slug: str, year: int = 2026) -> str:
+    local = glob.glob(str(_LOCAL / "clean" / slug / str(year) / f"*_{year}_clean.parquet"))
+    if local:
+        return local[0]
+    return https_url("clean", "clean_parquet", prefix=PREFIX, slug=slug, year=year)
 
 
-def _mart_path(slug: str, table: str, year: int = 2026) -> str | None:
-    """Trova il path del mart parquet (solo locale)."""
-    pattern = str(_OUT_DATA / "mart" / slug / str(year) / f"{table}.parquet")
-    files = glob.glob(pattern)
-    return files[0] if files else None
+def _mart_url(slug: str, table: str, year: int = 2026) -> str:
+    local = glob.glob(str(_LOCAL / "mart" / slug / str(year) / f"{table}.parquet"))
+    if local:
+        return local[0]
+    return https_url("mart", "mart_parquet", prefix=PREFIX, slug=slug, year=year, table=table)
 
 
 @st.cache_resource(show_spinner=False)
 def get_connection() -> duckdb.DuckDBPyConnection:
-    """DuckDB connection con view sui parquet files."""
     con = duckdb.connect(database=":memory:")
-
-    for view_name, slug in SLUGS.items():
-        path = _clean_path(slug)
-        if path:
-            if view_name == "sentenze_complete":
-                con.execute(
-                    f"CREATE OR REPLACE VIEW {view_name} AS "
-                    f"SELECT *, COALESCE(esito, '') AS esito "
-                    f"FROM read_parquet('{path}')"
-                )
+    for view, slug in SLUGS.items():
+        url = _clean_url(slug)
+        try:
+            if view == "sentenze_complete":
+                con.execute(f"CREATE VIEW {view} AS SELECT *, COALESCE(esito,'') AS esito FROM read_parquet('{url}')")
             else:
-                con.execute(
-                    f"CREATE OR REPLACE VIEW {view_name} AS SELECT * FROM read_parquet('{path}')"
-                )
-            logger.info(f"View {view_name} → {Path(path).name}")
-        else:
-            con.execute(f"CREATE OR REPLACE VIEW {view_name} AS SELECT NULL AS _missing LIMIT 0")
-            logger.warning(f"View {view_name}: parquet not found")
-
+                con.execute(f"CREATE VIEW {view} AS SELECT * FROM read_parquet('{url}')")
+        except Exception:
+            con.execute(f"CREATE VIEW {view} AS SELECT NULL AS _missing LIMIT 0")
     return con
 
 
 def query(sql: str):
-    """Esegue SQL e restituisce un DataFrame pandas."""
-    con = get_connection()
-    return con.execute(sql).fetchdf()
+    return get_connection().execute(sql).fetchdf()
 
 
 def load_mart(slug_key: str, table: str):
-    """Carica un mart come DataFrame. Locale da out/ o GCS via lab_connectors."""
-    from lab_connectors.duckdb.queries import load_mart_table
-
     slug = SLUGS.get(slug_key, slug_key)
-    # Prova locale prima, poi GCS
-    path = _mart_path(slug, table)
-    if path:
-        con = duckdb.connect(database=":memory:")
-        return con.execute(f"SELECT * FROM read_parquet('{path}')").fetchdf()
-    # Fallback GCS (production)
-    return load_mart_table(slug, table, YEARS[0], prefix=PREFIX)
+    url = _mart_url(slug, table)
+    return duckdb.connect().execute(f"SELECT * FROM read_parquet('{url}')").fetchdf()
