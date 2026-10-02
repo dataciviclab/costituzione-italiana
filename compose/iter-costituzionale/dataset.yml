@@ -1,0 +1,114 @@
+# iter_costituzionale — proposte di revisione della Costituzione in Parlamento
+#
+# Compose: unisce le revisioni costituzionali (clean locale) con i DDL
+# costituzionali di Camera e Senato (open-politica, GCS) e con camera_leggi
+# (URN Normattiva quando disponibile).
+#
+# Domanda: quante proposte arrivano a legge? Chi le porta? Dove si fermano?
+#
+# Tri-tier join (join_tier):
+#   high   — chiave strutturata:
+#            · camera_leggi.urn_normattiva = revisioni.urn
+#            · (data_legge reale ≠ 2100, numero_legge) = revisioni + overlap titoli
+#   medium — titolo normalizzato / containment (famiglia istituzionale)
+#
+# Join_method:
+#   urn_camera | data_numero | titolo | nessuna
+#
+# ha_legge = 1 solo su join_tier=high (i sibling di un testo unificato
+# restano nel clean ma non contano come "diventati legge" nei mart di sintesi).
+#
+# Nota: senato_ddl ha righe multiple per stato/fase → dedup a una riga per atto.
+
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "iter_costituzionale"
+  source_id: "dataciviclab_composite"
+  tags: [costituzione, parlamento, ddl, revisione_costituzionale, compose]
+  category: normativa
+  description: >
+    Iter delle proposte di revisione costituzionale: DDL Camera/Senato
+    (natura costituzionale) joinate alle leggi di revisione promulgate.
+    Join tri-tier: high = chiavi strutturate (URN camera / data+numero reale),
+    medium = titolo. Il clean è DDL-centrico: raw = revisioni locali.
+  years: [2026]
+  time_coverage:
+    start_year: 1947
+    end_year: 2026
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "revisioni"
+      type: "local_file"
+      args:
+        path: "../../out/data/clean/revisioni_costituzionali/2026/revisioni_costituzionali_2026_clean.parquet"
+        filename: "revisioni.parquet"
+      primary: true
+
+support:
+  # open-politica clean su GCS — multi-anno legislature 13–19
+  # NOTE: i path GCS sono popolati dalla CI di open-politica dopo merge.
+  # Il fix locale urn_normattiva (placeholder→NULL, legge.costituzionale)
+  # diventa visibile qui solo dopo merge + run CI open-politica.
+  - type: external
+    name: senato_ddl
+    uri: "https://storage.googleapis.com/dataciviclab-clean/open-politica/senato_ddl/{year}/senato_ddl_{year}_clean.parquet"
+    years: [13, 14, 15, 16, 17, 18, 19]
+  - type: external
+    name: camera_ddl
+    uri: "https://storage.googleapis.com/dataciviclab-clean/open-politica/camera_ddl/{year}/camera_ddl_{year}_clean.parquet"
+    years: [13, 14, 15, 16, 17, 18, 19]
+  - type: external
+    name: camera_leggi
+    uri: "https://storage.googleapis.com/dataciviclab-clean/open-politica/camera_leggi/{year}/camera_leggi_{year}_clean.parquet"
+    years: [13, 14, 15, 16, 17, 18, 19]
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: config_only
+    mode: latest
+  required_columns:
+    - camera_o_senato
+    - atto_num
+    - titolo
+    - data_presentazione
+    - legislatura
+    - stato
+    - natura
+    - join_method
+    - join_quality
+    - join_tier
+  validate:
+    min_rows: 500
+    not_null:
+      - camera_o_senato
+      - atto_num
+      - titolo
+
+mart:
+  tables:
+    - name: "mart_ddl_per_stato"
+      sql: "sql/mart_ddl_per_stato.sql"
+    - name: "mart_funnel_conversione"
+      sql: "sql/mart_funnel_conversione.sql"
+    - name: "mart_revisioni_con_iter"
+      sql: "sql/mart_revisioni_con_iter.sql"
+  required_tables:
+    - "mart_ddl_per_stato"
+    - "mart_funnel_conversione"
+    - "mart_revisioni_con_iter"
+  validate:
+    table_rules:
+      mart_ddl_per_stato:
+        min_rows: 20
+      mart_funnel_conversione:
+        min_rows: 2
+      mart_revisioni_con_iter:
+        min_rows: 1
+
+validation:
+  fail_on_error: true

@@ -12,7 +12,8 @@ DATASETS = \
 
 # ─── Compose (dipendono dai clean dei datasets) ───────────────
 COMPOSE = \
-	compose/sentenze-complete
+	compose/sentenze-complete \
+	compose/iter-costituzionale
 
 # ─── Run singolo dataset ──────────────────────────────────────
 .PHONY: $(addprefix run-,$(notdir $(DATASETS))) $(addprefix run-,$(notdir $(COMPOSE)))
