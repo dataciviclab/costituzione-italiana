@@ -23,13 +23,14 @@ Questo repo mette insieme **7 dataset** (+ 1 compose) per rispondere a domande c
 | **Giudici** | Anagrafica giudici costituzionali (eletto_da, date) | ~200 giudici |
 | **Citazioni** | La Costituzione nella legislazione ordinaria | 15.969 citazioni |
 | **Sentenze Complete** | Compose: pronunce × massime × giudici | 267.635 righe |
+| **Iter Costituzionale** | Compose: DDL Camera/Senato × revisioni (join tri-tier) | ~2.7k proposte |
 
 ## Esempi di domande
 
 - **Quali relatori hanno il tasso più alto di accoglimento?**
 - **Quali articoli vengono citati nelle leggi ma mai portati davanti alla Corte?**
 - **Come varia il tasso di accoglimento per articolo nel tempo?**
-- **Quali giudici hanno relazionato su più sentenze illegittime?**
+- **Quante proposte di revisione costituzionale arrivano a legge?** (`iter_costituzionale`)
 
 ## Quick start
 
@@ -92,7 +93,8 @@ costituzione-italiana/
 │   ├── citazioni-legislative/
 │   └── scripts/                       ← script di import
 ├── compose/
-│   └── sentenze-complete/             ← cross-dataset (pronunce × massime × giudici)
+│   ├── sentenze-complete/             ← cross-dataset (pronunce × massime × giudici)
+│   └── iter-costituzionale/           ← DDL Camera/Senato × revisioni promulgate
 ├── dashboard/                         ← Streamlit
 ├── out/                               ← output pipeline (raw/clean/mart)
 ├── registry/                          ← artifact catalog
