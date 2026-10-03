@@ -165,20 +165,27 @@ ddl AS (
     ) WHERE _rn = 1
 ),
 
--- ── HIGH 1: camera DDL → camera_leggi (ddl_numero o titolo) → revisioni.urn ──
+-- ── HIGH 1: camera DDL → camera_leggi (ddl_numero+legislatura o titolo) → revisioni ──
+-- ddl_numero Camera restarta per legislatura: senza qualifica si possono
+-- collidere DDL di leg diverse (stessa classe del bug LC/PK OP #48/#50).
 ddl_to_leggi AS (
     SELECT
         d.camera_o_senato,
         d.atto_num,
+        d.legislatura AS ddl_legislatura,
         c.urn_normattiva AS urn_camera,
         c.legge_key_full AS legge_key_full_cam,
         c.legge_key_year AS legge_key_year_cam,
         c.ddl_numero AS ddl_numero_cam,
+        c.legislatura AS legge_legislatura,
         c.gu_pubblicazione,
         c.titolo AS legge_titolo,
         CASE
             WHEN d.ddl_numero IS NOT NULL AND c.ddl_numero IS NOT NULL
-             AND d.ddl_numero = c.ddl_numero THEN 'ddl_numero'
+             AND d.ddl_numero = c.ddl_numero
+             AND d.legislatura IS NOT NULL AND c.legislatura IS NOT NULL
+             AND d.legislatura = c.legislatura
+                THEN 'ddl_numero'
             WHEN d.titolo_norm = c.titolo_norm THEN 'titolo_exatto'
             WHEN c.titolo_norm LIKE '%' || substring(d.titolo_norm FROM 1 FOR 60) || '%'
               OR d.titolo_norm LIKE '%' || substring(c.titolo_norm FROM 1 FOR 60) || '%'
@@ -188,8 +195,11 @@ ddl_to_leggi AS (
     FROM ddl d
     JOIN camera_leggi_raw c
       ON (
+            -- join strutturato solo con legislatura allineata
             d.ddl_numero IS NOT NULL AND c.ddl_numero IS NOT NULL
             AND d.ddl_numero = c.ddl_numero
+            AND d.legislatura IS NOT NULL AND c.legislatura IS NOT NULL
+            AND d.legislatura = c.legislatura
          OR d.titolo_norm = c.titolo_norm
          OR c.titolo_norm LIKE '%' || substring(d.titolo_norm FROM 1 FOR 60) || '%'
          OR d.titolo_norm LIKE '%' || substring(c.titolo_norm FROM 1 FOR 60) || '%'
