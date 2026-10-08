@@ -17,7 +17,10 @@ raw:
     - name: "revisioni_corpus"
       type: "script"
       args:
-        command: 'python3 ../scripts/importa-revisioni.py --corpus-dir "/home/gabry/dev/dataciviclab-workspace/italia-corpus/Leggi costituzionali" --output-dir .'
+        # Nessun path locale nel config: lo script usa DEFAULT_CORPUS
+        # (workspace diritto-legge/italia-corpus/collezioni/…) oppure
+        # sparse-clone GitHub se assente (CI).
+        command: "python3 ../scripts/importa-revisioni.py --output-dir ."
         output: "revisioni.parquet"
         filename: "revisioni.parquet"
       primary: true

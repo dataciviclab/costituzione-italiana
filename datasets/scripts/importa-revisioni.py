@@ -24,8 +24,9 @@ from pathlib import Path
 logger = logging.getLogger("importa-revisioni")
 
 DEFAULT_CORPUS = (
-    Path(__file__).resolve().parent.parent.parent
+    Path(__file__).resolve().parent.parent.parent.parent
     / "italia-corpus"
+    / "collezioni"
     / "Leggi costituzionali"
 )
 
@@ -281,7 +282,7 @@ def _ensure_corpus(corpus_dir: Path) -> Path:
         return corpus_dir
     import subprocess, tempfile
     base = Path(tempfile.mkdtemp()) / "italia-corpus"
-    target = base / "Leggi costituzionali"
+    target = base / "collezioni" / "Leggi costituzionali"
     logger.info("Scaricamento Leggi costituzionali da GitHub...")
     subprocess.run(["git", "init", str(base)], check=True, capture_output=True)
     subprocess.run(
@@ -292,7 +293,7 @@ def _ensure_corpus(corpus_dir: Path) -> Path:
         ["git", "config", "core.sparseCheckout", "true"],
         cwd=str(base), check=True, capture_output=True,
     )
-    (base / ".git" / "info" / "sparse-checkout").write_text("Leggi costituzionali/\n")
+    (base / ".git" / "info" / "sparse-checkout").write_text("collezioni/Leggi costituzionali/\n")
     subprocess.run(
         ["git", "pull", "--depth", "1", "origin", "main"],
         cwd=str(base), check=True, capture_output=True,
