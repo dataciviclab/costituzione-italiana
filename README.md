@@ -35,6 +35,8 @@ Questo repo mette insieme **7 dataset** (+ 1 compose) per rispondere a domande c
 ## Quick start
 
 ```bash
+pip install -e ".[dev,pipeline]"
+
 # Esegui tutti i dataset + compose
 make run-all
 
@@ -44,9 +46,14 @@ make run-massime
 # Valid tutti i config
 make check
 
+# Test (contract + policy + dashboard smoke)
+make test
+
 # Genera registry
 make registry-write
 ```
+
+Contribuzione e regole repo: [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Accedere ai dati
 
@@ -96,8 +103,10 @@ costituzione-italiana/
 │   ├── sentenze-complete/             ← cross-dataset (pronunce × massime × giudici)
 │   └── iter-costituzionale/           ← DDL Camera/Senato × revisioni promulgate
 ├── dashboard/                         ← Streamlit
+├── tests/                             ← contract, policy, regression
 ├── out/                               ← output pipeline (raw/clean/mart)
 ├── registry/                          ← artifact catalog
+├── CONTRIBUTING.md
 ├── Makefile
 └── pyproject.toml
 ```

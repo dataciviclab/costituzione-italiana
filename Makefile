@@ -1,76 +1,75 @@
+# CLI toolkit del Lab. Le dipendenze runtime vivono in pyproject.toml:
+#   pip install -e ".[dev,pipeline,dashboard]"
 TOOLKIT = toolkit
+export TOOLKIT_ALLOW_SCRIPT_SOURCE ?= 1
 
-# ─── Datasets (ordine libero, nessuna dipendenza tra loro) ─────
-DATASETS = \
-	datasets/articoli \
-	datasets/revisioni \
-	datasets/atti-promovimento \
-	datasets/massime \
-	datasets/citazioni-legislative \
-	datasets/pronunce \
-	datasets/giudici
+# Scoperta automatica dei config (nessuna lista hardcoded)
+DATASETS := $(shell find datasets -name dataset.yml 2>/dev/null | sort)
+COMPOSE  := $(shell find compose -name dataset.yml 2>/dev/null | sort)
 
-# ─── Compose (dipendono dai clean dei datasets) ───────────────
-COMPOSE = \
-	compose/sentenze-complete \
-	compose/iter-costituzionale
+# --- Dataset singoli ----------------------------------------------------------
 
-# ─── Run singolo dataset ──────────────────────────────────────
-.PHONY: $(addprefix run-,$(notdir $(DATASETS))) $(addprefix run-,$(notdir $(COMPOSE)))
+.PHONY: run
+run:
+	@for f in $(DATASETS); do \
+		echo "=== $$f ==="; \
+		$(TOOLKIT) run --config "$$f" || exit 1; \
+	done
 
-$(addprefix run-,$(notdir $(DATASETS))):
+# Alias documentato in README/CONTRIBUTING: make run-<slug>
+.PHONY: $(addprefix run-,$(notdir $(dir $(DATASETS))))
+$(addprefix run-,$(notdir $(dir $(DATASETS)))):
 	@slug=$@; slug=$${slug#run-}; \
 	config=$$(find datasets -maxdepth 2 -name dataset.yml -path "*/$$slug/*" | head -1); \
 	if [ -z "$$config" ]; then echo "❌ Dataset '$$slug' non trovato"; exit 1; fi; \
 	echo "=== $$slug ==="; \
 	$(TOOLKIT) run --config "$$config"
 
-$(addprefix run-,$(notdir $(COMPOSE))):
+# --- Compose (dopo i dataset) ------------------------------------------------
+
+.PHONY: compose
+compose:
+	@for f in $(COMPOSE); do \
+		echo "=== $$f (compose) ==="; \
+		$(TOOLKIT) run --config "$$f" || exit 1; \
+	done
+
+.PHONY: $(addprefix run-,$(notdir $(dir $(COMPOSE))))
+$(addprefix run-,$(notdir $(dir $(COMPOSE)))):
 	@slug=$@; slug=$${slug#run-}; \
 	config=$$(find compose -maxdepth 2 -name dataset.yml -path "*/$$slug/*" | head -1); \
 	if [ -z "$$config" ]; then echo "❌ Compose '$$slug' non trovato"; exit 1; fi; \
 	echo "=== $$slug (compose) ==="; \
 	$(TOOLKIT) run --config "$$config"
 
-# ─── Run all: datasets prima, compose dopo ────────────────────
-.PHONY: run-datasets run-compose run-all
-run-datasets:
-	@for d in $(DATASETS); do \
-		echo "=== $$d ==="; \
-		$(TOOLKIT) run --config $$d/dataset.yml || exit 1; \
-	done
+# CI post-merge e dispatch: dataset + compose
+.PHONY: run-all
+run-all: run compose
 
-run-compose: run-datasets
-	@for d in $(COMPOSE); do \
-		echo "=== $$d (compose) ==="; \
-		$(TOOLKIT) run --config $$d/dataset.yml || exit 1; \
-	done
+# Alias documentato
+.PHONY: all
+all: run-all test
 
-run-all: run-compose
+# --- Preflight: valida tutti i config ----------------------------------------
 
-# ─── Preflight: valida tutti i config ─────────────────────────
 .PHONY: check
 check:
-	@for f in $$(find datasets compose -name dataset.yml | sort); do \
-		echo "→ $$f"; \
+	@for f in $(DATASETS) $(COMPOSE); do \
+		echo "-> $$f"; \
 		$(TOOLKIT) run preflight --config "$$f" > /dev/null 2>&1 || exit 1; \
 	done
 	@echo "✅ All configs valid"
 
-# ─── Status singolo dataset ───────────────────────────────────
-.PHONY: $(addprefix status-,$(notdir $(DATASETS))) $(addprefix status-,$(notdir $(COMPOSE)))
+# --- Status singolo dataset/compose ------------------------------------------
 
-$(addprefix status-,$(notdir $(DATASETS))):
+.PHONY: $(addprefix status-,$(notdir $(dir $(DATASETS))) $(addprefix status-,$(notdir $(dir $(COMPOSE)))))
+$(addprefix status-,$(notdir $(dir $(DATASETS))) $(addprefix status-,$(notdir $(dir $(COMPOSE))))):
 	@slug=$@; slug=$${slug#status-}; \
-	config=$$(find datasets -maxdepth 2 -name dataset.yml -path "*/$$slug/*" | head -1); \
+	config=$$(find datasets compose -maxdepth 2 -name dataset.yml -path "*/$$slug/*" | head -1); \
 	$(TOOLKIT) inspect summary --config "$$config" 2>/dev/null || echo "Nessuno stato per $$slug"
 
-$(addprefix status-,$(notdir $(COMPOSE))):
-	@slug=$@; slug=$${slug#status-}; \
-	config=$$(find compose -maxdepth 2 -name dataset.yml -path "*/$$slug/*" | head -1); \
-	$(TOOLKIT) inspect summary --config "$$config" 2>/dev/null || echo "Nessuno stato per $$slug"
+# --- Registry (artifact catalogo — dry-run di default) -----------------------
 
-# ─── Registry ─────────────────────────────────────────────────
 .PHONY: registry registry-write
 registry:
 	$(TOOLKIT) registry build --prefix costituzione-italiana
@@ -78,15 +77,30 @@ registry:
 registry-write:
 	$(TOOLKIT) registry build --prefix costituzione-italiana --write
 
-# ─── Pulizia ──────────────────────────────────────────────────
+# --- Test --------------------------------------------------------------------
+
+.PHONY: test
+test:
+	pytest tests/ dashboard/tests/ -v
+
+# --- Dashboard ---------------------------------------------------------------
+# Richiede: pip install -e ".[dashboard]"
+
+.PHONY: dashboard
+dashboard:
+	cd dashboard && streamlit run app.py --server.headless=true
+
+# --- Pulizia -----------------------------------------------------------------
+
 .PHONY: clean clean-runs
 clean:
-	rm -rf out/data/_runs out/data/raw out/data/clean out/data/mart
+	rm -rf out/data/_runs out/data/raw out/data/clean out/data/mart out/data/probe
 
 clean-runs:
 	rm -rf out/data/_runs/
 
-# ─── Help ─────────────────────────────────────────────────────
+# --- Help --------------------------------------------------------------------
+
 .PHONY: help
 help:
 	@grep -E '^[a-zA-Z_-]+:' Makefile | sort
