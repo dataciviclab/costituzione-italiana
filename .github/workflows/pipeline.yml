@@ -15,6 +15,10 @@ on:
         required: false
         default: ""
 
+concurrency:
+  group: costituzione-italiana-pipeline-${{ github.event.pull_request.number || github.ref || 'schedule' }}
+  cancel-in-progress: false
+
 env:
   TOOLKIT_ALLOW_SCRIPT_SOURCE: "1"
 
@@ -24,7 +28,10 @@ jobs:
     uses: dataciviclab/.github/.github/workflows/pipeline-reusable.yml@main
     with:
       repo-slug: "costituzione-italiana"
+      # Sempre run completo: niente detect-paths/run-batch-command (selettività
+      # post-merge non usata — schedule mensile + post-merge riallineano tutto).
       run-command: "make run-all"
+      install-extras: "dev,pipeline"
       extra-env: "TOOLKIT_ALLOW_SCRIPT_SOURCE=1"
     permissions:
       contents: write

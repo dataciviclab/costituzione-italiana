@@ -3,17 +3,23 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "costituzione-italiana"
+name = "dataciviclab-costituzione-italiana"
 version = "0.1.0"
-description = "Costituzione della Repubblica Italiana — testo strutturato in Markdown"
-license = "CC-BY-SA-3.0"
-requires-python = ">=3.11"
+description = "Costituzione italiana — testo, revisioni, Corte Costituzionale e citazioni"
+readme = "README.md"
+requires-python = ">=3.12"
+license = "MIT"
+
+# Runtime per test, script di import e contratti SQL.
+# toolkit è CLI esterno → extra `pipeline`; lab-connectors da toolkit (transitiva).
 dependencies = [
-    "dataciviclab-toolkit @ git+https://github.com/dataciviclab/toolkit.git",
-    "duckdb>=1.5.3",
+    "duckdb>=1.5.3,<2",
     "pyarrow>=14",
     "PyYAML>=6",
 ]
+
+[tool.setuptools]
+packages = []
 
 [project.optional-dependencies]
 dev = [
@@ -21,14 +27,17 @@ dev = [
     "pytest-cov>=5.0",
     "ruff>=0.5",
 ]
+pipeline = [
+    "dataciviclab-toolkit @ git+https://github.com/dataciviclab/toolkit.git",
+]
+# Streamlit Cloud legge dashboard/requirements.txt (export pin dello stesso extra).
 dashboard = [
     "streamlit>=1.61",
-    "plotly>=5.18",
     "altair>=6.2",
     "pandas>=3.0",
     "duckdb>=1.5.3",
     "lab-connectors[duckdb] @ git+https://github.com/dataciviclab/lab-connectors.git",
 ]
 
-[tool.setuptools]
-packages = []
+[project.urls]
+Home = "https://github.com/dataciviclab/costituzione-italiana"

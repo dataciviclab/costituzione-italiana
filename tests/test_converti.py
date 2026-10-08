@@ -33,7 +33,7 @@ def test_costituzione_md_disposizioni():
     idx = content.find("Disposizioni transitorie e finali")
     if idx > 0:
         resto = content[idx:]
-        n_disp = len([l for l in resto.split("\n") if l.startswith("### ")])
+        n_disp = len([line for line in resto.split("\n") if line.startswith("### ")])
         assert n_disp >= 18, f"Trovate {n_disp} disposizioni, attese almeno 18"
 
 
