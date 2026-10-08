@@ -65,23 +65,41 @@ st.markdown("---")
 st.subheader("📍 Stati dell'iter per ramo e legislatura")
 
 df_stati = load_mart("iter_costituzionale", "mart_ddl_per_stato")
-chart_stati = (
-    alt.Chart(df_stati)
-    .mark_bar(cornerRadiusTopLeft=2, cornerRadiusTopRight=2)
-    .encode(
-        x=alt.X("legislatura:O", title="Legislatura"),
-        y=alt.Y("n_proposte:Q", title="DDL"),
-        color=alt.Color("stato:N", title="Stato"),
-        row=alt.Row("camera_o_senato:N", title="Ramo"),
-        tooltip=["camera_o_senato", "legislatura", "stato", "n_proposte", "n_con_legge_high"],
-    )
-    .properties(height=180)
-)
-st.altair_chart(chart_stati, width="stretch")
+
+# Due pannelli affiancati: facet row+stretch rompe la larghezza Streamlit
+col_cam, col_sen = st.columns(2)
+for col, ramo in ((col_cam, "camera"), (col_sen, "senato")):
+    with col:
+        st.caption(ramo.capitalize())
+        df_ramo = df_stati[df_stati["camera_o_senato"] == ramo]
+        if df_ramo.empty:
+            st.caption("Nessun dato")
+            continue
+        chart = (
+            alt.Chart(df_ramo)
+            .mark_bar(cornerRadiusTopLeft=2, cornerRadiusTopRight=2)
+            .encode(
+                x=alt.X("legislatura:O", title="Legislatura", axis=alt.Axis(labelAngle=-45)),
+                y=alt.Y("n_proposte:Q", title="DDL"),
+                color=alt.Color("stato:N", title="Stato"),
+                tooltip=[
+                    "legislatura",
+                    "stato",
+                    "n_proposte",
+                    "n_con_legge_high",
+                    "pct_con_legge_high",
+                ],
+            )
+            .properties(height=260)
+        )
+        st.altair_chart(chart, width="stretch")
 
 with st.expander("Tabella stati"):
     st.dataframe(
-        df_stati.sort_values(["camera_o_senato", "legislatura", "n_proposte"], ascending=[True, True, False]),
+        df_stati.sort_values(
+            ["camera_o_senato", "legislatura", "n_proposte"],
+            ascending=[True, True, False],
+        ),
         width="stretch",
         hide_index=True,
     )
