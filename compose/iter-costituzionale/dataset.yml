@@ -49,21 +49,29 @@ raw:
       primary: true
 
 support:
-  # open-politica clean su GCS — multi-anno legislature 13–19
+  # open-politica clean su GCS — multi-anno legislature 13–19.
+  # Forma dichiarativa repo+slug+layer (toolkit risolve via registry produttore
+  # → stesso template URI GCS di prima, senza hardcoded).
   # NOTE: i path GCS sono popolati dalla CI di open-politica dopo merge.
   # Il fix locale urn_normattiva (placeholder→NULL, legge.costituzionale)
   # diventa visibile qui solo dopo merge + run CI open-politica.
   - type: external
     name: senato_ddl
-    uri: "https://storage.googleapis.com/dataciviclab-clean/open-politica/senato_ddl/{year}/senato_ddl_{year}_clean.parquet"
+    repo: open-politica
+    slug: senato_ddl
+    layer: clean
     years: [13, 14, 15, 16, 17, 18, 19]
   - type: external
     name: camera_ddl
-    uri: "https://storage.googleapis.com/dataciviclab-clean/open-politica/camera_ddl/{year}/camera_ddl_{year}_clean.parquet"
+    repo: open-politica
+    slug: camera_ddl
+    layer: clean
     years: [13, 14, 15, 16, 17, 18, 19]
   - type: external
     name: camera_leggi
-    uri: "https://storage.googleapis.com/dataciviclab-clean/open-politica/camera_leggi/{year}/camera_leggi_{year}_clean.parquet"
+    repo: open-politica
+    slug: camera_leggi
+    layer: clean
     years: [13, 14, 15, 16, 17, 18, 19]
 
 clean:
