@@ -1,4 +1,9 @@
-"""Fonti dati per la dashboard Costituzione Italiana."""
+"""Fonti dati per la dashboard Costituzione Italiana.
+
+Pattern standard Lab (standards/dashboard.md): wrappa
+``lab_connectors.duckdb.queries`` con cache Streamlit. Path resolution
+via registry del repo + ``detect_local_root`` (API pubbliche).
+"""
 
 from __future__ import annotations
 
@@ -10,11 +15,21 @@ if TYPE_CHECKING:
 
 import duckdb
 import streamlit as st
-from lab_connectors.duckdb.queries import _detect_local_root, _resolve_url
+from lab_connectors.duckdb.queries import (
+    detect_local_root,
+)
+from lab_connectors.duckdb.queries import (
+    load_clean as _load_clean,
+)
+from lab_connectors.duckdb.queries import (
+    load_mart_table as _load_mart_table,
+)
+from lab_connectors.gcs.paths import https_url, resolve
+from lab_connectors.registry import load_registry_local
 
+REPO_ROOT = Path(__file__).resolve().parent.parent
 PREFIX = "costituzione-italiana/"
-_REPO = Path(__file__).resolve().parent.parent
-_LOCAL = _REPO / "out" / "data"
+_registry = load_registry_local(str(REPO_ROOT / "registry" / "registry.json"))
 
 SLUGS = {
     "articoli": "articoli_costituzione",
@@ -25,38 +40,38 @@ SLUGS = {
     "pronunce": "pronunce_corte_costituzionale",
     "giudici": "giudici_corte_costituzionale",
     "sentenze_complete": "sentenze_complete",
+    "iter_costituzionale": "iter_costituzionale",
 }
 
 YEARS = [2026]
 
 
 def _local_root() -> str | None:
-    """Rileva out/data/ locale, con fallback al path del repo."""
-    detected = _detect_local_root()
-    if detected:
-        return detected
-    local = _REPO / "out" / "data"
-    if local.is_dir():
-        return str(local)
-    return None
+    """out/data/ del repo se presente, altrimenti GCS."""
+    return detect_local_root(repo_root=REPO_ROOT)
 
 
 def _clean_url(slug: str, year: int = 2026) -> str:
     lr = _local_root()
-    return _resolve_url(
-        "clean", "clean_parquet", prefix=PREFIX, local_root=lr, slug=slug, year=year,
-    )
+    if lr:
+        rel = resolve("clean_parquet", slug=slug, year=str(year))
+        return f"{lr}/clean/{rel}"
+    return https_url("clean", "clean_parquet", prefix=PREFIX, slug=slug, year=year)
 
 
 def _mart_url(slug: str, table: str, year: int = 2026) -> str:
     lr = _local_root()
-    return _resolve_url(
-        "mart", "mart_parquet", prefix=PREFIX, local_root=lr, slug=slug, year=year, table=table,
+    if lr:
+        rel = resolve("mart_parquet", slug=slug, year=str(year), table=table)
+        return f"{lr}/mart/{rel}"
+    return https_url(
+        "mart", "mart_parquet", prefix=PREFIX, slug=slug, year=year, table=table,
     )
 
 
 @st.cache_resource(show_spinner=False)
 def get_connection() -> duckdb.DuckDBPyConnection:
+    """Viste DuckDB su tutti i clean del repo (query multi-dataset)."""
     con = duckdb.connect(database=":memory:")
     for view, slug in SLUGS.items():
         url = _clean_url(slug)
@@ -79,7 +94,31 @@ def query(sql: str) -> pd.DataFrame:
 
 
 @st.cache_data(ttl=3600, show_spinner=False)
-def load_mart(slug_key: str, table: str) -> pd.DataFrame:
+def load_mart(slug_key: str, table: str, year: int = 2026) -> pd.DataFrame:
+    """Mart table via lab-connectors (registry prefix + auto locale/GCS)."""
     slug = SLUGS.get(slug_key, slug_key)
-    url = _mart_url(slug, table)
-    return duckdb.connect().execute(f"SELECT * FROM read_parquet('{url}')").fetchdf()
+    return _load_mart_table(
+        slug,
+        table,
+        year,
+        prefix=PREFIX,
+        local_root=_local_root(),
+        registry=_registry,
+    )
+
+
+@st.cache_data(ttl=3600, show_spinner=False)
+def load_clean(slug_key: str, year: int = 2026) -> pd.DataFrame:
+    slug = SLUGS.get(slug_key, slug_key)
+    return _load_clean(
+        slug,
+        [year],
+        prefix=PREFIX,
+        local_root=_local_root(),
+        registry=_registry,
+    )
+
+
+def get_registry():
+    """Registry del repo (SQL page e tool lab-connectors)."""
+    return _registry
