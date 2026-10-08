@@ -35,6 +35,7 @@ pages = {
     "Dati": [
         st.Page("pages/04_Revisioni.py", title="Revisioni", icon="🔧"),
         st.Page("pages/05_Citazioni.py", title="Citazioni", icon="📝"),
+        st.Page("pages/10_Iter.py", title="Iter Costituzionale", icon="🔁"),
     ],
     "Strumenti": [
         st.Page("pages/07_SQL.py", title="Query SQL", icon="🧪"),
