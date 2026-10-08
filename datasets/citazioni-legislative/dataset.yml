@@ -8,15 +8,16 @@ dataset:
   category: normativa
   years: [2026]
 
+# Parquet derived italia-corpus su GitHub raw (stessa fonte dello script
+# precedente). Toolkit http_file scarica in raw; clean legge auto/latest.
 raw:
   output_policy: overwrite
   sources:
     - name: "citazioni_italia_corpus"
-      type: "script"
+      type: "http_file"
       args:
-        command: "python3 ../scripts/importa-citazioni-da-italia-corpus.py --output-dir ."
-        output: "citazioni-legislative.parquet"
-        filename: "citazioni-legislative.parquet"
+        url: "https://raw.githubusercontent.com/dataciviclab/italia-corpus/main/data/derived/citazioni-costituzionali.parquet"
+        filename: "citazioni-costituzionali.parquet"
       primary: true
 
 clean:
