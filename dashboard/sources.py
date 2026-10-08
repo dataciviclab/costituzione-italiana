@@ -15,15 +15,7 @@ if TYPE_CHECKING:
 
 import duckdb
 import streamlit as st
-from lab_connectors.duckdb.queries import (
-    detect_local_root,
-)
-from lab_connectors.duckdb.queries import (
-    load_clean as _load_clean,
-)
-from lab_connectors.duckdb.queries import (
-    load_mart_table as _load_mart_table,
-)
+from lab_connectors.duckdb import queries as lc_queries
 from lab_connectors.gcs.paths import https_url, resolve
 from lab_connectors.registry import load_registry_local
 
@@ -48,7 +40,7 @@ YEARS = [2026]
 
 def _local_root() -> str | None:
     """out/data/ del repo se presente, altrimenti GCS."""
-    return detect_local_root(repo_root=REPO_ROOT)
+    return lc_queries.detect_local_root(repo_root=REPO_ROOT)
 
 
 def _clean_url(slug: str, year: int = 2026) -> str:
@@ -57,16 +49,6 @@ def _clean_url(slug: str, year: int = 2026) -> str:
         rel = resolve("clean_parquet", slug=slug, year=str(year))
         return f"{lr}/clean/{rel}"
     return https_url("clean", "clean_parquet", prefix=PREFIX, slug=slug, year=year)
-
-
-def _mart_url(slug: str, table: str, year: int = 2026) -> str:
-    lr = _local_root()
-    if lr:
-        rel = resolve("mart_parquet", slug=slug, year=str(year), table=table)
-        return f"{lr}/mart/{rel}"
-    return https_url(
-        "mart", "mart_parquet", prefix=PREFIX, slug=slug, year=year, table=table,
-    )
 
 
 @st.cache_resource(show_spinner=False)
@@ -97,7 +79,7 @@ def query(sql: str) -> pd.DataFrame:
 def load_mart(slug_key: str, table: str, year: int = 2026) -> pd.DataFrame:
     """Mart table via lab-connectors (registry prefix + auto locale/GCS)."""
     slug = SLUGS.get(slug_key, slug_key)
-    return _load_mart_table(
+    return lc_queries.load_mart_table(
         slug,
         table,
         year,
@@ -110,7 +92,7 @@ def load_mart(slug_key: str, table: str, year: int = 2026) -> pd.DataFrame:
 @st.cache_data(ttl=3600, show_spinner=False)
 def load_clean(slug_key: str, year: int = 2026) -> pd.DataFrame:
     slug = SLUGS.get(slug_key, slug_key)
-    return _load_clean(
+    return lc_queries.load_clean(
         slug,
         [year],
         prefix=PREFIX,
