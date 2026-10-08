@@ -36,8 +36,14 @@ def test_config_schema_minimo():
     assert "camera_ddl" in support
     assert "camera_leggi" in support
     for name in ("senato_ddl", "camera_ddl", "camera_leggi"):
-        assert support[name]["type"] == "external"
-        assert "{year}" in support[name]["uri"]
+        entry = support[name]
+        assert entry["type"] == "external"
+        # Forma dichiarativa registry (no URI GCS hardcoded nel config)
+        assert entry["repo"] == "open-politica"
+        assert entry["slug"] == name
+        assert entry["layer"] == "clean"
+        assert entry["years"] == [13, 14, 15, 16, 17, 18, 19]
+        assert "uri" not in entry
 
     tables = [t["name"] for t in cfg["mart"]["tables"]]
     assert "mart_ddl_per_stato" in tables
@@ -57,6 +63,26 @@ def test_sql_usa_placeholder_support():
     assert "{support.camera_leggi.outputs}" in clean
     assert "storage.googleapis.com" not in clean
     assert "../../open-politica" not in clean
+
+
+def test_support_external_resolves_from_registry():
+    """contract: repo+slug+layer risolvono allo stesso template URI GCS di prima."""
+    from lab_connectors.gcs.paths import https_url
+    from lab_connectors.registry.client import load_registry_local
+
+    workspace_root = REPO_ROOT.parents[1]
+    reg_path = workspace_root / "diritto-legge" / "open-politica" / "registry" / "registry.json"
+    if not reg_path.is_file():
+        return
+    reg = load_registry_local(reg_path)
+    for slug in ("senato_ddl", "camera_ddl", "camera_leggi"):
+        prefix = reg.prefix_for_slug(slug)
+        uri = https_url("clean", "clean_parquet", slug=slug, prefix=prefix, year="{year}")
+        expected = (
+            "https://storage.googleapis.com/dataciviclab-clean/"
+            f"open-politica/{slug}/{{year}}/{slug}_{{year}}_clean.parquet"
+        )
+        assert uri == expected, f"{slug}: {uri} != {expected}"
 
 
 def test_clean_filtra_costituzionali():
