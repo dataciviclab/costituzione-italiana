@@ -61,6 +61,8 @@ clean:
     - parametro_articolo
     - norma_descrizione
     - relatore_eletto_da
+    - relatore_giudice
+    - presidente_giudice
   validate:
     min_rows: 10000
 
