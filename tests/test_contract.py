@@ -150,7 +150,12 @@ def test_dataset_paths_are_relative_and_posix(dataset_configs: list[Path]) -> No
 
 @pytest.mark.contract
 def test_no_absolute_host_paths_in_script_commands(dataset_configs: list[Path]) -> None:
-    """Regression: PR #23 — niente path host assoluto nei command script raw."""
+    """Regression: PR #23 — niente path host da sviluppo locale nei command.
+
+    Marcatori stretti (home dir / drive Windows), non "qualsiasi slash":
+    evita falsi positivi su URL, `/dev/null`, redirect e path di sistema.
+    """
+    host_markers = ("/home/", "/Users/", "~/")
     for cfg in dataset_configs:
         dataset = yaml.safe_load(cfg.read_text(encoding="utf-8"))
         rel = str(cfg.relative_to(REPO_ROOT))
@@ -159,9 +164,12 @@ def test_no_absolute_host_paths_in_script_commands(dataset_configs: list[Path]) 
             command = args.get("command")
             if not command:
                 continue
-            assert "/home/" not in command, f"{rel}: command con path host assoluto: {command}"
-            assert not re.search(r"(^|\s)/[A-Za-z0-9_./-]+", command), (
-                f"{rel}: command con path POSIX assoluto: {command}"
+            for marker in host_markers:
+                assert marker not in command, (
+                    f"{rel}: command con path host '{marker}': {command}"
+                )
+            assert not re.search(r"[A-Za-z]:[\\/]", command), (
+                f"{rel}: command con path Windows: {command}"
             )
 
 

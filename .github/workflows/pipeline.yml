@@ -28,8 +28,9 @@ jobs:
     uses: dataciviclab/.github/.github/workflows/pipeline-reusable.yml@main
     with:
       repo-slug: "costituzione-italiana"
+      # Sempre run completo: niente detect-paths/run-batch-command (selettività
+      # post-merge non usata — schedule mensile + post-merge riallineano tutto).
       run-command: "make run-all"
-      detect-paths: "datasets compose"
       install-extras: "dev,pipeline"
       extra-env: "TOOLKIT_ALLOW_SCRIPT_SOURCE=1"
     permissions:
