@@ -14,7 +14,7 @@ st.markdown(
 # ── KPI ─────────────────────────────────────────────────────────────
 df_kpi = query("""
     SELECT
-        COUNT(*) AS n_citazioni,
+        SUM(peso) AS n_citazioni,
         COUNT(DISTINCT articolo) AS n_articoli,
         COUNT(DISTINCT fonte_filename) AS n_fonti,
         MIN(fonte_anno) AS anno_min,
@@ -35,7 +35,7 @@ st.markdown("---")
 st.subheader("🏆 Articoli più citati")
 
 df_top = query("""
-    SELECT articolo, COUNT(*) AS n_citazioni
+    SELECT articolo, SUM(peso) AS n_citazioni
     FROM citazioni_legislative
     GROUP BY articolo ORDER BY n_citazioni DESC
     LIMIT 20
@@ -60,7 +60,7 @@ st.markdown("---")
 st.subheader("📈 Citazioni nel tempo")
 
 df_trend = query("""
-    SELECT fonte_anno AS anno, COUNT(*) AS n_citazioni
+    SELECT fonte_anno AS anno, SUM(peso) AS n_citazioni
     FROM citazioni_legislative
     WHERE fonte_anno >= 1948
     GROUP BY 1 ORDER BY 1
@@ -84,7 +84,7 @@ st.markdown("---")
 st.subheader("📂 Citazioni per tipo di fonte")
 
 df_tipo = query("""
-    SELECT fonte_tipo, COUNT(*) AS n
+    SELECT fonte_tipo, SUM(peso) AS n
     FROM citazioni_legislative
     GROUP BY 1 ORDER BY n DESC
 """)

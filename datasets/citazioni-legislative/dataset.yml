@@ -8,16 +8,17 @@ dataset:
   category: normativa
   years: [2026]
 
-# Parquet derived italia-corpus su GitHub raw (stessa fonte dello script
-# precedente). Toolkit http_file scarica in raw; clean legge auto/latest.
+# Clean pubblicata di italia-corpus `riferimenti`: le citazioni costituzionali
+# sono archi con `origine='costituzione'` e `bersaglio_id='costituzione:art:N'`
+# (fold 2026-11). Niente più derived da GitHub raw: un solo canale (GCS).
 raw:
   output_policy: overwrite
   sources:
-    - name: "citazioni_italia_corpus"
+    - name: "citazioni_riferimenti"
       type: "http_file"
       args:
-        url: "https://raw.githubusercontent.com/dataciviclab/italia-corpus/main/data/derived/citazioni-costituzionali.parquet"
-        filename: "citazioni-costituzionali.parquet"
+        url: "https://storage.googleapis.com/dataciviclab-clean/italia-corpus/riferimenti/2026/riferimenti_2026_clean.parquet"
+        filename: "riferimenti_2026_clean.parquet"
       primary: true
 
 clean:
@@ -32,8 +33,9 @@ clean:
     - fonte_tipo
     - articolo
     - contesto
+    - peso
   validate:
-    min_rows: 10000
+    min_rows: 5000
     not_null:
       - articolo
 
