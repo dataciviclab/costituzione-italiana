@@ -86,7 +86,8 @@ Costituzione.md           ← testo sorgente (Wikisource)
 
 `massime` ha una riga per massima: `parametri` e `norme` sono due liste
 indipendenti, conservate in JSON nel clean ed esplose nei mart
-`mart_massime_parametri` e `mart_massime_norme`.
+`mart_massime_parametri` e `mart_massime_norme`. Grain, chiavi e contratti
+per i consumer: [docs/dati.md](docs/dati.md).
 
 ## Fonti e limiti
 
