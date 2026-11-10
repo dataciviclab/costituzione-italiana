@@ -41,6 +41,9 @@ clean:
     - tipo
   validate:
     min_rows: 40
+    not_null:
+      - urn
+    primary_key: [urn]
 
 mart:
   tables:

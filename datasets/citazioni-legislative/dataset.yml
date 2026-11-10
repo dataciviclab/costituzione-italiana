@@ -37,7 +37,9 @@ clean:
   validate:
     min_rows: 5000
     not_null:
+      - fonte_filename
       - articolo
+    primary_key: [fonte_filename, articolo]
 
 mart:
   tables:

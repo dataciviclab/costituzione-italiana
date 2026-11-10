@@ -38,6 +38,7 @@ clean:
     min_rows: 100
     not_null:
       - nome_cognome
+    primary_key: [nome_cognome]
 
 mart:
   tables:

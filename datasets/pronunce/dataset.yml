@@ -45,6 +45,7 @@ clean:
     not_null:
       - anno_pronuncia
       - numero_pronuncia
+    primary_key: [anno_pronuncia, numero_pronuncia]
 
 mart:
   tables:

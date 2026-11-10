@@ -96,6 +96,8 @@ clean:
       - camera_o_senato
       - atto_num
       - titolo
+    # un atto può comparire su più revisioni (join tri-tier): la chiave è la coppia
+    primary_key: [camera_o_senato, atto_num, rev_urn]
 
 mart:
   tables:
