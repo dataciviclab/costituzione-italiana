@@ -6,6 +6,9 @@ dataset:
   source_id: "costituzione_italiana"
   tags: [costituzione, diritti, ordinamento]
   category: normativa
+  description: >
+    Testo vigente della Costituzione: 139 articoli e 18 disposizioni
+    transitorie, con heading, parte, titolo, sezione, commi e testo.
   years: [2026]
 
 raw:

@@ -6,6 +6,9 @@ dataset:
   source_id: "corte_costituzionale"
   tags: [costituzione, giurisprudenza, corte_costituzionale, pronunce]
   category: giurisprudenza
+  description: >
+    Pronunce della Corte costituzionale dal 1956: presidente, relatore,
+    collegio, epigrafe, testo integrale (quando disponibile) e dispositivo.
   years: [2026]
   time_coverage:
     start_year: 1956

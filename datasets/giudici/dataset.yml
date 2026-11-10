@@ -6,6 +6,10 @@ dataset:
   source_id: "corte_costituzionale"
   tags: [costituzione, giurisprudenza, corte_costituzionale, giudici]
   category: giurisprudenza
+  description: >
+    Anagrafica dei giudici costituzionali: elezione, date di nomina,
+    giuramento e cessazione, nota biografica. Include le voci collettive
+    presenti nell'anagrafica ufficiale.
   years: [2026]
 
 raw:

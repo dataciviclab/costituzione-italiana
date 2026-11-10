@@ -6,6 +6,9 @@ dataset:
   source_id: "italia_corpus"
   tags: [costituzione, revisioni, leggi_costituzionali]
   category: normativa
+  description: >
+    Leggi di revisione costituzionale dal 1948: URN, data, titolo, articoli
+    modificati e tipo (modifica, statuto speciale, altra legge costituzionale).
   years: [2026]
   time_coverage:
     start_year: 1948

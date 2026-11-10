@@ -6,6 +6,10 @@ dataset:
   source_id: "corte_costituzionale"
   tags: [costituzione, giurisprudenza, corte_costituzionale, massime]
   category: giurisprudenza
+  description: >
+    Massime delle pronunce dal 1956: esito, parametri costituzionali evocati
+    e norme impugnate, una riga per massima. Parametri e norme sono due liste
+    indipendenti, esposte dai mart `mart_massime_parametri`/`mart_massime_norme`.
   years: [2026]
   time_coverage:
     start_year: 1956
