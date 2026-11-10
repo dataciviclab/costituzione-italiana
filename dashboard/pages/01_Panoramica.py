@@ -14,7 +14,7 @@ df_kpi = query("""
         (SELECT COUNT(*) FROM articoli) AS n_articoli,
         (SELECT COUNT(*) FROM revisioni) AS n_modifiche,
         (SELECT COUNT(*) FROM atti_promovimento) AS n_giudizi,
-        (SELECT COUNT(*) FROM citazioni_legislative) AS n_citazioni,
+        (SELECT SUM(peso) FROM citazioni_legislative) AS n_citazioni,
         (SELECT COUNT(*) FROM pronunce) AS n_pronunce
 """)
 k = df_kpi.iloc[0]
@@ -138,7 +138,7 @@ st.markdown("---")
 st.subheader("📝 Articoli più citati nella legislazione")
 
 df_cit_top = query("""
-    SELECT a.heading, COUNT(*) AS n_citazioni
+    SELECT a.heading, SUM(c.peso) AS n_citazioni
     FROM citazioni_legislative c
     JOIN articoli a ON c.articolo = a.articolo
     GROUP BY 1 ORDER BY 2 DESC LIMIT 10

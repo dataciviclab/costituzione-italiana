@@ -4,7 +4,7 @@
 
 SELECT
     articolo,
-    COUNT(*) AS n_citazioni,
+    SUM(peso) AS n_citazioni,
     COUNT(DISTINCT fonte_filename) AS n_fonti_diverse,
     MIN(fonte_anno) AS prima_citazione,
     MAX(fonte_anno) AS ultima_citazione,
