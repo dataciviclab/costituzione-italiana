@@ -11,7 +11,7 @@ Grain, chiavi e limiti dei dataset. Per l'accesso: README.
 | `massime_corte_costituzionale` | 1 riga per massima | `id_massima` | 1956-2026, 46.665 |
 | `giudici_corte_costituzionale` | 1 riga per voce anagrafica | `nome_cognome` | 136 voci |
 | `citazioni_costituzionali` | 1 riga per atto × articolo | `fonte_filename, articolo` | 4.771 atti, 9.993 coppie |
-| `revisioni_costituzionali` | 1 riga per legge | `urn` | 50 leggi, 1948-2026 |
+| `revisioni_costituzionali` | 1 riga per legge | `urn` | 50 leggi costituzionali, 1947-2026 |
 | `atti_promovimento_corte_costituzionale` | 1 riga per atto × parte × parametro × comma | `tipo, anno, numero_atto, numero_parte, parametro_articolo, parametro_comma` | snapshot pendenti 2024-2026, 993 |
 | `sentenze_complete` (compose) | 1 riga per pronuncia × massima | `anno_pronuncia, numero_pronuncia, id_massima` | 46.718 |
 | `iter_costituzionale` (compose) | 1 riga per DDL × revisione | `camera_o_senato, atto_num, rev_urn` | 2.737 proposte, leg. XIII-XIX |

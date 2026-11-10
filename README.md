@@ -23,7 +23,7 @@ come:
 | Dataset | Cosa | Quantità |
 |---|---|---|
 | **Articoli** | Ogni articolo con heading, parte, titolo, sezione | 139 articoli + 18 disposizioni |
-| **Revisioni** | Leggi di revisione costituzionale (1948-2026) | 50 leggi |
+| **Revisioni** | Leggi costituzionali (1947-2026) | 50 leggi |
 | **Pronunce** | Presidente, relatore, collegio, epigrafe, testo integrale | 22.428 pronunce (1956-2026) |
 | **Massime** | Esiti e parametri evocati, una riga per massima | 46.665 massime |
 | **Giudici** | Anagrafica (eletto_da, date, nota biografica) | 136 voci |
@@ -100,6 +100,8 @@ per i consumer: [docs/dati.md](docs/dati.md).
 
 - **Atti pendenti**: la fonte open data pubblica solo i registri dei giudizi
   pendenti (2024-2026), non la serie storica degli atti di promovimento.
+- **Revisioni**: la fonte è la collezione "Leggi costituzionali"; include 3
+  leggi pre-costituzionali del 1947, non solo revisioni del testo vigente.
 - **Citazioni**: coperte le 19 collezioni di italia-corpus (4.771 atti), non
   tutte le leggi ordinarie.
 - **Esito**: è derivato dal testo della massima, non un campo della fonte;
