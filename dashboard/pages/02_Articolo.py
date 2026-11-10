@@ -3,7 +3,7 @@
 import altair as alt
 import streamlit as st
 from lab_connectors.formatters import fmt_num
-from sources import query
+from sources import load_mart, query
 
 st.title("📜 Esplora un Articolo")
 
@@ -25,12 +25,14 @@ df_atti = query(f"""
     ORDER BY anno DESC, numero_atto DESC
     LIMIT 50
 """)
-df_massime = query(f"""
-    SELECT esito, COUNT(*) AS n
-    FROM massime
-    WHERE parametro_articolo = {articolo_n}
-    GROUP BY esito ORDER BY n DESC
-""")
+df_massime = (
+    load_mart("massime", "mart_massime_parametri")
+    .query("parametro_articolo == @articolo_n")
+    .groupby("esito", as_index=False)
+    .size()
+    .rename(columns={"size": "n"})
+    .sort_values("n", ascending=False)
+)
 df_cit = query(f"""
     SELECT fonte_collezione, fonte_anno, fonte_tipo, contesto
     FROM citazioni_legislative

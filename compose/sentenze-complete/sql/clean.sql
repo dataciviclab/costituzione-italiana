@@ -128,12 +128,13 @@ SELECT
     p.dispositivo,
 
     -- ── massime ─────────────────────────────────────────
+    -- parametri/norme restano JSON: il join è 1:1 sulla massima, l'esplosione
+    -- vive nei mart (mai prodotto cartesiano tra le due liste).
+    m.id_massima,
     m.esito,
     m.tipologia_giudizio,
-    m.parametro_articolo,
-    m.parametro_comma,
-    m.norma_descrizione,
-    m.norma_articolo,
+    m.parametri,
+    m.norme,
 
     -- ── anagrafica: relatore (esatto → normalizzato) ────
     pr_relatore.relatore_eletto_da,

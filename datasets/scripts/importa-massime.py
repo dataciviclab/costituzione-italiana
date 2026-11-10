@@ -2,15 +2,19 @@
 """Scarica e processa le Massime della Corte Costituzionale.
 
 Le massime sono riassunti strutturati delle pronunce, con esito,
-parametri costituzionali evocati e norme impugnate in formato XML
-molto più gestibile del testo libero delle pronunce.
+parametri costituzionali evocati e norme impugnate.
 
 Dataset originali (3 archi temporali):
   https://dati.cortecostituzionale.it/opendata/distribuzione/CC_OpenMassime_1956_1980.zip
   https://dati.cortecostituzionale.it/opendata/distribuzione/CC_OpenMassime_1981_2000.zip
   https://dati.cortecostituzionale.it/opendata/distribuzione/CC_OpenMassime_2001_oggi.zip
 
-Produce data/massime.parquet con una riga per massima (flatten).
+Produce data/massime.parquet con **una riga per massima** (46.665 record).
+I parametri costituzionali e le norme impugnate sono due liste indipendenti
+della stessa massima: restano JSON nel clean e vengono esplose nei mart
+(`mart_massime_parametri`, `mart_massime_norme`). Il vecchio parser faceva
+il prodotto cartesiano delle due liste: 267k righe inventate e 6.276 massime
+perse (quelle con una sola delle due liste).
 """
 
 from __future__ import annotations
@@ -18,18 +22,18 @@ from __future__ import annotations
 import argparse
 import csv
 import io
+import json
 import logging
 import os
 import re
-import tempfile
 import urllib.request
-
-import pyarrow as pa
-import pyarrow.parquet as pq
 import zipfile
 from collections import Counter
 from pathlib import Path
 from xml.etree import ElementTree as ET
+
+import pyarrow as pa
+import pyarrow.parquet as pq
 
 logger = logging.getLogger("importa-massime")
 
@@ -51,19 +55,23 @@ FIELDNAMES = [
     "esito",
     "titolo",
     "testo",
-    "parametro_codice",
-    "parametro_descrizione",
-    "parametro_articolo",
-    "parametro_comma",
-    "norma_codice",
-    "norma_descrizione",
-    "norma_numero",
-    "norma_data",
-    "norma_articolo",
-    "norma_specificazione_articolo",
-    "norma_comma",
-    "norma_specificazione_comma",
+    "parametri",
+    "norme",
+    "n_parametri",
+    "n_norme",
 ]
+
+PARAMETRO_FIELDS = (
+    "codice",
+    "descrizione",
+    "numero",
+    "data",
+    "articolo",
+    "specificazione_articolo",
+    "comma",
+    "specificazione_comma",
+)
+NORMA_FIELDS = PARAMETRO_FIELDS
 
 # Regex per estrarre esito dal testo della massima
 # L'ordine è importante: pattern più specifici prima
@@ -113,8 +121,21 @@ def _classify_esito(testo: str) -> str:
     return "altro"
 
 
-def _download_zip(url: str, dest: Path) -> Path | None:
-    """Scarica un archivio ZIP se non già presente in cache."""
+def _text(elem: ET.Element | None, tag: str) -> str:
+    if elem is None:
+        return ""
+    child = elem.find(tag)
+    if child is None or child.text is None:
+        return ""
+    return child.text.strip()
+
+
+def _fields(elem: ET.Element, fieldnames: tuple[str, ...]) -> dict[str, str]:
+    """Estrae i campi figli di un elemento (parametro o norma)."""
+    return {name: _text(elem, name) for name in fieldnames}
+
+
+def _load_zip(url: str, dest: Path) -> Path | None:
     fname = dest / os.path.basename(url)
     if fname.exists() and fname.stat().st_size > 1000:
         logger.info(f"Cache: {fname.name}")
@@ -129,7 +150,11 @@ def _download_zip(url: str, dest: Path) -> Path | None:
 
 
 def _parse_massime_xml(xml_data: bytes) -> list[dict]:
-    """Parsa un XML annuale di massime e restituisce lista di record."""
+    """Parsa un XML annuale di massime: una riga per massima.
+
+    `parametri` e `norme` sono liste indipendenti della massima: vengono
+    serializzate in JSON, mai moltiplicate tra loro.
+    """
     records: list[dict] = []
     try:
         root = ET.fromstring(xml_data)
@@ -144,93 +169,49 @@ def _parse_massime_xml(xml_data: bytes) -> list[dict]:
 
         anno = pt.findtext("anno_pronuncia", "")
         numero = pt.findtext("numero_pronuncia", "")
-        tipologia = pt.findtext("tipologia_pronuncia", "")
-        tipologia_giudizio = pt.findtext("tipologia_giudizio", "")
-        data_dec = pt.findtext("data_decisione", "")
-        data_dep = pt.findtext("data_deposito", "")
 
-        # Calcola esito aggregato per questa pronuncia
-        massime_testi: list[str] = []
-        for massima in pronuncia.findall(".//massima"):
-            t = massima.findtext("testo", "")
-            if t:
-                massime_testi.append(t)
+        massime = pronuncia.findall(".//massima")
+        testi = [m.findtext("testo", "") for m in massime if m.findtext("testo", "")]
+        esito = _classify_esito(" ".join(testi))
 
-        esito_pronuncia = "altro"
-        if massime_testi:
-            # Unisci tutti i testi delle massime per determinare l'esito
-            testo_completo = " ".join(massime_testi)
-            esito_pronuncia = _classify_esito(testo_completo)
+        for massima in massime:
+            parametri_el = massima.find("parametri")
+            norme_el = massima.find("norme")
+            parametri = (
+                [_fields(p, PARAMETRO_FIELDS) for p in parametri_el.findall("parametro")]
+                if parametri_el is not None
+                else []
+            )
+            norme = (
+                [_fields(n, NORMA_FIELDS) for n in norme_el.findall("norma")]
+                if norme_el is not None
+                else []
+            )
 
-        for massima in pronuncia.findall(".//massima"):
             num_massima = massima.findtext("numero", "")
-
-            # Normalizza id_massima a int (vuoto → 0)
-            try:
-                num_massima_int = int(num_massima) if num_massima else 0
-            except ValueError:
-                num_massima_int = 0
-
-            for parametro in massima.findall(".//parametri/parametro"):
-                for norma in massima.findall(".//norme/norma"):
-                    record = {
-                        "id_massima": num_massima_int,
-                        "anno_pronuncia": int(anno) if anno.isdigit() else 0,
-                        "numero_pronuncia": int(numero) if numero.isdigit() else 0,
-                        "tipologia_pronuncia": tipologia,
-                        "tipologia_giudizio": tipologia_giudizio,
-                        "data_decisione": data_dec,
-                        "data_deposito": data_dep,
-                        "esito": esito_pronuncia,
-                        "titolo": massima.findtext("titolo", ""),
-                        "testo": massima.findtext("testo", ""),
-                        "parametro_codice": parametro.findtext("codice", ""),
-                        "parametro_descrizione": parametro.findtext("descrizione", ""),
-                        "parametro_articolo": parametro.findtext("articolo", ""),
-                        "parametro_comma": parametro.findtext("comma", ""),
-                        "norma_codice": norma.findtext("codice", ""),
-                        "norma_descrizione": norma.findtext("descrizione", ""),
-                        "norma_numero": norma.findtext("numero", ""),
-                        "norma_data": norma.findtext("data", ""),
-                        "norma_articolo": norma.findtext("articolo", ""),
-                        "norma_specificazione_articolo": norma.findtext("specificazione_articolo", ""),
-                        "norma_comma": norma.findtext("comma", ""),
-                        "norma_specificazione_comma": norma.findtext("specificazione_comma", ""),
-                    }
-                    records.append(record)
-
-            # Massime senza parametri/norme (es. massime di principio)
-            if not list(massima.findall(".//parametri/parametro")) and not list(massima.findall(".//norme/norma")):
-                record = {
-                    "id_massima": num_massima_int,
+            records.append(
+                {
+                    "id_massima": int(num_massima) if num_massima.isdigit() else 0,
                     "anno_pronuncia": int(anno) if anno.isdigit() else 0,
                     "numero_pronuncia": int(numero) if numero.isdigit() else 0,
-                    "tipologia_pronuncia": tipologia,
-                    "tipologia_giudizio": tipologia_giudizio,
-                    "data_decisione": data_dec,
-                    "data_deposito": data_dep,
-                    "esito": esito_pronuncia,
+                    "tipologia_pronuncia": pt.findtext("tipologia_pronuncia", ""),
+                    "tipologia_giudizio": pt.findtext("tipologia_giudizio", ""),
+                    "data_decisione": pt.findtext("data_decisione", ""),
+                    "data_deposito": pt.findtext("data_deposito", ""),
+                    "esito": esito,
                     "titolo": massima.findtext("titolo", ""),
                     "testo": massima.findtext("testo", ""),
-                    "parametro_codice": "",
-                    "parametro_descrizione": "",
-                    "parametro_articolo": "",
-                    "parametro_comma": "",
-                    "norma_codice": "",
-                    "norma_descrizione": "",
-                    "norma_numero": "",
-                    "norma_data": "",
-                    "norma_articolo": "",
-                    "norma_specificazione_articolo": "",
-                    "norma_comma": "",
-                    "norma_specificazione_comma": "",
+                    "parametri": json.dumps(parametri, ensure_ascii=False),
+                    "norme": json.dumps(norme, ensure_ascii=False),
+                    "n_parametri": len(parametri),
+                    "n_norme": len(norme),
                 }
-                records.append(record)
+            )
 
     return records
 
 
-def _stampa_metriche(records: list[dict]):
+def _stampa_metriche(records: list[dict]) -> None:
     """Stampa metriche riassuntive."""
     total = len(records)
     if total == 0:
@@ -239,32 +220,35 @@ def _stampa_metriche(records: list[dict]):
 
     esiti = Counter(r["esito"] for r in records)
     pronunce = len({(r["anno_pronuncia"], r["numero_pronuncia"]) for r in records})
-    massime_univoche = len({r["id_massima"] for r in records})
     con_esito = sum(1 for r in records if r["esito"] != "altro")
     con_titolo = sum(1 for r in records if r.get("titolo"))
     con_testo = sum(1 for r in records if r.get("testo"))
+    n_parametri = sum(r["n_parametri"] for r in records)
+    n_norme = sum(r["n_norme"] for r in records)
 
-    # Distribuzione tipologia_giudizio
-    tipi_giudizio = Counter(r["tipologia_giudizio"] for r in records if r.get("tipologia_giudizio"))
+    tipi_giudizio = Counter(
+        r["tipologia_giudizio"] for r in records if r.get("tipologia_giudizio")
+    )
 
-    print(f"\n📊 Massime — metriche")
+    print("\n📊 Massime — metriche")
     print(f"{'='*40}")
-    print(f"  Record (parametri×norme): {total:>8,}")
+    print(f"  Massime:                  {total:>8,}")
     print(f"  Pronunce coperte:         {pronunce:>8,}")
-    print(f"  Massime univoche:         {massime_univoche:>8,}")
+    print(f"  Parametri:                {n_parametri:>8,}")
+    print(f"  Norme:                    {n_norme:>8,}")
     print(f"  Con esito determinato:    {con_esito:>8,} ({con_esito/total*100:.1f}%)")
     print(f"  Con titolo:               {con_titolo:>8,} ({con_titolo/total*100:.1f}%)")
     print(f"  Con testo:                {con_testo:>8,} ({con_testo/total*100:.1f}%)")
-    print(f"\n  Distribuzione esiti:")
+    print("\n  Distribuzione esiti:")
     for k, v in esiti.most_common():
         print(f"    {k:30s} {v:>6,} ({v/total*100:.1f}%)")
     if tipi_giudizio:
-        print(f"\n  Distribuzione tipologia giudizio:")
+        print("\n  Distribuzione tipologia giudizio:")
         for k, v in tipi_giudizio.most_common():
             print(f"    {k:60s} {v:>6,} ({v/total*100:.1f}%)")
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser(description="Importa massime Corte Costituzionale")
     parser.add_argument("--output-dir", default=None, help="Directory output (default: data/)")
     parser.add_argument("--cache-dir", default="/tmp/cc_massime_cache", help="Directory cache ZIP")
@@ -276,7 +260,6 @@ def main():
         format="%(message)s",
     )
 
-    # Determina directory output
     if args.output_dir:
         outdir = Path(args.output_dir)
     else:
@@ -286,10 +269,9 @@ def main():
     cachedir = Path(args.cache_dir)
     cachedir.mkdir(parents=True, exist_ok=True)
 
-    # Scarica archivi
     zip_paths: list[Path] = []
     for url in ARCHIVES:
-        p = _download_zip(url, cachedir)
+        p = _load_zip(url, cachedir)
         if p:
             zip_paths.append(p)
 
@@ -297,7 +279,6 @@ def main():
         logger.error("Nessun archivio scaricato.")
         return
 
-    # Parsa tutti gli XML
     records: list[dict] = []
     for archive_zip in sorted(zip_paths):
         logger.info(f"\nElaborazione: {archive_zip.name}")
@@ -313,11 +294,8 @@ def main():
                         xml_data = zf_inner.read(xml_name)
                         recs = _parse_massime_xml(xml_data)
                         records.extend(recs)
-                        year = re.search(r"(\d{4})", xml_name)
-                        anno = year.group(1) if year else "??"
                         logger.debug(f"  {xml_name}: {len(recs)} record")
 
-    # Salva CSV
     csv_path = outdir / "massime.csv"
     with open(csv_path, "w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=FIELDNAMES)
@@ -325,7 +303,6 @@ def main():
         w.writerows(records)
     logger.info(f"\nCSV: {csv_path} ({len(records)} righe)")
 
-    # Salva Parquet
     pqt = outdir / "massime.parquet"
     table = pa.Table.from_pylist(records)
     pq.write_table(table, pqt)

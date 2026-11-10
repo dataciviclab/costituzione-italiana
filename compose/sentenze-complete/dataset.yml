@@ -57,9 +57,10 @@ clean:
     - data_decisione
     - data_deposito
     - collegio
+    - id_massima
     - esito
-    - parametro_articolo
-    - norma_descrizione
+    - parametri
+    - norme
     - relatore_eletto_da
     - relatore_giudice
     - presidente_giudice
