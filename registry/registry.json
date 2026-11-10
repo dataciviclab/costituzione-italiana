@@ -2,7 +2,7 @@
   "schema_version": 1,
   "repo": "costituzione-italiana",
   "source_repo": "dataciviclab/costituzione-italiana",
-  "updated_at": "2026-11-01",
+  "updated_at": "2026-11-10",
   "datasets": [
     {
       "slug": "articoli_costituzione",
@@ -1256,7 +1256,7 @@
       "detail": "anno 2026 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20261101T130058Z_cb0e55b6",
+        "run_id": "20261110T195454Z_fd295e26",
         "year": 2026,
         "status": "SUCCESS",
         "quality_score": {
@@ -1273,9 +1273,9 @@
           "clean": 25226,
           "mart": 1267
         },
-        "started_at": "2026-11-01T13:00:58.143468+00:00",
-        "finished_at": "2026-11-01T13:00:58.845501+00:00",
-        "duration_seconds": 0.702
+        "started_at": "2026-11-10T19:54:54.369755+00:00",
+        "finished_at": "2026-11-10T19:54:54.954016+00:00",
+        "duration_seconds": 0.584
       }
     },
     {
@@ -1286,26 +1286,23 @@
       "detail": "anno 2026 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20261101T130059Z_1e0f9199",
+        "run_id": "20261110T195455Z_bd24bbfc",
         "year": 2026,
-        "status": "SUCCESS",
+        "status": "FAILED",
         "quality_score": {
           "raw": 100,
-          "clean": 100,
-          "mart": 100
+          "clean": 80
         },
         "output_rows": {
-          "clean": 1082,
-          "mart": 96
+          "clean": 985
         },
         "output_bytes": {
-          "raw": 16096,
-          "clean": 12498,
-          "mart": 2280
+          "raw": 15313,
+          "clean": 11153
         },
-        "started_at": "2026-11-01T13:00:59.244281+00:00",
-        "finished_at": "2026-11-01T13:01:02.144339+00:00",
-        "duration_seconds": 2.9
+        "started_at": "2026-11-10T19:54:55.390799+00:00",
+        "finished_at": "2026-11-10T19:54:57.099580+00:00",
+        "duration_seconds": 1.709
       }
     },
     {
