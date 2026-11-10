@@ -1,8 +1,12 @@
 name: Pipeline
 
 on:
-  pull_request:
-    types: [closed]
+  # Push su main, non `pull_request: closed`: il merge della PR di registry
+  # (bot, `post-merge-registry/*`) rientrava nel filtro `paths` per via del
+  # three-dot diff e ri-triggerava la pipeline → loop. Con `push` il merge del
+  # registry tocca solo `registry/**` e non matcha.
+  push:
+    branches: [main]
     paths:
       - "datasets/**"
       - "compose/**"
@@ -16,7 +20,7 @@ on:
         default: ""
 
 concurrency:
-  group: costituzione-italiana-pipeline-${{ github.event.pull_request.number || github.ref || 'schedule' }}
+  group: costituzione-italiana-pipeline
   cancel-in-progress: false
 
 env:
@@ -24,7 +28,6 @@ env:
 
 jobs:
   pipeline:
-    if: github.event.pull_request.merged == true || github.event_name != 'pull_request'
     uses: dataciviclab/.github/.github/workflows/pipeline-reusable.yml@main
     with:
       repo-slug: "costituzione-italiana"
