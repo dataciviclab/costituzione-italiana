@@ -40,7 +40,11 @@ clean:
     - norme_str
     - n_norme
   validate:
-    min_rows: 1000
+    # Soglia anti-download-parziale, non un atteso di prodotto: la fonte
+    # (`Norme_impugnate`, due ZIP) ha **985** parametri oggi (794 ordinanze +
+    # 191 ricorsi). Se salta uno dei due ZIP il conteggio scende sotto 900,
+    # quindi la soglia resta una guardia reale.
+    min_rows: 900
     not_null:
       - anno
       - parametro_articolo
