@@ -30,6 +30,18 @@ DEFAULT_CORPUS = (
     / "Leggi costituzionali"
 )
 
+# Fonti quando il corpus locale non c'è (CI): lista e metadati dalla clean
+# `normativa` di italia-corpus su GCS, testo dei soli MD della collezione via
+# GitHub raw (~2,3 MB per run). Niente clone del repo.
+COLLEZIONE = "Leggi costituzionali"
+NORMATIVA_URL = (
+    "https://storage.googleapis.com/dataciviclab-clean/"
+    "italia-corpus/normativa/2026/normativa_2026_clean.parquet"
+)
+TESTI_RAW_BASE = (
+    "https://raw.githubusercontent.com/dataciviclab/italia-corpus/main/collezioni"
+)
+
 # ---------------------------------------------------------------------------
 # 1. Estrazione dal TITOLO
 # ---------------------------------------------------------------------------
@@ -277,31 +289,40 @@ def importa_revisioni(corpus_dir: Path) -> list[dict]:
 
 
 def _ensure_corpus(corpus_dir: Path) -> Path:
-    """Se la directory corpus non esiste, scarica solo Leggi costituzionali da GitHub."""
+    """Directory locale se c'è (dev), altrimenti scarica solo questa collezione.
+
+    Lista dei file dalla clean `normativa` (GCS), testo dai MD del corpus via
+    GitHub raw. Niente `git clone`: il layout `collezioni/<collezione>/<file>`
+    è il contratto dichiarato (lo usano anche legal_text e MCP).
+    """
     if corpus_dir.exists() and any(corpus_dir.glob("*.md")):
         return corpus_dir
-    import subprocess, tempfile
-    base = Path(tempfile.mkdtemp()) / "italia-corpus"
-    target = base / "collezioni" / "Leggi costituzionali"
-    logger.info("Scaricamento Leggi costituzionali da GitHub...")
-    subprocess.run(["git", "init", str(base)], check=True, capture_output=True)
-    subprocess.run(
-        ["git", "remote", "add", "origin", "https://github.com/dataciviclab/italia-corpus.git"],
-        cwd=str(base), check=True, capture_output=True,
+
+    import tempfile
+    import urllib.parse
+    import urllib.request
+
+    import pyarrow.parquet as pq
+
+    base = Path(tempfile.mkdtemp()) / "revisioni-md"
+    base.mkdir(parents=True)
+    parquet = base.parent / "normativa_2026_clean.parquet"
+
+    logger.info("Scarico la clean normativa (%s)…", NORMATIVA_URL)
+    urllib.request.urlretrieve(NORMATIVA_URL, parquet)
+    nomi = sorted(
+        {
+            row["filename"]
+            for row in pq.read_table(parquet, columns=["filename", "collezione"]).to_pylist()
+            if row["collezione"] == COLLEZIONE
+        }
     )
-    subprocess.run(
-        ["git", "config", "core.sparseCheckout", "true"],
-        cwd=str(base), check=True, capture_output=True,
-    )
-    (base / ".git" / "info" / "sparse-checkout").write_text("collezioni/Leggi costituzionali/\n")
-    subprocess.run(
-        ["git", "pull", "--depth", "1", "origin", "main"],
-        cwd=str(base), check=True, capture_output=True,
-    )
-    if target.exists():
-        return target
-    logger.error("Directory non trovata dopo download: %s", target)
-    sys.exit(1)
+    logger.info("Scarico %d MD di %s…", len(nomi), COLLEZIONE)
+    for nome in nomi:
+        url = f"{TESTI_RAW_BASE}/{urllib.parse.quote(COLLEZIONE)}/{urllib.parse.quote(nome)}"
+        with urllib.request.urlopen(url, timeout=60) as resp:
+            (base / nome).write_bytes(resp.read())
+    return base
 
 
 def main() -> None:
