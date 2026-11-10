@@ -5,7 +5,7 @@ dataset:
   name: "atti_promovimento_corte_costituzionale"
   source_id: "corte_costituzionale"
   tags: [costituzione, giurisprudenza, corte_costituzionale, promovimento]
-  category: giurisprudenza
+  category: giustizia
   description: >
     Atti di promovimento PENDENTI davanti alla Corte costituzionale:
     parametri costituzionali evocati dalle ordinanze, dai ricorsi e dai
