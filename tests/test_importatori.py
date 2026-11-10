@@ -17,6 +17,7 @@ import pytest
 REPO_ROOT = Path(__file__).resolve().parent.parent
 PRONUNCE_SCRIPT = REPO_ROOT / "datasets" / "scripts" / "importa-pronunce.py"
 MASSIME_SCRIPT = REPO_ROOT / "datasets" / "scripts" / "importa-massime.py"
+ATTI_SCRIPT = REPO_ROOT / "datasets" / "scripts" / "importa-corte-costituzionale.py"
 
 pytestmark = pytest.mark.adapter
 
@@ -173,3 +174,49 @@ def test_massime_non_perde_quelle_con_una_sola_lista(
     assert solo_parametro["n_norme"] == 0
     assert solo_norma["n_parametri"] == 0
     assert solo_norma["n_norme"] == 1
+
+
+@pytest.fixture(scope="module")
+def atti_module() -> ModuleType:
+    return _load_module(ATTI_SCRIPT, "importa_atti")
+
+
+XML_ATTI = """<?xml version="1.0" encoding="UTF-8"?>
+<registro_ordinanze>
+  <atto anno="2026" numero="10">
+    <numero_parte>2<norme><norma><descrizione>legge</descrizione><numero>197</numero><articolo>1</articolo><comma>115</comma></norma></norme>
+    <parametri>
+      <parametro><descrizione>Costituzione</descrizione><articolo>3</articolo></parametro>
+      <parametro><descrizione>Convenzione per la salvaguardia diritti dell'uomo</descrizione><articolo>6</articolo></parametro>
+    </parametri>
+    </numero_parte>
+  </atto>
+</registro_ordinanze>
+"""
+
+XML_CONFLITTO = """<?xml version="1.0" encoding="UTF-8"?>
+<confiltto_enti>
+  <atto anno="2026" numero="2">
+    <norme><norma><descrizione>Decreto</descrizione><numero>20</numero></norma></norme>
+    <parametri>
+      <parametro><descrizione>Costituzione</descrizione><articolo>117</articolo></parametro>
+    </parametri>
+  </atto>
+</confiltto_enti>
+"""
+
+
+def test_atti_legge_numero_parte(atti_module: ModuleType) -> None:
+    records = atti_module.parse_xml(XML_ATTI.encode("utf-8"), "ordinanza")
+    assert len(records) == 1
+    assert records[0]["numero_parte"] == 2
+    assert records[0]["parametro_articolo"] == 3
+
+
+def test_atti_conflitti_senza_numero_parte(atti_module: ModuleType) -> None:
+    """I conflitti hanno norme/parametri direttamente sull'atto (una parte)."""
+    records = atti_module.parse_xml(XML_CONFLITTO.encode("utf-8"), "conflitto_enti")
+    assert len(records) == 1
+    assert records[0]["numero_parte"] == 1
+    assert records[0]["tipo"] == "conflitto_enti"
+    assert records[0]["parametro_articolo"] == 117
