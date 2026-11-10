@@ -17,9 +17,10 @@ raw:
     - name: "revisioni_corpus"
       type: "script"
       args:
-        # Nessun path locale nel config: lo script usa DEFAULT_CORPUS
-        # (workspace diritto-legge/italia-corpus/collezioni/…) oppure
-        # sparse-clone GitHub se assente (CI).
+        # Nessun path locale nel config: lo script usa DEFAULT_CORPUS se
+        # presente (dev), altrimenti scarica la lista dalla clean `normativa`
+        # (GCS) e i soli MD della collezione via GitHub raw (~2,3 MB). Niente
+        # clone del repo.
         command: "python3 ../scripts/importa-revisioni.py --output-dir ."
         output: "revisioni.parquet"
         filename: "revisioni.parquet"
