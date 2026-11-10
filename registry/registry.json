@@ -7,7 +7,7 @@
     {
       "slug": "articoli_costituzione",
       "name": "Articoli Costituzione",
-      "description": "",
+      "description": "Testo vigente della Costituzione: 139 articoli e 18 disposizioni transitorie, con heading, parte, titolo, sezione, commi e testo.\n",
       "source": "",
       "source_id": "costituzione_italiana",
       "period": {
@@ -15,6 +15,7 @@
         "end": 2026
       },
       "tags": [
+        "normativa",
         "costituzione",
         "diritti",
         "ordinamento"
@@ -83,20 +84,21 @@
     {
       "slug": "atti_promovimento_corte_costituzionale",
       "name": "Atti Promovimento Corte Costituzionale",
-      "description": "",
+      "description": "Atti di promovimento PENDENTI davanti alla Corte costituzionale: parametri costituzionali evocati dalle ordinanze, dai ricorsi e dai ricorsi per conflitto tra enti/poteri ancora in attesa di decisione. È uno snapshot, non una serie storica: la fonte open data pubblica solo i registri dei giudizi pendenti (oggi 2024–2026).\n",
       "source": "",
       "source_id": "corte_costituzionale",
       "period": {
-        "start": 1956,
+        "start": 2024,
         "end": 2026
       },
       "tags": [
+        "giustizia",
         "costituzione",
         "giurisprudenza",
-        "corte_costituzionale",
+        "corte-costituzionale",
         "promovimento"
       ],
-      "category": "giurisprudenza",
+      "category": "giustizia",
       "columns": [
         {
           "name": "tipo",
@@ -180,7 +182,7 @@
     {
       "slug": "citazioni_costituzionali",
       "name": "Citazioni Costituzionali",
-      "description": "",
+      "description": "Citazioni della Costituzione nelle collezioni normative di italia-corpus: una riga per atto e articolo, con il numero di occorrenze (`peso`).\n",
       "source": "",
       "source_id": "italia_corpus",
       "period": {
@@ -188,6 +190,7 @@
         "end": 2026
       },
       "tags": [
+        "normativa",
         "costituzione",
         "legislazione",
         "citazioni"
@@ -250,7 +253,7 @@
     {
       "slug": "giudici_corte_costituzionale",
       "name": "Giudici Corte Costituzionale",
-      "description": "",
+      "description": "Anagrafica dei giudici costituzionali: elezione, date di nomina, giuramento e cessazione, nota biografica. Include le voci collettive presenti nell'anagrafica ufficiale.\n",
       "source": "",
       "source_id": "corte_costituzionale",
       "period": {
@@ -258,12 +261,13 @@
         "end": 2026
       },
       "tags": [
+        "giustizia",
         "costituzione",
         "giurisprudenza",
-        "corte_costituzionale",
+        "corte-costituzionale",
         "giudici"
       ],
-      "category": "giurisprudenza",
+      "category": "giustizia",
       "columns": [
         {
           "name": "nome_cognome",
@@ -341,10 +345,11 @@
         "end": 2026
       },
       "tags": [
+        "normativa",
         "costituzione",
         "parlamento",
         "ddl",
-        "revisione_costituzionale",
+        "revisione-costituzionale",
         "compose"
       ],
       "category": "normativa",
@@ -529,7 +534,7 @@
     {
       "slug": "massime_corte_costituzionale",
       "name": "Massime Corte Costituzionale",
-      "description": "",
+      "description": "Massime delle pronunce dal 1956: esito, parametri costituzionali evocati e norme impugnate, una riga per massima. Parametri e norme sono due liste indipendenti, esposte dai mart `mart_massime_parametri`/`mart_massime_norme`.\n",
       "source": "",
       "source_id": "corte_costituzionale",
       "period": {
@@ -537,12 +542,13 @@
         "end": 2026
       },
       "tags": [
+        "giustizia",
         "costituzione",
         "giurisprudenza",
-        "corte_costituzionale",
+        "corte-costituzionale",
         "massime"
       ],
-      "category": "giurisprudenza",
+      "category": "giustizia",
       "columns": [
         {
           "name": "id_massima",
@@ -605,75 +611,27 @@
           "description": ""
         },
         {
-          "name": "parametro_codice",
+          "name": "parametri",
           "type": "VARCHAR",
           "role": "dimension",
           "description": ""
         },
         {
-          "name": "parametro_descrizione",
+          "name": "norme",
           "type": "VARCHAR",
           "role": "dimension",
           "description": ""
         },
         {
-          "name": "parametro_articolo",
+          "name": "n_parametri",
           "type": "INTEGER",
           "role": "metric",
           "description": ""
         },
         {
-          "name": "parametro_comma",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
-        },
-        {
-          "name": "norma_codice",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
-        },
-        {
-          "name": "norma_descrizione",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
-        },
-        {
-          "name": "norma_numero",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
-        },
-        {
-          "name": "norma_data",
-          "type": "DATE",
-          "role": "dimension",
-          "description": ""
-        },
-        {
-          "name": "norma_articolo",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
-        },
-        {
-          "name": "norma_specificazione_articolo",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
-        },
-        {
-          "name": "norma_comma",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
-        },
-        {
-          "name": "norma_specificazione_comma",
-          "type": "VARCHAR",
-          "role": "dimension",
+          "name": "n_norme",
+          "type": "INTEGER",
+          "role": "metric",
           "description": ""
         }
       ],
@@ -686,13 +644,15 @@
       "mart_refs": [
         "massime_corte_costituzionale__mart_sentenze_per_annuale",
         "massime_corte_costituzionale__mart_parametri_per_annuale",
-        "massime_corte_costituzionale__mart_esiti_per_giudizio"
+        "massime_corte_costituzionale__mart_esiti_per_giudizio",
+        "massime_corte_costituzionale__mart_massime_parametri",
+        "massime_corte_costituzionale__mart_massime_norme"
       ]
     },
     {
       "slug": "pronunce_corte_costituzionale",
       "name": "Pronunce Corte Costituzionale",
-      "description": "",
+      "description": "Pronunce della Corte costituzionale dal 1956: presidente, relatore, collegio, epigrafe, testo integrale (quando disponibile) e dispositivo.\n",
       "source": "",
       "source_id": "corte_costituzionale",
       "period": {
@@ -700,12 +660,13 @@
         "end": 2026
       },
       "tags": [
+        "giustizia",
         "costituzione",
         "giurisprudenza",
-        "corte_costituzionale",
+        "corte-costituzionale",
         "pronunce"
       ],
-      "category": "giurisprudenza",
+      "category": "giustizia",
       "columns": [
         {
           "name": "anno_pronuncia",
@@ -762,6 +723,12 @@
           "description": ""
         },
         {
+          "name": "epigrafe",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
           "name": "collegio",
           "type": "VARCHAR",
           "role": "dimension",
@@ -794,7 +761,7 @@
     {
       "slug": "revisioni_costituzionali",
       "name": "Revisioni Costituzionali",
-      "description": "",
+      "description": "Leggi costituzionali dal 1947 (collezione italia-corpus): revisioni, statuti speciali e altre leggi costituzionali, con URN, data, titolo e articoli modificati. Include 3 leggi pre-costituzionali del 1947 che la fonte classifica come leggi costituzionali.\n",
       "source": "",
       "source_id": "italia_corpus",
       "period": {
@@ -802,9 +769,10 @@
         "end": 2023
       },
       "tags": [
+        "normativa",
         "costituzione",
         "revisioni",
-        "leggi_costituzionali"
+        "leggi-costituzionali"
       ],
       "category": "normativa",
       "columns": [
@@ -872,13 +840,14 @@
         "end": 2026
       },
       "tags": [
+        "giustizia",
         "costituzione",
         "giurisprudenza",
-        "corte_costituzionale",
+        "corte-costituzionale",
         "sentenze",
         "compose"
       ],
-      "category": "giurisprudenza",
+      "category": "giustizia",
       "columns": [
         {
           "name": "anno_pronuncia",
@@ -947,6 +916,12 @@
           "description": ""
         },
         {
+          "name": "id_massima",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
           "name": "esito",
           "type": "VARCHAR",
           "role": "dimension",
@@ -959,25 +934,13 @@
           "description": ""
         },
         {
-          "name": "parametro_articolo",
-          "type": "INTEGER",
-          "role": "metric",
-          "description": ""
-        },
-        {
-          "name": "parametro_comma",
+          "name": "parametri",
           "type": "VARCHAR",
           "role": "dimension",
           "description": ""
         },
         {
-          "name": "norma_descrizione",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
-        },
-        {
-          "name": "norma_articolo",
+          "name": "norme",
           "type": "VARCHAR",
           "role": "dimension",
           "description": ""
@@ -1123,6 +1086,26 @@
       }
     },
     {
+      "slug": "massime_corte_costituzionale__mart_massime_norme",
+      "dataset": "massime_corte_costituzionale",
+      "table": "mart_massime_norme",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/costituzione-italiana/massime_corte_costituzionale/2026/mart_massime_norme.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "massime_corte_costituzionale__mart_massime_parametri",
+      "dataset": "massime_corte_costituzionale",
+      "table": "mart_massime_parametri",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/costituzione-italiana/massime_corte_costituzionale/2026/mart_massime_parametri.parquet",
+        "multi_file": false
+      }
+    },
+    {
       "slug": "massime_corte_costituzionale__mart_parametri_per_annuale",
       "dataset": "massime_corte_costituzionale",
       "table": "mart_parametri_per_annuale",
@@ -1202,7 +1185,7 @@
       "detail": "anno 2026 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20261110T203908Z_564ff1f7",
+        "run_id": "20261110T222853Z_00fe0d95",
         "year": 2026,
         "status": "SUCCESS",
         "quality_score": {
@@ -1216,12 +1199,12 @@
         },
         "output_bytes": {
           "raw": 4673,
-          "clean": 140029,
-          "mart": 12206
+          "clean": 140070,
+          "mart": 12213
         },
-        "started_at": "2026-11-10T20:39:08.218464+00:00",
-        "finished_at": "2026-11-10T20:39:26.991172+00:00",
-        "duration_seconds": 18.773
+        "started_at": "2026-11-10T22:28:53.801249+00:00",
+        "finished_at": "2026-11-10T22:29:15.409298+00:00",
+        "duration_seconds": 21.608
       }
     },
     {
@@ -1232,7 +1215,7 @@
       "detail": "anno 2026 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20261110T203927Z_27007522",
+        "run_id": "20261110T222916Z_f51389da",
         "year": 2026,
         "status": "SUCCESS",
         "quality_score": {
@@ -1241,17 +1224,17 @@
           "mart": 100
         },
         "output_rows": {
-          "clean": 268364,
-          "mart": 332
+          "clean": 46718,
+          "mart": 244
         },
         "output_bytes": {
-          "raw": 4731877,
-          "clean": 4353249,
-          "mart": 7374
+          "raw": 98144208,
+          "clean": 6851689,
+          "mart": 6225
         },
-        "started_at": "2026-11-10T20:39:27.641474+00:00",
-        "finished_at": "2026-11-10T20:39:28.941531+00:00",
-        "duration_seconds": 1.3
+        "started_at": "2026-11-10T22:29:16.234343+00:00",
+        "finished_at": "2026-11-10T22:29:18.531129+00:00",
+        "duration_seconds": 2.297
       }
     },
     {
@@ -1262,7 +1245,7 @@
       "detail": "anno 2026 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20261110T203813Z_c685fec0",
+        "run_id": "20261110T222731Z_3ecc1345",
         "year": 2026,
         "status": "SUCCESS",
         "quality_score": {
@@ -1279,9 +1262,9 @@
           "clean": 25226,
           "mart": 1267
         },
-        "started_at": "2026-11-10T20:38:13.535442+00:00",
-        "finished_at": "2026-11-10T20:38:14.053773+00:00",
-        "duration_seconds": 0.518
+        "started_at": "2026-11-10T22:27:31.052302+00:00",
+        "finished_at": "2026-11-10T22:27:31.735916+00:00",
+        "duration_seconds": 0.684
       }
     },
     {
@@ -1292,7 +1275,7 @@
       "detail": "anno 2026 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20261110T203814Z_8b643ad8",
+        "run_id": "20261110T222732Z_28b50170",
         "year": 2026,
         "status": "SUCCESS",
         "quality_score": {
@@ -1301,17 +1284,17 @@
           "mart": 100
         },
         "output_rows": {
-          "clean": 985,
-          "mart": 91
+          "clean": 993,
+          "mart": 100
         },
         "output_bytes": {
-          "raw": 15313,
-          "clean": 11153,
-          "mart": 2216
+          "raw": 15522,
+          "clean": 13095,
+          "mart": 2341
         },
-        "started_at": "2026-11-10T20:38:14.379321+00:00",
-        "finished_at": "2026-11-10T20:38:16.330611+00:00",
-        "duration_seconds": 1.951
+        "started_at": "2026-11-10T22:27:32.185060+00:00",
+        "finished_at": "2026-11-10T22:27:35.329287+00:00",
+        "duration_seconds": 3.144
       }
     },
     {
@@ -1322,7 +1305,7 @@
       "detail": "anno 2026 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20261110T203816Z_1aaec82b",
+        "run_id": "20261110T222736Z_44a606ad",
         "year": 2026,
         "status": "SUCCESS",
         "quality_score": {
@@ -1337,11 +1320,11 @@
         "output_bytes": {
           "raw": 12727777,
           "clean": 154638,
-          "mart": 1916
+          "mart": 1918
         },
-        "started_at": "2026-11-10T20:38:16.898817+00:00",
-        "finished_at": "2026-11-10T20:38:18.570614+00:00",
-        "duration_seconds": 1.672
+        "started_at": "2026-11-10T22:27:36.020146+00:00",
+        "finished_at": "2026-11-10T22:27:37.651747+00:00",
+        "duration_seconds": 1.632
       }
     },
     {
@@ -1352,7 +1335,7 @@
       "detail": "anno 2026 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20261110T203818Z_fb20c46b",
+        "run_id": "20261110T222738Z_7ffafc4e",
         "year": 2026,
         "status": "SUCCESS",
         "quality_score": {
@@ -1369,9 +1352,9 @@
           "clean": 13466,
           "mart": 967
         },
-        "started_at": "2026-11-10T20:38:18.883335+00:00",
-        "finished_at": "2026-11-10T20:38:19.872943+00:00",
-        "duration_seconds": 0.99
+        "started_at": "2026-11-10T22:27:38.094329+00:00",
+        "finished_at": "2026-11-10T22:27:39.061127+00:00",
+        "duration_seconds": 0.967
       }
     },
     {
@@ -1382,7 +1365,7 @@
       "detail": "anno 2026 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20261110T203820Z_46f9e806",
+        "run_id": "20261110T222739Z_40dfe9c7",
         "year": 2026,
         "status": "SUCCESS",
         "quality_score": {
@@ -1391,17 +1374,17 @@
           "mart": 100
         },
         "output_rows": {
-          "clean": 267546,
-          "mart": 6557
+          "clean": 46665,
+          "mart": 204155
         },
         "output_bytes": {
-          "raw": 67713868,
-          "clean": 18964287,
-          "mart": 36161
+          "raw": 39634957,
+          "clean": 20613629,
+          "mart": 1171974
         },
-        "started_at": "2026-11-10T20:38:20.184395+00:00",
-        "finished_at": "2026-11-10T20:38:41.305236+00:00",
-        "duration_seconds": 21.121
+        "started_at": "2026-11-10T22:27:39.517394+00:00",
+        "finished_at": "2026-11-10T22:27:58.783096+00:00",
+        "duration_seconds": 19.266
       }
     },
     {
@@ -1412,7 +1395,7 @@
       "detail": "anno 2026 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20261110T203841Z_976c02c7",
+        "run_id": "20261110T222759Z_e38e9c12",
         "year": 2026,
         "status": "SUCCESS",
         "quality_score": {
@@ -1425,13 +1408,13 @@
           "mart": 1040
         },
         "output_bytes": {
-          "raw": 10021753,
-          "clean": 4731877,
-          "mart": 10245
+          "raw": 182420058,
+          "clean": 98144208,
+          "mart": 10246
         },
-        "started_at": "2026-11-10T20:38:41.630850+00:00",
-        "finished_at": "2026-11-10T20:38:56.285861+00:00",
-        "duration_seconds": 14.655
+        "started_at": "2026-11-10T22:27:59.275317+00:00",
+        "finished_at": "2026-11-10T22:28:42.443833+00:00",
+        "duration_seconds": 43.169
       }
     },
     {
@@ -1442,7 +1425,7 @@
       "detail": "anno 2026 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20261110T203856Z_62dffd84",
+        "run_id": "20261110T222842Z_e88cf095",
         "year": 2026,
         "status": "SUCCESS",
         "quality_score": {
@@ -1459,9 +1442,9 @@
           "clean": 4673,
           "mart": 585
         },
-        "started_at": "2026-11-10T20:38:56.589871+00:00",
-        "finished_at": "2026-11-10T20:39:07.193278+00:00",
-        "duration_seconds": 10.603
+        "started_at": "2026-11-10T22:28:42.907120+00:00",
+        "finished_at": "2026-11-10T22:28:52.722658+00:00",
+        "duration_seconds": 9.816
       }
     }
   ],
