@@ -4,7 +4,7 @@ schema_version: 1
 dataset:
   name: "atti_promovimento_corte_costituzionale"
   source_id: "corte_costituzionale"
-  tags: [costituzione, giurisprudenza, corte_costituzionale, promovimento]
+  tags: [giustizia, costituzione, giurisprudenza, corte-costituzionale, promovimento]
   category: giustizia
   description: >
     Atti di promovimento PENDENTI davanti alla Corte costituzionale:

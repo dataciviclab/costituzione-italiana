@@ -4,7 +4,7 @@ schema_version: 1
 dataset:
   name: "articoli_costituzione"
   source_id: "costituzione_italiana"
-  tags: [costituzione, diritti, ordinamento]
+  tags: [normativa, costituzione, diritti, ordinamento]
   category: normativa
   description: >
     Testo vigente della Costituzione: 139 articoli e 18 disposizioni

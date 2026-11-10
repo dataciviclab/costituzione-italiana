@@ -4,7 +4,7 @@ schema_version: 1
 dataset:
   name: "pronunce_corte_costituzionale"
   source_id: "corte_costituzionale"
-  tags: [costituzione, giurisprudenza, corte_costituzionale, pronunce]
+  tags: [giustizia, costituzione, giurisprudenza, corte-costituzionale, pronunce]
   category: giustizia
   description: >
     Pronunce della Corte costituzionale dal 1956: presidente, relatore,

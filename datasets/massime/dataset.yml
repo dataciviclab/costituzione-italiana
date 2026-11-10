@@ -4,7 +4,7 @@ schema_version: 1
 dataset:
   name: "massime_corte_costituzionale"
   source_id: "corte_costituzionale"
-  tags: [costituzione, giurisprudenza, corte_costituzionale, massime]
+  tags: [giustizia, costituzione, giurisprudenza, corte-costituzionale, massime]
   category: giustizia
   description: >
     Massime delle pronunce dal 1956: esito, parametri costituzionali evocati

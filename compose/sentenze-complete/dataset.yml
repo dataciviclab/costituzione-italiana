@@ -11,7 +11,7 @@ schema_version: 1
 dataset:
   name: "sentenze_complete"
   source_id: "corte_costituzionale"
-  tags: [costituzione, giurisprudenza, corte_costituzionale, sentenze, compose]
+  tags: [giustizia, costituzione, giurisprudenza, corte-costituzionale, sentenze, compose]
   category: giustizia
   description: >
     SentenzeComplete: pronunce della Corte Costituzionale unite con massime
