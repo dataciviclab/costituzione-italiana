@@ -36,6 +36,7 @@ clean:
     - relatore_pronuncia
     - data_decisione
     - data_deposito
+    - epigrafe
     - collegio
     - testo
     - dispositivo

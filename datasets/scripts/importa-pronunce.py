@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Scarica e processa le Pronunce della Corte Costituzionale (testo integrale).
 
-Estrae da XML: presidente, relatore, redattore, ecli, collegio, testo, dispositivo.
+Estrae da XML: presidente, relatore, redattore, ecli, epigrafe, collegio,
+testo, dispositivo.
 
 Dataset originali (3 archi temporali):
   https://dati.cortecostituzionale.it/opendata/distribuzione/CC_OpenPronunce_1956_1980.zip
@@ -47,10 +48,15 @@ FIELDNAMES = [
     "redattore_pronuncia",
     "data_decisione",
     "data_deposito",
+    "epigrafe",
     "collegio",
     "testo",
     "dispositivo",
 ]
+
+# Blocchi del source che vanno separati da riga vuota (motivazione in fatto /
+# in diritto). Gli altri figli sono inline e vanno separati da spazio.
+_BLOCK_TAGS = {"fatto", "diritto"}
 
 
 def _text(elem: ET.Element | None, tag: str) -> str:
@@ -60,6 +66,35 @@ def _text(elem: ET.Element | None, tag: str) -> str:
     if child is None or child.text is None:
         return ""
     return child.text.strip()
+
+
+def _element_text(elem: ET.Element | None) -> str:
+    """Testo completo di un elemento, inclusi figli e tail.
+
+    Il source annida i contenuti: ``<collegio><titolo>…</titolo>composta da:
+    …</collegio>`` e ``<testo><fatto>…</fatto><diritto>…</diritto></testo>``.
+    Leggere solo ``.text`` restituisce stringa vuota (bug storico: collegio
+    sempre NULL, testo al 2%).
+    """
+    if elem is None:
+        return ""
+    parts: list[str] = []
+
+    def append_piece(piece: str, separator: str) -> None:
+        if not piece.strip():
+            return
+        if parts and not parts[-1].endswith((" ", "\n")):
+            parts.append(separator)
+        parts.append(piece)
+
+    append_piece(elem.text or "", " ")
+    for child in elem:
+        append_piece(_element_text(child), "\n\n" if child.tag in _BLOCK_TAGS else " ")
+        append_piece(child.tail or "", " ")
+    text = "".join(parts).replace("\r\n", "\n").replace("\r", "\n")
+    text = re.sub(r"[ \t]+\n", "\n", text)
+    text = re.sub(r"\n{3,}", "\n\n", text)
+    return text.strip()
 
 
 def _download_zip(url: str, dest: Path) -> Path | None:
@@ -103,10 +138,12 @@ def _parse_pronunce_xml(xml_data: bytes) -> list[dict]:
 
         ptesto = pronuncia.find("pronuncia_testo")
         if ptesto is not None:
-            record["collegio"] = _text(ptesto, "collegio")
-            record["testo"] = _text(ptesto, "testo")
-            record["dispositivo"] = _text(ptesto, "dispositivo")
+            record["epigrafe"] = _element_text(ptesto.find("epigrafe"))
+            record["collegio"] = _element_text(ptesto.find("collegio"))
+            record["testo"] = _element_text(ptesto.find("testo"))
+            record["dispositivo"] = _element_text(ptesto.find("dispositivo"))
         else:
+            record["epigrafe"] = ""
             record["collegio"] = ""
             record["testo"] = ""
             record["dispositivo"] = ""
