@@ -4,8 +4,12 @@ schema_version: 1
 dataset:
   name: "giudici_corte_costituzionale"
   source_id: "corte_costituzionale"
-  tags: [costituzione, giurisprudenza, corte_costituzionale, giudici]
-  category: giurisprudenza
+  tags: [giustizia, costituzione, giurisprudenza, corte-costituzionale, giudici]
+  category: giustizia
+  description: >
+    Anagrafica dei giudici costituzionali: elezione, date di nomina,
+    giuramento e cessazione, nota biografica. Include le voci collettive
+    presenti nell'anagrafica ufficiale.
   years: [2026]
 
 raw:
@@ -38,6 +42,7 @@ clean:
     min_rows: 100
     not_null:
       - nome_cognome
+    primary_key: [nome_cognome]
 
 mart:
   tables:

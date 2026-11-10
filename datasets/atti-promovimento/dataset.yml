@@ -4,11 +4,17 @@ schema_version: 1
 dataset:
   name: "atti_promovimento_corte_costituzionale"
   source_id: "corte_costituzionale"
-  tags: [costituzione, giurisprudenza, corte_costituzionale, promovimento]
-  category: giurisprudenza
+  tags: [giustizia, costituzione, giurisprudenza, corte-costituzionale, promovimento]
+  category: giustizia
+  description: >
+    Atti di promovimento PENDENTI davanti alla Corte costituzionale:
+    parametri costituzionali evocati dalle ordinanze, dai ricorsi e dai
+    ricorsi per conflitto tra enti/poteri ancora in attesa di decisione.
+    È uno snapshot, non una serie storica: la fonte open data pubblica
+    solo i registri dei giudizi pendenti (oggi 2024–2026).
   years: [2026]
   time_coverage:
-    start_year: 1956
+    start_year: 2024
     end_year: 2026
 
 raw:
@@ -41,13 +47,17 @@ clean:
     - n_norme
   validate:
     # Soglia anti-download-parziale, non un atteso di prodotto: la fonte
-    # (`Norme_impugnate`, due ZIP) ha **985** parametri oggi (794 ordinanze +
-    # 191 ricorsi). Se salta uno dei due ZIP il conteggio scende sotto 900,
-    # quindi la soglia resta una guardia reale.
+    # (`Norme_impugnate`, quattro registri) ha **1.000** parametri Costituzione
+    # oggi (794 ordinanze + 191 ricorsi + 11 conflitti enti + 4 conflitti
+    # poteri). Se salta un registro il conteggio scende sotto 900, quindi la
+    # soglia resta una guardia reale.
     min_rows: 900
     not_null:
       - anno
       - parametro_articolo
+    # una riga per atto × parte × parametro × comma (dedup dei 7 duplicati
+    # identici della fonte)
+    primary_key: [tipo, anno, numero_atto, numero_parte, parametro_articolo, parametro_comma]
 
 mart:
   tables:

@@ -4,8 +4,12 @@ schema_version: 1
 dataset:
   name: "massime_corte_costituzionale"
   source_id: "corte_costituzionale"
-  tags: [costituzione, giurisprudenza, corte_costituzionale, massime]
-  category: giurisprudenza
+  tags: [giustizia, costituzione, giurisprudenza, corte-costituzionale, massime]
+  category: giustizia
+  description: >
+    Massime delle pronunce dal 1956: esito, parametri costituzionali evocati
+    e norme impugnate, una riga per massima. Parametri e norme sono due liste
+    indipendenti, esposte dai mart `mart_massime_parametri`/`mart_massime_norme`.
   years: [2026]
   time_coverage:
     start_year: 1956
@@ -38,23 +42,18 @@ clean:
     - esito
     - titolo
     - testo
-    - parametro_codice
-    - parametro_descrizione
-    - parametro_articolo
-    - parametro_comma
-    - norma_codice
-    - norma_descrizione
-    - norma_numero
-    - norma_data
-    - norma_articolo
-    - norma_specificazione_articolo
-    - norma_comma
-    - norma_specificazione_comma
+    - parametri
+    - norme
+    - n_parametri
+    - n_norme
   validate:
-    min_rows: 100000
+    min_rows: 40000
     not_null:
+      - id_massima
       - anno_pronuncia
       - numero_pronuncia
+    # id_massima è l'id globale della massima (unico in tutta la serie)
+    primary_key: [id_massima]
 
 mart:
   tables:
@@ -64,10 +63,16 @@ mart:
       sql: "sql/mart/mart_parametri_per_annuale.sql"
     - name: "mart_esiti_per_giudizio"
       sql: "sql/mart/mart_esiti_per_giudizio.sql"
+    - name: "mart_massime_parametri"
+      sql: "sql/mart/mart_massime_parametri.sql"
+    - name: "mart_massime_norme"
+      sql: "sql/mart/mart_massime_norme.sql"
   required_tables:
     - "mart_sentenze_per_annuale"
     - "mart_parametri_per_annuale"
     - "mart_esiti_per_giudizio"
+    - "mart_massime_parametri"
+    - "mart_massime_norme"
   validate:
     table_rules:
       mart_sentenze_per_annuale:
@@ -79,6 +84,10 @@ mart:
       mart_esiti_per_giudizio:
         primary_key: [tipologia_giudizio]
         min_rows: 5
+      mart_massime_parametri:
+        min_rows: 80000
+      mart_massime_norme:
+        min_rows: 60000
 
 validation:
   fail_on_error: true

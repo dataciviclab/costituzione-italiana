@@ -1,8 +1,14 @@
--- CLEAN: atti di promovimento (norme impugnate + parametri evocati)
+-- CLEAN: atti di promovimento pendenti (norme impugnate + parametri evocati)
 --
--- Dalla Corte Costituzionale: quali norme vengono impugnate e con quale parametro.
+-- Dalla Corte Costituzionale: quali norme vengono impugnate e con quale
+-- parametro. La fonte è uno snapshot dei giudizi pendenti (4 registri:
+-- ordinanze, ricorsi, conflitti tra enti/poteri), non una serie storica.
+--
+-- DISTINCT: la fonte ripete 7 parametri identici (stessa parte, articolo,
+-- comma e norme). Una riga per (atto, parte, parametro, comma) è il grain
+-- dichiarato nel primary_key.
 
-SELECT
+SELECT DISTINCT
     normalize_string(tipo) AS tipo,
     CAST(anno AS INTEGER) AS anno,
     CAST(numero_atto AS INTEGER) AS numero_atto,

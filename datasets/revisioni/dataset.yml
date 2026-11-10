@@ -4,8 +4,13 @@ schema_version: 1
 dataset:
   name: "revisioni_costituzionali"
   source_id: "italia_corpus"
-  tags: [costituzione, revisioni, leggi_costituzionali]
+  tags: [normativa, costituzione, revisioni, leggi-costituzionali]
   category: normativa
+  description: >
+    Leggi costituzionali dal 1947 (collezione italia-corpus): revisioni,
+    statuti speciali e altre leggi costituzionali, con URN, data, titolo e
+    articoli modificati. Include 3 leggi pre-costituzionali del 1947 che la
+    fonte classifica come leggi costituzionali.
   years: [2026]
   time_coverage:
     start_year: 1948
@@ -41,6 +46,9 @@ clean:
     - tipo
   validate:
     min_rows: 40
+    not_null:
+      - urn
+    primary_key: [urn]
 
 mart:
   tables:

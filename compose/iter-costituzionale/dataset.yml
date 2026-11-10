@@ -26,7 +26,7 @@ schema_version: 1
 dataset:
   name: "iter_costituzionale"
   source_id: "dataciviclab_composite"
-  tags: [costituzione, parlamento, ddl, revisione_costituzionale, compose]
+  tags: [normativa, costituzione, parlamento, ddl, revisione-costituzionale, compose]
   category: normativa
   description: >
     Iter delle proposte di revisione costituzionale: DDL Camera/Senato
@@ -96,6 +96,8 @@ clean:
       - camera_o_senato
       - atto_num
       - titolo
+    # un atto può comparire su più revisioni (join tri-tier): la chiave è la coppia
+    primary_key: [camera_o_senato, atto_num, rev_urn]
 
 mart:
   tables:

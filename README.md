@@ -1,135 +1,118 @@
 # Costituzione italiana — testo, revisioni, giurisprudenza e citazioni
 
-**139 articoli, 22.389 pronunce, 266.811 massime, 15.969 citazioni. La Costituzione italiana come non l'hai mai vista: interrogabile.**
+[![check](https://github.com/dataciviclab/costituzione-italiana/actions/workflows/check.yml/badge.svg)](https://github.com/dataciviclab/costituzione-italiana/actions/workflows/check.yml)
 
-La Costituzione italiana ha 139 articoli. Alcuni sono famosi (Art. 21, libertà di stampa),
-altri dimenticati (Art. 46, collaborazione dei lavoratori). Alcuni vengono invocati in
-continuazione nei processi, altri mai.
+**139 articoli, 22.428 pronunce, 46.665 massime, 16.174 citazioni.** La
+Costituzione italiana e la giurisprudenza costituzionale in formato aperto e
+interrogabile.
 
-Questo repo mette insieme **7 dataset** (+ 1 compose) per rispondere a domande come:
+La Costituzione ha 139 articoli. Alcuni sono famosi (Art. 21, libertà di
+stampa), altri dimenticati (Art. 46, collaborazione dei lavoratori). Alcuni
+vengono invocati continuamente davanti alla Corte, altri mai.
+
+Questo repo mette insieme **7 dataset + 2 compose** per rispondere a domande
+come:
+
 - *Quali relatori hanno più sentenze con esito "illegittimo"?*
-- *L'Art. 3 (uguaglianza) è il più evocato in giudizio: ma quante volte viene accolto?*
-- *I giudici eletti dal Senato relazionano su articoli diversi da quelli eletti dalla Camera?*
+- *L'Art. 3 (uguaglianza) è il più evocato: ma quante volte viene accolto?*
+- *Quali articoli sono citati nelle leggi ma mai davanti alla Corte?*
+- *Quante proposte di revisione costituzionale arrivano a legge?*
 
 ## Cosa contiene
 
 | Dataset | Cosa | Quantità |
 |---|---|---|
-| **Articoli** | Ogni articolo con heading, parte, titolo, sezione | 157 righe |
-| **Revisioni** | Leggi di revisione costituzionale (1948-2023) | 50 leggi |
-| **Atti di promovimento** | Parametri costituzionali evocati in giudizio | 1.006 parametri |
-| **Massime** | Esiti della Corte Costituzionale (1956-2026) | 266.811 massime |
-| **Pronunce** | Pronunce con presidente, relatore, collegio, testo | 22.389 pronunce |
-| **Giudici** | Anagrafica giudici costituzionali (eletto_da, date) | ~200 giudici |
-| **Citazioni** | La Costituzione nella legislazione ordinaria | 15.969 citazioni |
-| **Sentenze Complete** | Compose: pronunce × massime × giudici | 267.635 righe |
-| **Iter Costituzionale** | Compose: DDL Camera/Senato × revisioni (join tri-tier) | ~2.7k proposte |
+| **Articoli** | Ogni articolo con heading, parte, titolo, sezione | 139 articoli + 18 disposizioni |
+| **Revisioni** | Leggi costituzionali (1947-2026) | 50 leggi |
+| **Pronunce** | Presidente, relatore, collegio, epigrafe, testo integrale | 22.428 pronunce (1956-2026) |
+| **Massime** | Esiti e parametri evocati, una riga per massima | 46.665 massime |
+| **Giudici** | Anagrafica (eletto_da, date, nota biografica) | 136 voci |
+| **Citazioni** | La Costituzione nelle collezioni di italia-corpus | 16.174 occorrenze |
+| **Atti pendenti** | Parametri evocati nei giudizi ancora pendenti | 993 parametri (2024-2026) |
+| **Sentenze Complete** | Compose: pronunce × massime × giudici | 46.718 righe |
+| **Iter Costituzionale** | Compose: DDL Camera/Senato × revisioni | 2.737 proposte |
 
-## Esempi di domande
+## Come accedere
 
-- **Quali relatori hanno il tasso più alto di accoglimento?**
-- **Quali articoli vengono citati nelle leggi ma mai portati davanti alla Corte?**
-- **Come varia il tasso di accoglimento per articolo nel tempo?**
-- **Quante proposte di revisione costituzionale arrivano a legge?** (`iter_costituzionale`)
+### 1. Via MCP del Lab (`dcl-mcp`)
 
-## Quick start
+```text
+find("massime corte costituzionale")      # trova il dataset
+explore("massime_corte_costituzionale")   # card, colonne, mart, path GCS
+gcs_query(slug="massime_corte_costituzionale",
+          sql="SELECT esito, count(*) AS n FROM _data GROUP BY 1")
+```
+
+### 2. Via DuckDB, direttamente da GCS
+
+```sql
+-- Tasso di accoglimento per articolo (dai parametri delle massime)
+SELECT parametro_articolo, n_casi, pct_accoglimento
+FROM 'https://storage.googleapis.com/dataciviclab-mart/costituzione-italiana/sentenze_complete/2026/mart_sentenze_per_articolo.parquet'
+ORDER BY n_casi DESC LIMIT 10;
+
+-- Massime di una pronuncia
+SELECT id_massima, esito, parametri
+FROM 'https://storage.googleapis.com/dataciviclab-clean/costituzione-italiana/massime_corte_costituzionale/2026/massime_corte_costituzionale_2026_clean.parquet'
+WHERE anno_pronuncia = 2026 AND numero_pronuncia = 192;
+```
+
+### 3. Dashboard
+
+<https://dcl-costituzione-italiana.streamlit.app/>
+
+## Sviluppo
 
 ```bash
 pip install -e ".[dev,pipeline]"
-
-# Esegui tutti i dataset + compose
-make run-all
-
-# Esegui un singolo dataset
-make run-massime
-
-# Valid tutti i config
-make check
-
-# Test (contract + policy + dashboard smoke)
-make test
-
-# Genera registry
-make registry-write
+make check        # preflight di tutti i dataset.yml
+make run-all      # pipeline completa (dataset + compose)
+make test         # contract, policy e smoke test
+make registry     # dry-run del registry
 ```
 
 Contribuzione e regole repo: [CONTRIBUTING.md](CONTRIBUTING.md).
 
-## Accedere ai dati
-
-### 1. Via MCP (toolkit)
-
-I 7 dataset sono accessibili via SQL dal server MCP toolkit del Lab.
-
-### 2. Via DuckDB diretto
-
-```sql
--- Relatori con più sentenze illegittime
-SELECT relatore_pronuncia, n_illegittime, pct_illegittime
-FROM 'out/data/mart/sentenze_complete/2026/mart_relatore_esiti.parquet'
-ORDER BY n_illegittime DESC LIMIT 10;
-
--- Tasso di accoglimento per articolo
-SELECT parametro_articolo, n_accolte, pct_accoglimento
-FROM 'out/data/mart/sentenze_complete/2026/mart_sentenze_per_articolo.parquet'
-ORDER BY n_accolte DESC LIMIT 10;
-```
-
-### 3. Via download parquet
-
-I clean parquet sono in `out/data/clean/`, i mart in `out/data/mart/`.
-
-## Dashboard Streamlit
-
-```bash
-pip install -r dashboard/requirements.txt
-streamlit run dashboard/app.py
-```
-
 ## Architettura
 
 ```
-costituzione-italiana/
-├── datasets/                          ← 7 dataset (toolkit pipeline)
-│   ├── articoli/
-│   ├── revisioni/
-│   ├── atti-promovimento/
-│   ├── massime/
-│   ├── pronunce/
-│   ├── giudici/
-│   ├── citazioni-legislative/
-│   └── scripts/                       ← script di import
-├── compose/
-│   ├── sentenze-complete/             ← cross-dataset (pronunce × massime × giudici)
-│   └── iter-costituzionale/           ← DDL Camera/Senato × revisioni promulgate
-├── dashboard/                         ← Streamlit
-├── tests/                             ← contract, policy, regression
-├── out/                               ← output pipeline (raw/clean/mart)
-├── registry/                          ← artifact catalog
-├── CONTRIBUTING.md
-├── Makefile
-└── pyproject.toml
+datasets/                 ← 7 dataset (toolkit: raw → clean → mart)
+compose/                  ← sentenze-complete, iter-costituzionale
+dashboard/                ← Streamlit (GCS via lab-connectors)
+registry/                 ← artifact registry (generato dalla pipeline)
+tests/                    ← contract, policy, adapter
+Costituzione.md           ← testo sorgente (Wikisource)
 ```
 
-## Fonti
+`massime` ha una riga per massima: `parametri` e `norme` sono due liste
+indipendenti, conservate in JSON nel clean ed esplose nei mart
+`mart_massime_parametri` e `mart_massime_norme`. Grain, chiavi e contratti
+per i consumer: [docs/dati.md](docs/dati.md).
+
+## Fonti e limiti
 
 | Dataset | Fonte | Licenza |
 |---|---|---|
 | Articoli | Wikisource | CC BY-SA 3.0 |
-| Revisioni | italia-corpus via Normattiva | — |
-| Atti di promovimento | dati.cortecostituzionale.it | CC BY-SA 3.0 |
-| Massime | dati.cortecostituzionale.it | CC BY-SA 3.0 |
-| Pronunce | dati.cortecostituzionale.it | CC BY-SA 3.0 |
-| Giudici | dati.cortecostituzionale.it | CC BY-SA 3.0 |
-| Citazioni | italia-corpus | — |
+| Revisioni, Citazioni | italia-corpus (Normattiva) | — |
+| Pronunce, Massime, Giudici, Atti | dati.cortecostituzionale.it | CC BY-SA 3.0 |
+| Codice | MIT | — |
 
-## Approfondimenti
+- **Atti pendenti**: la fonte open data pubblica solo i registri dei giudizi
+  pendenti (2024-2026), non la serie storica degli atti di promovimento.
+- **Revisioni**: la fonte è la collezione "Leggi costituzionali"; include 3
+  leggi pre-costituzionali del 1947, non solo revisioni del testo vigente.
+- **Citazioni**: coperte le 19 collezioni di italia-corpus (4.771 atti), non
+  tutte le leggi ordinarie.
+- **Esito**: è derivato dal testo della massima, non un campo della fonte;
+  circa un terzo delle massime resta `altro` (non classificato).
+- **Giudici**: 136 voci come nell'anagrafica ufficiale, incluse 11 voci
+  collettive presenti a monte.
+- **Pronunce**: testo integrale disponibile per 12.196 pronunce (54,4%);
+  `collegio` ed `epigrafe` per tutte.
 
-- [Discussion: Come decide la Consulta?](https://github.com/orgs/dataciviclab/discussions/288)
-- [Annuncio: costituzione_master — nuovo dataset pubblicato](https://github.com/dataciviclab/dataciviclab/issues/369)
+## Partecipa
 
-## Licenza
-
-- **Testo**: CC BY-SA 3.0 (da Wikisource)
-- **Dati Corte Costituzionale**: CC BY-SA 3.0
-- **Codice**: MIT
+- Domande e segnalazioni: [GitHub Discussions](https://github.com/dataciviclab/dataciviclab/discussions)
+- Bug e proposte: [issue del repo](https://github.com/dataciviclab/costituzione-italiana/issues)
+- Come contribuire: [CONTRIBUTING.md](CONTRIBUTING.md)

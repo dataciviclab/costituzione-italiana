@@ -11,10 +11,10 @@ schema_version: 1
 dataset:
   name: "sentenze_complete"
   source_id: "corte_costituzionale"
-  tags: [costituzione, giurisprudenza, corte_costituzionale, sentenze, compose]
-  category: giurisprudenza
+  tags: [giustizia, costituzione, giurisprudenza, corte-costituzionale, sentenze, compose]
+  category: giustizia
   description: >
-    SentenzeComplete: pronunce della Corte Costituzionaliunite con massime
+    SentenzeComplete: pronunce della Corte Costituzionale unite con massime
     (esiti, parametri, norme) e anagrafica giudici (eletto_da).
     Una riga per pronuncia × massima.
   years: [2026]
@@ -57,14 +57,21 @@ clean:
     - data_decisione
     - data_deposito
     - collegio
+    - id_massima
     - esito
-    - parametro_articolo
-    - norma_descrizione
+    - parametri
+    - norme
     - relatore_eletto_da
     - relatore_giudice
     - presidente_giudice
   validate:
     min_rows: 10000
+    not_null:
+      - anno_pronuncia
+      - numero_pronuncia
+    # una riga per (pronuncia, massima); id_massima è NULL solo per le
+    # pronunce senza massime, una riga ciascuna
+    primary_key: [anno_pronuncia, numero_pronuncia, id_massima]
 
 mart:
   tables:

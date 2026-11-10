@@ -4,8 +4,11 @@ schema_version: 1
 dataset:
   name: "citazioni_costituzionali"
   source_id: "italia_corpus"
-  tags: [costituzione, legislazione, citazioni]
+  tags: [normativa, costituzione, legislazione, citazioni]
   category: normativa
+  description: >
+    Citazioni della Costituzione nelle collezioni normative di italia-corpus:
+    una riga per atto e articolo, con il numero di occorrenze (`peso`).
   years: [2026]
 
 # Clean pubblicata di italia-corpus `riferimenti`: le citazioni costituzionali
@@ -37,7 +40,9 @@ clean:
   validate:
     min_rows: 5000
     not_null:
+      - fonte_filename
       - articolo
+    primary_key: [fonte_filename, articolo]
 
 mart:
   tables:

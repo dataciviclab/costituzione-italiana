@@ -1,6 +1,7 @@
 -- CLEAN: pronunce della Corte Costituzionale (testo integrale)
 --
--- Una riga per pronuncia con presidente, relatore, collegio, testo, dispositivo.
+-- Una riga per pronuncia con presidente, relatore, epigrafe, collegio, testo,
+-- dispositivo.
 
 SELECT
     CAST(anno_pronuncia AS INTEGER) AS anno_pronuncia,
@@ -12,6 +13,7 @@ SELECT
     normalize_string(redattore_pronuncia) AS redattore_pronuncia,
     TRY_CAST(strptime(NULLIF(data_decisione, ''), '%d/%m/%Y') AS DATE) AS data_decisione,
     TRY_CAST(strptime(NULLIF(data_deposito, ''), '%d/%m/%Y') AS DATE) AS data_deposito,
+    normalize_string(epigrafe) AS epigrafe,
     normalize_string(collegio) AS collegio,
     normalize_string(testo) AS testo,
     normalize_string(dispositivo) AS dispositivo

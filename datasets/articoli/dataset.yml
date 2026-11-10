@@ -4,8 +4,11 @@ schema_version: 1
 dataset:
   name: "articoli_costituzione"
   source_id: "costituzione_italiana"
-  tags: [costituzione, diritti, ordinamento]
+  tags: [normativa, costituzione, diritti, ordinamento]
   category: normativa
+  description: >
+    Testo vigente della Costituzione: 139 articoli e 18 disposizioni
+    transitorie, con heading, parte, titolo, sezione, commi e testo.
   years: [2026]
 
 raw:
@@ -37,6 +40,8 @@ clean:
     min_rows: 130
     not_null:
       - heading
+    # articolo per il testo principale, disposizione per le transitorie
+    primary_key: [parte, disposizione, articolo]
 
 mart:
   tables:

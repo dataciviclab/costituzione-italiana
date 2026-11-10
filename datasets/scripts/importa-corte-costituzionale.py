@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
-"""Scarica e processa i dati della Corte Costituzionale (Atti di promovimento).
+"""Scarica e processa gli atti di promovimento PENDENTI della Corte Costituzionale.
+
+I quattro registri open data (ordinanze, ricorsi, conflitti tra enti,
+conflitti tra poteri) sono snapshot dei giudizi pendenti, non una serie
+storica.
 
 Estrae da XML:
-- Ogni atto: anno, numero, tipo (ordinanza/ricorso)
+- Ogni atto: anno, numero, tipo (ordinanza/ricorso/conflitto_enti/conflitto_poteri)
 - Norma impugnata: descrizione, numero, data, articolo, comma
 - Parametro costituzionale evocato: articolo, comma
 
@@ -29,6 +33,8 @@ BASE_URL = "https://dati.cortecostituzionale.it/opendata/Norme_impugnate"
 ZIPS = {
     "ordinanza": f"{BASE_URL}/Cc_Opendata_RegistroOrdinanze.zip",
     "ricorso": f"{BASE_URL}/Cc_Opendata_RegistroRicorsi.zip",
+    "conflitto_enti": f"{BASE_URL}/Cc_Opendata_RegistroConflittiEnti.zip",
+    "conflitto_poteri": f"{BASE_URL}/Cc_Opendata_RegistroConflittiPoteri.zip",
 }
 
 
@@ -87,13 +93,20 @@ def parse_xml(xml_content: bytes, tipo: str) -> list[dict]:
     root = ET.fromstring(xml_content)
     records: list[dict] = []
 
-    # Il root può essere <registro_ordinanze> o <registro_ricorsi>
+    # Il root cambia per registro (`registro_ordinanze`, `registro_ricorsi`,
+    # `confiltto_enti`, `conflitto_poteri`): leggiamo sempre gli `<atto>`.
     for atto in root.findall("atto"):
         anno = atto.get("anno", "")
         numero_atto = atto.get("numero", "")
 
-        for np in atto.findall("numero_parte"):
-            numero_parte = (np.text or "").strip() or "1"
+        # Ordinanze/ricorsi annidano norme e parametri in `<numero_parte>`;
+        # i conflitti li hanno direttamente sull'atto (una sola parte).
+        parti = atto.findall("numero_parte") or [atto]
+        for np in parti:
+            if np is atto:
+                numero_parte = "1"
+            else:
+                numero_parte = (np.text or "").strip() or "1"
 
             # Leggi norme impugnate
             norme_el = np.find("norme")

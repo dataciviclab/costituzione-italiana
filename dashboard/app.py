@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Costituzione Italiana · Dashboard Streamlit
-139 articoli, 22k pronunce, 266k massime, 16k citazioni — la Costituzione come non l'hai mai vista.
+139 articoli, 22.428 pronunce, 46.665 massime, 16.174 citazioni — la Costituzione come non l'hai mai vista.
 """
 
 import streamlit as st
