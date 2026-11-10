@@ -14,7 +14,7 @@ dataset:
   tags: [costituzione, giurisprudenza, corte_costituzionale, sentenze, compose]
   category: giurisprudenza
   description: >
-    SentenzeComplete: pronunce della Corte Costituzionaliunite con massime
+    SentenzeComplete: pronunce della Corte Costituzionale unite con massime
     (esiti, parametri, norme) e anagrafica giudici (eletto_da).
     Una riga per pronuncia × massima.
   years: [2026]
