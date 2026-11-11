@@ -17,11 +17,12 @@ run:
 	done
 
 # Alias documentato in README/CONTRIBUTING: make run-<slug>
-.PHONY: $(addprefix run-,$(notdir $(dir $(DATASETS))))
-$(addprefix run-,$(notdir $(dir $(DATASETS)))):
-	@slug=$@; slug=$${slug#run-}; \
-	config=$$(find datasets -maxdepth 2 -name dataset.yml -path "*/$$slug/*" | head -1); \
-	if [ -z "$$config" ]; then echo "❌ Dataset '$$slug' non trovato"; exit 1; fi; \
+# Pattern rule: `$(notdir $(dir ...))` espandeva a vuoto (trailing slash),
+# quindi i target run-<slug> non esistevano.
+run-%:
+	@slug=$*; \
+	config=$$(find datasets compose -maxdepth 2 -name dataset.yml -path "*/$$slug/dataset.yml" | head -1); \
+	[ -n "$$config" ] || { echo "❌ Dataset '$$slug' non trovato"; exit 1; }; \
 	echo "=== $$slug ==="; \
 	$(TOOLKIT) run --config "$$config"
 
@@ -33,14 +34,6 @@ compose:
 		echo "=== $$f (compose) ==="; \
 		$(TOOLKIT) run --config "$$f" || exit 1; \
 	done
-
-.PHONY: $(addprefix run-,$(notdir $(dir $(COMPOSE))))
-$(addprefix run-,$(notdir $(dir $(COMPOSE)))):
-	@slug=$@; slug=$${slug#run-}; \
-	config=$$(find compose -maxdepth 2 -name dataset.yml -path "*/$$slug/*" | head -1); \
-	if [ -z "$$config" ]; then echo "❌ Compose '$$slug' non trovato"; exit 1; fi; \
-	echo "=== $$slug (compose) ==="; \
-	$(TOOLKIT) run --config "$$config"
 
 # CI post-merge e dispatch: dataset + compose
 .PHONY: run-all
@@ -62,11 +55,11 @@ check:
 
 # --- Status singolo dataset/compose ------------------------------------------
 
-.PHONY: $(addprefix status-,$(notdir $(dir $(DATASETS))) $(addprefix status-,$(notdir $(dir $(COMPOSE)))))
-$(addprefix status-,$(notdir $(dir $(DATASETS))) $(addprefix status-,$(notdir $(dir $(COMPOSE))))):
-	@slug=$@; slug=$${slug#status-}; \
-	config=$$(find datasets compose -maxdepth 2 -name dataset.yml -path "*/$$slug/*" | head -1); \
-	$(TOOLKIT) inspect summary --config "$$config" 2>/dev/null || echo "Nessuno stato per $$slug"
+status-%:
+	@slug=$*; \
+	config=$$(find datasets compose -maxdepth 2 -name dataset.yml -path "*/$$slug/dataset.yml" | head -1); \
+	[ -n "$$config" ] || { echo "❌ Dataset '$$slug' non trovato"; exit 1; }; \
+	$(TOOLKIT) inspect runs --config "$$config" 2>/dev/null || echo "Nessuno stato per $$slug"
 
 # --- Registry (artifact catalogo — dry-run di default) -----------------------
 
