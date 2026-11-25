@@ -76,8 +76,9 @@ def scarica_ed_estrai(temp_dir: str) -> list[dict]:
             # Trova il file XML dentro lo ZIP
             xml_files = [n for n in zf.namelist() if n.endswith(".xml")]
             if not xml_files:
-                logger.warning("Nessun XML trovato in %s", url)
-                continue
+                raise RuntimeError(
+                    f"Registro {tipo} senza XML in {url}: download o formato fonte cambiato"
+                )
 
             xml_path = xml_files[0]
             logger.info("Parsing %s (%s, %d KB)", xml_path, tipo, len(zip_data) // 1024)
@@ -222,7 +223,7 @@ def main() -> None:
 
     if not records:
         logger.error("Nessun record estratto")
-        return
+        raise SystemExit(1)
 
     csv_path = args.output_dir / "atti-promovimento.csv"
     scrivi_csv(records, csv_path)
