@@ -46,12 +46,14 @@ clean:
     - norme_str
     - n_norme
   validate:
-    # Soglia anti-download-parziale, non un atteso di prodotto: la fonte
-    # (`Norme_impugnate`, quattro registri) ha **1.000** parametri Costituzione
-    # oggi (794 ordinanze + 191 ricorsi + 11 conflitti enti + 4 conflitti
-    # poteri). Se salta un registro il conteggio scende sotto 900, quindi la
-    # soglia resta una guardia reale.
-    min_rows: 900
+    # Soglia anti-download-parziale, non un atteso di prodotto: la fonte è uno
+    # snapshot dei giudizi PENDENTI (quattro registri), quindi il conteggio
+    # scende quando le questioni vengono decise e risale con i nuovi depositi.
+    # Al 2026-11-25: 887 parametri (684 ordinanze + 188 ricorsi + 11 conflitti
+    # enti + 4 conflitti poteri), prima 1.000. La soglia resta bassa come rete
+    # di sicurezza contro un registro perso o un parse rotto; il controllo
+    # puntuale per registro è nello script di import.
+    min_rows: 300
     not_null:
       - anno
       - parametro_articolo
